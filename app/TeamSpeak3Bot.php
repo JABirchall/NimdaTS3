@@ -130,17 +130,15 @@ class TeamSpeak3Bot
 
         $this->initializePlugins();
         $this->subscribe();
-        $this->kick("tag");
         $this->wait();
     }
-
 
     protected function subscribe()
     {
         Signal::getInstance()->subscribe("errorException", array($this, "onException"));
         Signal::getInstance()->subscribe("notifyTextmessage", [$this, "onMessage"]);
         Signal::getInstance()->subscribe("serverqueryConnected", [$this, "onConnect"]);
-        Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
+        //Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
         $this->node->notifyRegister("server");
         $this->node->notifyRegister("channel");
         $this->node->notifyRegister("textserver");
@@ -212,9 +210,6 @@ class TeamSpeak3Bot
         return null;
     }
 
-    /**
-     *
-     */
     private function initializePlugins() {
         $dir = opendir("config/plugins");
 
@@ -380,10 +375,10 @@ class TeamSpeak3Bot
             foreach($config->triggers as $trigger) {
                 if($event["msg"]->startsWith($trigger)){
                     $info['triggerUsed'] = $trigger;
-                    $text = $event["msg"]->substr(strlen($trigger)+1)->toString();
+                    $text = $event["msg"]->substr(strlen($trigger)+1);
                     $info['fullText'] = $event["msg"];
                     unset($info['text']);
-                    if(!empty($text)) $info['text'] = $text;
+                    if(!empty($text->toString())) $info['text'] = $text;
                     $this->plugins[$name]->info = $info;
                     $this->plugins[$name]->trigger();
                     break;

@@ -4,12 +4,14 @@ use App\Plugin;
 /**
  * Class MD5
  */
-class MD5 extends Plugin {
+class MD5 extends Plugin
+{
 
     /**
      * @return sendOutput
      */
-    function isTriggered() {
+    function isTriggered()
+    {
 		if(!isset($this->info['text'])) {
 			$this->sendOutput($this->CONFIG['usage']);
 			return;
