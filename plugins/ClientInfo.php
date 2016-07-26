@@ -26,6 +26,7 @@ class ClientInfo extends Plugin
             $Client->message("[COLOR=blue][B]{$name}: Joined: ".date("F j, Y, g:i a",$clientInfo["client_created"]));
             $Client->message("[COLOR=blue][B]{$name}: Last connection: ". date("F j, Y, g:i a",$clientInfo["client_lastconnected"]));
             $Client->message("[COLOR=blue][B]{$name}: Total connections: {$clientInfo["client_totalconnections"]}");
+            $clientInfo["client_description"] = ($clientInfo["client_description"])?$clientInfo["client_description"]:"N/A";
             $Client->message("[COLOR=blue][B]{$name}: Client description: {$clientInfo["client_description"]}");
             $Client->message("[COLOR=blue][B]{$name}: Last IP: {$clientInfo["client_lastip"]}");
         }catch (Ts3Exception $e)
