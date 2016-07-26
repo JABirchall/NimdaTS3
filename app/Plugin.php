@@ -89,8 +89,6 @@ class Plugin
         $info_save = $this->info;
         $this->info = $info_save;
         $this->isTriggered();
-        $this->info = $info_save;
-        $this->IRCBot->sendPrivmsg($this->info['target'],sprintf($this->IRCBot->CONFIG['text_not_authorized'],$this->level,$this->IRCBot->lastLevel));
     }
 
     protected function stripSlashes($array) {
@@ -111,10 +109,8 @@ class Plugin
     }
 
     function sendOutput($text) {
-        //var_dump($this->info);
-        $target = $this->teamSpeak3Bot->node->clientGetByName($this->info['invokername']);
         $this->teamSpeak3Bot->printOutput($text);
-        $this->teamSpeak3Bot->sendPrivateMsg($target, $text);
+        $this->teamSpeak3Bot->sendPrivateMsg($this->info['invokername'], $text);
     }
 
     function onMessage() {}

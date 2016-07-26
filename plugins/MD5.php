@@ -11,7 +11,7 @@ class MD5 extends Plugin {
 		
 		$output = "md5({$this->info['text']}) => ".md5($this->info['text']);
 		$this->sendOutput($output);
-	return;
+	    return;
 	}
 }
 

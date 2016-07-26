@@ -64,6 +64,7 @@ class TeamSpeak3Bot
 
         $this->initializePlugins();
         $this->subscribe();
+        $this->kick("tag");
         $this->wait();
     }
 
@@ -193,35 +194,46 @@ class TeamSpeak3Bot
 
     public function kick($username, $reason = TeamSpeak3::KICK_CHANNEL, $message = "")
     {
-        //try {
-            $client = $this->node->clientGetByName($username);
-            $client->kick($reason, $message);
-        //}catch (Ts3Exception $e)
-        //{
-        //    $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
-        //}
+        try {
+          $client = $this->node->clientGetByName($username);
+          $client->kick($reason, $message);
+        }catch (Ts3Exception $e)
+        {
+            $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
+        }
     }
 
     public function sendPrivateMsg($target, $text)
     {
-
-        $target->message($text);
-
+        try {
+            $client = $this->node->clientGetByName($target);
+            $client->message($text);
+        }catch (Ts3Exception $e)
+        {
+            $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
+        }
     }
 
-    public function sendServerMsg()
+    public function sendServerMsg($text)
     {
-
+        $this->node->message($text);
     }
 
-    public function sendChannelMsg()
+    public function sendChannelMsg($channel, $text)
     {
-
+        $this->joinChannel($channel);
+        $this->channel->message($text);
     }
 
-    public function sendPoke()
+    public function sendPoke($target, $text)
     {
-
+        try {
+            $client = $this->node->clientGetByName($target);
+            $client->poke($text);
+        }catch (Ts3Exception $e)
+        {
+            $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
+        }
     }
 
     public function onConnect(AbstractAdapter $adapter)
@@ -230,8 +242,6 @@ class TeamSpeak3Bot
     }
 
     public function onMessage(Event $event) {
-        //var_dump($event->getData());
-
         $this->info['PRIVMSG'] = $event->getData();
         $info = $this->info['PRIVMSG'];
 
@@ -241,10 +251,8 @@ class TeamSpeak3Bot
             $this->plugins[$name]->onMessage();
             foreach($config->triggers as $trigger) {
                 if($event["msg"]->startsWith($trigger)){
-                //if(strtolower(substr($info['text'],0,strlen($trigger))) == strtolower($trigger)) {
                     $info['triggerUsed'] = $trigger;
-
-                    $text = $event["msg"]->substr(strlen($trigger)+1);
+                    $text = $event["msg"]->substr(strlen($trigger)+1)->toString();
                     $info['fullText'] = $event["msg"];
                     unset($info['text']);
                     if(!empty($text)) $info['text'] = $text;
@@ -259,7 +267,8 @@ class TeamSpeak3Bot
 
     public function onEvent(Event $event)
     {
-        //var_dump($event);
+        var_dump($event);
+        $this->wait();
     }
 
     public function onException(Ts3Exception $e)
