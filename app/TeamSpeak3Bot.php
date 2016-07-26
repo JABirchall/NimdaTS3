@@ -12,6 +12,7 @@ use TeamSpeak3\TeamSpeak3;
 use TeamSpeak3\Helper\Signal;
 use TeamSpeak3\Ts3Exception;
 use TeamSpeak3\Adapter\ServerQuery\Event;
+use TeamSpeak3\Adapter\AbstractAdapter;
 
 /**
  * Class TeamSpeak3Bot
@@ -119,6 +120,7 @@ class TeamSpeak3Bot
      */
     public function run()
     {
+        $this->subscribe();
         try {
             $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}");
             $this->online = TRUE;
@@ -129,23 +131,29 @@ class TeamSpeak3Bot
         }
 
         $this->initializePlugins();
-        $this->subscribe();
+
+        $this->register();
         $this->wait();
     }
 
     protected function subscribe()
     {
-        Signal::getInstance()->subscribe("serverqueryWaitTimeout", [$this, "onTimeout"]);
+        Signal::getInstance()->subscribe("serverqueryWaitTimeout", [$this, "onWaitTimeout"]);
         Signal::getInstance()->subscribe("errorException", [$this, "onException"]);
         Signal::getInstance()->subscribe("notifyTextmessage", [$this, "onMessage"]);
         Signal::getInstance()->subscribe("serverqueryConnected", [$this, "onConnect"]);
         Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
+        $this->printOutput("Events subscribed.");
+    }
+
+    protected function register()
+    {
         $this->node->notifyRegister("textserver");
         $this->node->notifyRegister("textchannel");
         $this->node->notifyRegister("textprivate");
         $this->node->notifyRegister("server");
         $this->node->notifyRegister("channel");
-        $this->printOutput("Events subscribed.");
+        $this->printOutput("Registered.");
     }
 
     /**
@@ -408,13 +416,13 @@ class TeamSpeak3Bot
         //$this->wait();
     }
 
-    public function onTimeout(Event $event)
+    public function onWaitTimeout($time, AbstractAdapter $adapter)
     {
-        if ($this->node->getAdapter()->getQueryLastTimestamp() < time() - 120)
-            $this->node->getAdapter()->request("clientupdate");
+        if ($adapter->getQueryLastTimestamp() < time() - 120)
+            $adapter->request("clientupdate");
         $this->node->clientListReset();
         $this->node->channelListReset();
-        var_dump($event);
+        var_dump($time);
         //$this->wait();
     }
 
