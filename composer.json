@@ -1,0 +1,21 @@
+{
+  "name": "drwhatnoname/drbotts3",
+  "description": "description_text",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "require": {
+    "fkubis/teamspeak-php-framework": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Plugin\\": "plugins/"
+    }
+  },
+  "authors": [
+    {
+      "name": "author's name",
+      "email": "email@example.com"
+    }
+  ]
+}

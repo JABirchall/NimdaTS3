@@ -1,0 +1,64 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "c5727b4f784eaf24dfd4b1ca3863b771",
+    "content-hash": "4b9575a35e6b9ead1d00545e767797aa",
+    "packages": [
+        {
+            "name": "fkubis/teamspeak-php-framework",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fkubis/teamspeak-php-framework.git",
+                "reference": "0854c46b93da76c329ec3f426aec1a038072377c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fkubis/teamspeak-php-framework/zipball/0854c46b93da76c329ec3f426aec1a038072377c",
+                "reference": "0854c46b93da76c329ec3f426aec1a038072377c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TeamSpeak3\\": "TeamSpeak3/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL2"
+            ],
+            "authors": [
+                {
+                    "name": "Sven Paulsen"
+                },
+                {
+                    "name": "Frank Kubis",
+                    "email": "f.kubis@aranox.de"
+                }
+            ],
+            "description": "Clone of TS3 PHP Framework 1.1.23 providing the library as composer project.",
+            "homepage": "https://github.com/fkubis/teamspeak-php-framework",
+            "keywords": [
+                "teamspeak3"
+            ],
+            "time": "2016-07-05 09:14:42"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "fkubis/teamspeak-php-framework": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

@@ -1,0 +1,24 @@
+{
+    "name": "fkubis/teamspeak-php-framework",
+    "type": "library",
+    "description": "Clone of TS3 PHP Framework 1.1.23 providing the library as composer project.",
+    "keywords": ["teamspeak3"],
+    "minimum-stability": "dev",
+    "homepage": "https://github.com/fkubis/teamspeak-php-framework",
+    "license": "GPL2",
+    "authors": [
+        {
+            "name": "Sven Paulsen"
+        },
+        {
+            "name": "Frank Kubis",
+            "email": "f.kubis@aranox.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "TeamSpeak3\\": "TeamSpeak3/" }
+    },
+    "require": {
+        "php": ">=5.3.3"
+    }
+}
