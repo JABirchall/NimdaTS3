@@ -135,15 +135,16 @@ class TeamSpeak3Bot
 
     protected function subscribe()
     {
-        Signal::getInstance()->subscribe("errorException", array($this, "onException"));
+        Signal::getInstance()->subscribe("serverqueryWaitTimeout", [$this, "onTimeout"]);
+        Signal::getInstance()->subscribe("errorException", [$this, "onException"]);
         Signal::getInstance()->subscribe("notifyTextmessage", [$this, "onMessage"]);
         Signal::getInstance()->subscribe("serverqueryConnected", [$this, "onConnect"]);
-        //Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
-        $this->node->notifyRegister("server");
-        $this->node->notifyRegister("channel");
+        Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
         $this->node->notifyRegister("textserver");
         $this->node->notifyRegister("textchannel");
         $this->node->notifyRegister("textprivate");
+        $this->node->notifyRegister("server");
+        $this->node->notifyRegister("channel");
         $this->printOutput("Events subscribed.");
     }
 
@@ -161,7 +162,7 @@ class TeamSpeak3Bot
      */
     protected function wait()
     {
-        $this->node->getAdapter()->wait();
+        while(1) $this->node->getAdapter()->wait();
     }
 
     /**
@@ -185,7 +186,6 @@ class TeamSpeak3Bot
         if(Self::$_instance === null)
                 self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort);
 
-
         return Self::$_instance;
     }
 
@@ -206,7 +206,6 @@ class TeamSpeak3Bot
     {
         if(Self::$_instance === null)
             self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort);
-
 
         return null;
     }
@@ -370,23 +369,25 @@ class TeamSpeak3Bot
         $info = $this->info['PRIVMSG'];
 
         foreach($this->plugins as $name => $config) {
-
             $this->plugins[$name]->info = $info;
             $this->plugins[$name]->onMessage();
+
             foreach($config->triggers as $trigger) {
                 if($event["msg"]->startsWith($trigger)){
                     $info['triggerUsed'] = $trigger;
                     $text = $event["msg"]->substr(strlen($trigger)+1);
                     $info['fullText'] = $event["msg"];
                     unset($info['text']);
-                    if(!empty($text->toString())) $info['text'] = $text;
+
+                    if(!empty($text->toString()))
+                        $info['text'] = $text;
+
                     $this->plugins[$name]->info = $info;
                     $this->plugins[$name]->trigger();
                     break;
                 }
             }
         }
-        $this->wait();
     }
 
     /**
@@ -394,8 +395,20 @@ class TeamSpeak3Bot
      */
     public function onEvent(Event $event)
     {
+        $this->node->clientListReset();
+        $this->node->channelListReset();
+        //var_dump($event);
+        //$this->wait();
+    }
+
+    public function onTimeout(Event $event)
+    {
+        if($this->node->getAdapter()->getQueryLastTimestamp() < time()-120)
+            $this->node->getAdapter()->request("clientupdate");
+        $this->node->clientListReset();
+        $this->node->channelListReset();
         var_dump($event);
-        $this->wait();
+        //$this->wait();
     }
 
     /**

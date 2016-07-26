@@ -26,7 +26,8 @@ class Jail extends Plugin
                 $suspect = $this->server->clientGetById($suspect["clid"]);
                 $suspect->move($jail);
                 $suspect->poke("[COLOR=red][b] You have been put in jail by {$this->info['invokername']}");
-
+                $output = "User {$suspect['client_nickname']->toString()} was put in jail by {$this->info['invokername']}";
+                $this->sendOutput($output);
             }
         }catch(Ts3Exception $e)
         {
