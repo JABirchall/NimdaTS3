@@ -144,15 +144,16 @@ class TeamSpeak3Bot
         $this->node->notifyRegister("textserver");
         $this->node->notifyRegister("textchannel");
         $this->node->notifyRegister("textprivate");
-        $this->printOutput("Events subscribed");
+        $this->printOutput("Events subscribed.");
     }
 
     /**
      * @param $output
+     * @param $eol
      */
-    public function printOutput($output)
+    public function printOutput($output, $eol = true)
     {
-        echo $output . PHP_EOL;
+        echo $output, $eol?PHP_EOL:'';
     }
 
     /**
@@ -230,16 +231,16 @@ class TeamSpeak3Bot
         $config['configFile'] = $configFile;
 
         if(!$config) {
-            $this->printOutput("Plugin with config file '".$configFile."' has not been loaded cause it doesn't exist.");
+            $this->printOutput("Plugin with config file '".$configFile."' has not been loaded because it doesn't exist.");
             return false;
         }
 
         if(!isset($config['name'])) {
-            $this->printOutput("Plugin with config file '".$configFile."' has not been loaded cause it has no name.");
+            $this->printOutput("Plugin with config file '".$configFile."' has not been loaded because it has no name.");
             return false;
         }
 
-        $this->printOutput("Loading Plugin [{$config['name']}] ...");
+        $this->printOutput("Loading Plugin [{$config['name']}] by {$config['author']} ... ", false);
         require_once("plugins/".$config['name'].".php");
 
         $this->plugins[$config['name']] = new $config['name']($config, $this);
