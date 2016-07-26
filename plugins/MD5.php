@@ -1,9 +1,15 @@
 <?php
 use App\Plugin;
 
+/**
+ * Class MD5
+ */
 class MD5 extends Plugin {
-	
-	function isTriggered() {
+
+    /**
+     * @return sendOutput
+     */
+    function isTriggered() {
 		if(!isset($this->info['text'])) {
 			$this->sendOutput($this->CONFIG['usage']);
 			return;
@@ -11,7 +17,6 @@ class MD5 extends Plugin {
 		
 		$output = "md5({$this->info['text']}) => ".md5($this->info['text']);
 		$this->sendOutput($output);
-	    return;
 	}
 }
 

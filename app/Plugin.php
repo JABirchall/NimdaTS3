@@ -8,21 +8,63 @@
 
 namespace App;
 
+/**
+ * Class Plugin
+ * @package App
+ */
 class Plugin
 {
+    /**
+     * @var
+     */
     public $name;
+    /**
+     * @var
+     */
     public $author;
+    /**
+     * @var
+     */
     public $description;
+    /**
+     * @var
+     */
     public $version;
+    /**
+     * @var
+     */
     public $level;
+    /**
+     * @var mixed
+     */
     public $triggers;
+    /**
+     * @var mixed
+     */
     public $originalTriggers;
+    /**
+     * @var
+     */
     public $configFile;
+    /**
+     * @var
+     */
     public $config;
+    /**
+     * @var
+     */
     public $output;
 
+    /**
+     * @var
+     */
     public $teamSpeak3Bot;
 
+    /**
+     * Plugin constructor.
+     * @param $config
+     * @param $teamSpeak3Bot
+     */
     public function __construct($config, $teamSpeak3Bot)
     {
         $this->teamSpeak3Bot = $teamSpeak3Bot;
@@ -66,12 +108,20 @@ class Plugin
         }
     }
 
+    /**
+     * @param $trigger
+     * @return bool
+     */
     function addTrigger($trigger) {
         array_push($this->triggers,$trigger);
         $this->triggers = $this->sortByLengthDESC($this->triggers);
         return true;
     }
 
+    /**
+     * @param $trigger
+     * @return bool
+     */
     function delTrigger($trigger) {
         $key = array_search($trigger,$this->triggers);
         if($key === false)
@@ -91,30 +141,56 @@ class Plugin
         $this->isTriggered();
     }
 
+    /**
+     * @param $array
+     * @return array|string|stripslashes
+     */
     protected function stripSlashes($array) {
         $value = is_array($array) ? array_map('stripslashes', $array) : stripslashes($array);
         return $value;
     }
 
+    /**
+     * @param $array
+     * @return mixed
+     */
     static function sortByLengthASC($array) {
         $tempFunction = create_function('$a,$b','return strlen($a)-strlen($b);');
         usort($array,$tempFunction);
         return $array;
     }
 
+    /**
+     * @param $array
+     * @return mixed
+     */
     static function sortByLengthDESC($array) {
         $tempFunction = create_function('$a,$b','return strlen($b)-strlen($a);');
         usort($array,$tempFunction);
         return $array;
     }
 
+    /**
+     * @param $text
+     */
     function sendOutput($text) {
         $this->teamSpeak3Bot->printOutput($text);
         $this->teamSpeak3Bot->sendPrivateMsg($this->info['invokername'], $text);
     }
 
+    /**
+     *
+     */
     function onMessage() {}
+
+    /**
+     *
+     */
     function onChannelMessage() {}
+
+    /**
+     *
+     */
     function onKick() {}
 
 

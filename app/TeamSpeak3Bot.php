@@ -19,28 +19,91 @@ use TeamSpeak3\Adapter\ServerQuery\Event;
  */
 class TeamSpeak3Bot
 {
+    /**
+     * @var string
+     */
     protected static $_version = '0.0.1';
 
+    /**
+     * @var string
+     */
     private $username;
+    /**
+     * @var string
+     */
     private $password;
+    /**
+     * @var string
+     */
     private $host;
+    /**
+     * @var string
+     */
     private $port;
+    /**
+     * @var string
+     */
     private $name;
+    /**
+     * @var string
+     */
     private $serverPort;
+    /**
+     * @var
+     */
     public $node;
+    /**
+     * @var
+     */
     public $channel;
+    /**
+     * @var
+     */
     public $plugins;
 
+    /**
+     * @var
+     */
     private static $_username;
+    /**
+     * @var
+     */
     private static $_password;
+    /**
+     * @var
+     */
     private static $_host;
+    /**
+     * @var
+     */
     private static $_port;
+    /**
+     * @var
+     */
     private static $_name;
+    /**
+     * @var
+     */
     private static $_serverPort;
+    /**
+     * @var
+     */
     private static $_instance;
 
+    /**
+     * @var bool
+     */
     public $online = false;
 
+    /**
+     * TeamSpeak3Bot constructor.
+     * @param string $username
+     * @param string $password
+     * @param string $host
+     * @param string $port
+     * @param string $name
+     * @param string $serverPort
+     */
     public function __construct($username = "serveradmin", $password = "", $host = "127.0.0.1", $port = "10011", $name = "DrBot", $serverPort = "9987")
     {
         $this->username = $username;
@@ -51,6 +114,9 @@ class TeamSpeak3Bot
         $this->serverPort = $serverPort;
     }
 
+    /**
+     * Run the TeamSpeak3Bot instance
+     */
     public function run()
     {
         try {
@@ -68,6 +134,7 @@ class TeamSpeak3Bot
         $this->wait();
     }
 
+
     protected function subscribe()
     {
         Signal::getInstance()->subscribe("errorException", array($this, "onException"));
@@ -82,16 +149,25 @@ class TeamSpeak3Bot
         $this->printOutput("Events subscribed");
     }
 
+    /**
+     * @param $output
+     */
     public function printOutput($output)
     {
         echo $output . PHP_EOL;
     }
 
+    /**
+     * Wait for messages
+     */
     protected function wait()
     {
         $this->node->getAdapter()->wait();
     }
 
+    /**
+     * @param array $options
+     */
     public static function setOptions(Array $options = [])
     {
         Self::$_username = $options['username'];
@@ -102,6 +178,9 @@ class TeamSpeak3Bot
         Self::$_serverPort = $options['serverPort'];
     }
 
+    /**
+     * @return TeamSpeak3Bot
+     */
     public static function getInstance()
     {
         if(Self::$_instance === null)
@@ -111,6 +190,9 @@ class TeamSpeak3Bot
         return Self::$_instance;
     }
 
+    /**
+     * @return TeamSpeak3Bot
+     */
     public static function getNewInstance()
     {
         self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort);
@@ -118,6 +200,9 @@ class TeamSpeak3Bot
         return Self::$_instance;
     }
 
+    /**
+     * @return null
+     */
     public static function getLastInstance()
     {
         if(Self::$_instance === null)
@@ -127,6 +212,9 @@ class TeamSpeak3Bot
         return null;
     }
 
+    /**
+     *
+     */
     private function initializePlugins() {
         $dir = opendir("config/plugins");
 
@@ -138,6 +226,10 @@ class TeamSpeak3Bot
         closedir($dir);
     }
 
+    /**
+     * @param $configFile
+     * @return bool
+     */
     private function loadPlugin($configFile) {
         $config = $this->parseConfigFile("config/plugins/".$configFile);
         $config['configFile'] = $configFile;
@@ -161,6 +253,10 @@ class TeamSpeak3Bot
         return true;
     }
 
+    /**
+     * @param $file
+     * @return array|bool
+     */
     public function parseConfigFile($file) {
         if(!file_exists($file))
             return false;
@@ -177,6 +273,9 @@ class TeamSpeak3Bot
         return $array;
     }
 
+    /**
+     * @param $channel
+     */
     public function joinChannel($channel) {
         try {
             $this->channel = $this->node->channelGetByName($channel);
@@ -187,11 +286,19 @@ class TeamSpeak3Bot
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function whoAmI()
     {
         return $this->node->whoAmI();
     }
 
+    /**
+     * @param $username
+     * @param int $reason
+     * @param string $message
+     */
     public function kick($username, $reason = TeamSpeak3::KICK_CHANNEL, $message = "")
     {
         try {
@@ -203,6 +310,10 @@ class TeamSpeak3Bot
         }
     }
 
+    /**
+     * @param $target
+     * @param $text
+     */
     public function sendPrivateMsg($target, $text)
     {
         try {
@@ -214,17 +325,28 @@ class TeamSpeak3Bot
         }
     }
 
+    /**
+     * @param $text
+     */
     public function sendServerMsg($text)
     {
         $this->node->message($text);
     }
 
+    /**
+     * @param $channel
+     * @param $text
+     */
     public function sendChannelMsg($channel, $text)
     {
         $this->joinChannel($channel);
         $this->channel->message($text);
     }
 
+    /**
+     * @param $target
+     * @param $text
+     */
     public function sendPoke($target, $text)
     {
         try {
@@ -236,11 +358,17 @@ class TeamSpeak3Bot
         }
     }
 
+    /**
+     * @param AbstractAdapter $adapter
+     */
     public function onConnect(AbstractAdapter $adapter)
     {
         $this->printOutput("Connected!");
     }
 
+    /**
+     * @param Event $event
+     */
     public function onMessage(Event $event) {
         $this->info['PRIVMSG'] = $event->getData();
         $info = $this->info['PRIVMSG'];
@@ -265,18 +393,21 @@ class TeamSpeak3Bot
         $this->wait();
     }
 
+    /**
+     * @param Event $event
+     */
     public function onEvent(Event $event)
     {
         var_dump($event);
         $this->wait();
     }
 
+    /**
+     * @param Ts3Exception $e
+     */
     public function onException(Ts3Exception $e)
     {
         $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
     }
-
-
-
 
 }
