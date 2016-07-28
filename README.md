@@ -42,7 +42,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 * **DrWhat** - *All the work*
 
-See also the list of [contributors](https://github.com/DrBotTeamSpeak3/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/DrWhatNoName/DrBotTeamSpeak3/graphs/contributors) who participated in this project.
 
 ## License
 
