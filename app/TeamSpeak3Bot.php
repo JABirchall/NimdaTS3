@@ -23,7 +23,7 @@ class TeamSpeak3Bot
     /**
      * @var string
      */
-    protected static $_version = '0.0.1';
+    const DRBOTVERSION = '0.0.1';
 
     /**
      * @var string
@@ -94,10 +94,11 @@ class TeamSpeak3Bot
     /**
      * @var bool
      */
-    public $online = FALSE;
+    public $online = false;
 
     /**
      * TeamSpeak3Bot constructor.
+     *
      * @param string $username
      * @param string $password
      * @param string $host
@@ -123,7 +124,7 @@ class TeamSpeak3Bot
         $this->subscribe();
         try {
             $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}");
-            $this->online = TRUE;
+            $this->online = true;
         } catch (Ts3Exception $e) {
             $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
 
@@ -160,7 +161,7 @@ class TeamSpeak3Bot
      * @param $output
      * @param $eol
      */
-    public function printOutput($output, $eol = TRUE)
+    public function printOutput($output, $eol = true)
     {
         echo $output, $eol ? PHP_EOL : '';
     }
@@ -170,7 +171,7 @@ class TeamSpeak3Bot
      */
     protected function wait()
     {
-        while (1){
+        while ($this->online === true) {
             $this->printOutput("wait");
             $this->node->getAdapter()->wait();
         }
@@ -194,8 +195,9 @@ class TeamSpeak3Bot
      */
     public static function getInstance()
     {
-        if (Self::$_instance === NULL)
+        if (Self::$_instance === null) {
             self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort);
+        }
 
         return Self::$_instance;
     }
@@ -215,8 +217,9 @@ class TeamSpeak3Bot
      */
     public static function getLastInstance()
     {
-        if (Self::$_instance === NULL)
-            return NULL;
+        if (Self::$_instance === null) {
+            return null;
+        }
 
         return Self::$_instance;
     }
@@ -226,8 +229,9 @@ class TeamSpeak3Bot
         $dir = opendir("config/plugins");
 
         while ($file = readdir($dir)) {
-            if (substr($file, -5) == ".conf")
+            if (substr($file, -5) == ".conf") {
                 $this->loadPlugin($file);
+            }
         }
 
         closedir($dir);
@@ -235,6 +239,7 @@ class TeamSpeak3Bot
 
     /**
      * @param $configFile
+     *
      * @return bool
      */
     private function loadPlugin($configFile)
@@ -246,40 +251,43 @@ class TeamSpeak3Bot
             $this->printOutput("Plugin with config file '" . $configFile .
                                "' has not been loaded because it doesn't exist.");
 
-            return FALSE;
+            return false;
         }
 
         if (!isset($config['name'])) {
             $this->printOutput("Plugin with config file '" . $configFile .
                                "' has not been loaded because it has no name.");
 
-            return FALSE;
+            return false;
         }
 
-        $this->printOutput("Loading Plugin [{$config['name']}] by {$config['author']} ... ", FALSE);
+        $this->printOutput("Loading Plugin [{$config['name']}] by {$config['author']} ... ", false);
         require_once("plugins/" . $config['name'] . ".php");
 
         $this->plugins[$config['name']] = new $config['name']($config, $this);
         $this->printOutput("OK");
 
-        return TRUE;
+        return true;
     }
 
     /**
      * @param $file
+     *
      * @return array|bool
      */
     public function parseConfigFile($file)
     {
-        if (!file_exists($file))
-            return FALSE;
+        if (!file_exists($file)) {
+            return false;
+        }
 
         $array = [];
         $fp = fopen($file, "r");
         while ($row = fgets($fp)) {
             $row = trim($row);
-            if (preg_match('/^([A-Za-z0-9_]+?)\s+=\s+(.+?)$/', $row, $arr))
+            if (preg_match('/^([A-Za-z0-9_]+?)\s+=\s+(.+?)$/', $row, $arr)) {
                 $array[$arr[1]] = $arr[2];
+            }
         }
 
         fclose($fp);
@@ -351,8 +359,12 @@ class TeamSpeak3Bot
      */
     public function sendChannelMsg($channel, $text)
     {
-        $this->joinChannel($channel);
-        $this->channel->message($text);
+        try {
+            $this->joinChannel($channel);
+            $this->channel->message($text);
+        } catch (Ts3Exception $e) {
+            $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
+        }
     }
 
     /**
@@ -396,8 +408,9 @@ class TeamSpeak3Bot
                     $info['fullText'] = $event["msg"];
                     unset($info['text']);
 
-                    if (!empty($text->toString()))
+                    if (!empty($text->toString())) {
                         $info['text'] = $text;
+                    }
 
                     $this->plugins[$name]->info = $info;
                     $this->plugins[$name]->trigger();
@@ -414,18 +427,16 @@ class TeamSpeak3Bot
     {
         $this->node->clientListReset();
         $this->node->channelListReset();
-        //var_dump($event);
-        //$this->wait();
     }
 
     public function onWaitTimeout($time, AbstractAdapter $adapter)
     {
-        if ($adapter->getQueryLastTimestamp() < time() - 120)
+        if ($adapter->getQueryLastTimestamp() < time() - 120) {
             $adapter->request("clientupdate");
+        }
+
         $this->node->clientListReset();
         $this->node->channelListReset();
-        var_dump($time);
-        //$this->wait();
     }
 
     /**
