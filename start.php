@@ -1,4 +1,5 @@
 <?php
+
 use App\TeamSpeak3Bot;
 
 include_once("vendor/autoload.php");
