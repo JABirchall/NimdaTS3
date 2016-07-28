@@ -205,7 +205,7 @@ class TeamSpeak3Bot
      */
     public static function getNewInstance()
     {
-        self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort);
+        Self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort);
 
         return Self::$_instance;
     }
@@ -216,9 +216,9 @@ class TeamSpeak3Bot
     public static function getLastInstance()
     {
         if (Self::$_instance === NULL)
-            self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort);
+            return NULL;
 
-        return NULL;
+        return Self::$_instance;
     }
 
     private function initializePlugins()
