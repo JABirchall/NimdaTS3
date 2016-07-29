@@ -432,8 +432,9 @@ class TeamSpeak3Bot
     public function onEvent(Event $event)
     {
 
-        if($this->lastEvent&& empty(array_diff($this->lastEvent, $event->getData()))) {
+        if ($this->lastEvent && empty(array_diff($this->lastEvent, $event->getData()))) {
             $this->printOutput('defer duplicate event.');
+
             return;
         }
         $this->lastEvent = $event->getData();
