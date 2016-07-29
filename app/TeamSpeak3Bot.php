@@ -126,7 +126,6 @@ class TeamSpeak3Bot
         $this->subscribe();
         try {
             $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}");
-            $this->online = true;
         } catch (Ts3Exception $e) {
             $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
 
@@ -388,6 +387,7 @@ class TeamSpeak3Bot
      */
     public function onConnect(AbstractAdapter $adapter)
     {
+        $this->online = true;
         $this->printOutput("Connected!");
     }
 
@@ -407,7 +407,7 @@ class TeamSpeak3Bot
                 if ($trigger == 'event') {
                     continue;
                 }
-                
+
                 if ($event["msg"]->startsWith($trigger)) {
                     $info['triggerUsed'] = $trigger;
                     $text = $event["msg"]->substr(strlen($trigger) + 1);
