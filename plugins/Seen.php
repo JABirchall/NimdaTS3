@@ -1,5 +1,7 @@
 <?php
 
+use App\Plugin;
+
 /**
  * Created by PhpStorm.
  * User: Admin
