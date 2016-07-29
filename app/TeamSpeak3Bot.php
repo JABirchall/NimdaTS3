@@ -427,10 +427,12 @@ class TeamSpeak3Bot
      */
     public function onEvent(Event $event)
     {
-        if($this->lastEvent && empty(array_diff($this->lastEvent, $event->getData()))) {
+
+        if($this->lastEvent&& empty(array_diff($this->lastEvent, $event->getData()))) {
             $this->printOutput('defer duplicate event.');
             return;
         }
+        $this->lastEvent = $event->getData();
         $this->node->clientListReset();
         $this->node->channelListReset();
 
@@ -445,7 +447,7 @@ class TeamSpeak3Bot
                 if ($trigger != 'event') {
                     continue;
                 }
-                echo 'event'.PHP_EOL;
+
                 if ($event->getType()->toString() == $this->plugins[$name]->CONFIG['event']) {
                     $info['eventUsed'] = $this->plugins[$name]->CONFIG['event'];
                     $info['data'] = $event->getData();
@@ -456,7 +458,7 @@ class TeamSpeak3Bot
                 }
             }
         }
-        $this->lastEvent = $event->getData();
+
     }
 
     public function onWaitTimeout($time, AbstractAdapter $adapter)
