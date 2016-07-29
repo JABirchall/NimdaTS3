@@ -154,7 +154,7 @@ class TeamSpeak3Bot
         $this->node->notifyRegister("textprivate");
         $this->node->notifyRegister("server");
         $this->node->notifyRegister("channel");
-        $this->printOutput("Registered.");
+        $this->printOutput("Notifications registered.");
     }
 
     /**
