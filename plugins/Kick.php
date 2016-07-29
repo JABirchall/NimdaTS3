@@ -24,12 +24,10 @@ class Kick extends Plugin
         $this->server = $this->teamSpeak3Bot->node;
 
         foreach ($this->server->clientList() as $client) {
-            //echo $client['client_nickname']->toString() . " <> " . $this->info['text'] ." = ". strcasecmp($client['client_nickname']->toString(), $this->info['text']);
-
             if (strcasecmp($client['client_nickname']->toString(), $this->info['text']) === 0) {
                 try {
                     $client->kick(TeamSpeak3::KICK_SERVER, "Kicked by {$this->info['invokername']}");
-                    $output = "[color=green] User {$client['client_nickname']->toString()} was kicked from the server.";
+                    $output = "[color=green] User {$client['client_nickname']} was kicked from the server.";
                     $this->sendOutput($output);
                 } catch (Ts3Exception $e) {
                     $message = $e->getMessage();
