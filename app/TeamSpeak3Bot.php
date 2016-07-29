@@ -404,6 +404,10 @@ class TeamSpeak3Bot
             $this->plugins[$name]->onMessage();
 
             foreach ($config->triggers as $trigger) {
+                if ($trigger == 'event') {
+                    continue;
+                }
+                
                 if ($event["msg"]->startsWith($trigger)) {
                     $info['triggerUsed'] = $trigger;
                     $text = $event["msg"]->substr(strlen($trigger) + 1);
