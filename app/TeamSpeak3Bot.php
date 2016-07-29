@@ -96,6 +96,8 @@ class TeamSpeak3Bot
      */
     public $online = false;
 
+    protected $lastEvent;
+
     /**
      * TeamSpeak3Bot constructor.
      *
@@ -124,7 +126,6 @@ class TeamSpeak3Bot
         $this->subscribe();
         try {
             $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}");
-            $this->online = true;
         } catch (Ts3Exception $e) {
             $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
 
@@ -386,6 +387,7 @@ class TeamSpeak3Bot
      */
     public function onConnect(AbstractAdapter $adapter)
     {
+        $this->online = true;
         $this->printOutput("Connected!");
     }
 
@@ -402,6 +404,10 @@ class TeamSpeak3Bot
             $this->plugins[$name]->onMessage();
 
             foreach ($config->triggers as $trigger) {
+                if ($trigger == 'event') {
+                    continue;
+                }
+
                 if ($event["msg"]->startsWith($trigger)) {
                     $info['triggerUsed'] = $trigger;
                     $text = $event["msg"]->substr(strlen($trigger) + 1);
@@ -425,8 +431,39 @@ class TeamSpeak3Bot
      */
     public function onEvent(Event $event)
     {
+
+        if ($this->lastEvent && empty(array_diff($this->lastEvent, $event->getData()))) {
+            $this->printOutput('defer duplicate event.');
+
+            return;
+        }
+        $this->lastEvent = $event->getData();
         $this->node->clientListReset();
         $this->node->channelListReset();
+
+        $this->info['EVENT'] = $event->getData();
+        $info = $this->info['EVENT'];
+
+        foreach ($this->plugins as $name => $config) {
+            $this->plugins[$name]->info = $info;
+            $this->plugins[$name]->onMessage();
+
+            foreach ($config->triggers as $trigger) {
+                if ($trigger != 'event') {
+                    continue;
+                }
+
+                if ($event->getType()->toString() == $this->plugins[$name]->CONFIG['event']) {
+                    $info['eventUsed'] = $this->plugins[$name]->CONFIG['event'];
+                    $info['data'] = $event->getData();
+
+                    $this->plugins[$name]->info = $info;
+                    $this->plugins[$name]->trigger();
+                    break;
+                }
+            }
+        }
+
     }
 
     public function onWaitTimeout($time, AbstractAdapter $adapter)
