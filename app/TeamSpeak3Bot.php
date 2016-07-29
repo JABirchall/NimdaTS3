@@ -96,6 +96,8 @@ class TeamSpeak3Bot
      */
     public $online = false;
 
+    protected $lastEvent;
+
     /**
      * TeamSpeak3Bot constructor.
      *
@@ -425,8 +427,36 @@ class TeamSpeak3Bot
      */
     public function onEvent(Event $event)
     {
+        if($this->lastEvent && empty(array_diff($this->lastEvent, $event->getData()))) {
+            $this->printOutput('defer duplicate event.');
+            return;
+        }
         $this->node->clientListReset();
         $this->node->channelListReset();
+
+        $this->info['EVENT'] = $event->getData();
+        $info = $this->info['EVENT'];
+
+        foreach ($this->plugins as $name => $config) {
+            $this->plugins[$name]->info = $info;
+            $this->plugins[$name]->onMessage();
+
+            foreach ($config->triggers as $trigger) {
+                if ($trigger != 'event') {
+                    continue;
+                }
+                echo 'event'.PHP_EOL;
+                if ($event->getType()->toString() == $this->plugins[$name]->CONFIG['event']) {
+                    $info['eventUsed'] = $this->plugins[$name]->CONFIG['event'];
+                    $info['data'] = $event->getData();
+
+                    $this->plugins[$name]->info = $info;
+                    $this->plugins[$name]->trigger();
+                    break;
+                }
+            }
+        }
+        $this->lastEvent = $event->getData();
     }
 
     public function onWaitTimeout($time, AbstractAdapter $adapter)

@@ -37,7 +37,7 @@ class Plugin
     /**
      * @var mixed
      */
-    protected $triggers;
+    public $triggers;
     /**
      * @var mixed
      */
