@@ -249,23 +249,21 @@ class TeamSpeak3Bot
         $config['configFile'] = $configFile;
 
         if (!$config) {
-            $this->printOutput("Plugin with config file '" . $configFile .
-                               "' has not been loaded because it doesn't exist.");
+            $this->printOutput("Plugin with config file '" . $configFile . "' has not been loaded because it doesn't exist.");
 
             return false;
         }
 
         if (!isset($config['name'])) {
-            $this->printOutput("Plugin with config file '" . $configFile .
-                               "' has not been loaded because it has no name.");
+            $this->printOutput("Plugin with config file '" . $configFile . "' has not been loaded because it has no name.");
 
             return false;
         }
 
         $this->printOutput("Loading Plugin [{$config['name']}] by {$config['author']} ... ", false);
-        require_once("plugins/" . $config['name'] . ".php");
+        $config['class'] = \Plugin::class . '\\' . $config['name'];
 
-        $this->plugins[$config['name']] = new $config['name']($config, $this);
+        $this->plugins[$config['name']] = new $config['class']($config, $this);
         $this->printOutput("OK");
 
         return true;

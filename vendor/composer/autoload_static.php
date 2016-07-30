@@ -11,6 +11,10 @@ class ComposerStaticInitede9e2c8483e605ecdf2b2501bcd417e
         array (
             'TeamSpeak3\\' => 11,
         ),
+        'P' => 
+        array (
+            'Plugin\\' => 7,
+        ),
         'A' => 
         array (
             'App\\' => 4,
@@ -21,6 +25,10 @@ class ComposerStaticInitede9e2c8483e605ecdf2b2501bcd417e
         'TeamSpeak3\\' => 
         array (
             0 => __DIR__ . '/..' . '/fkubis/teamspeak-php-framework/TeamSpeak3',
+        ),
+        'Plugin\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/plugins',
         ),
         'App\\' => 
         array (

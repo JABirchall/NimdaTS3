@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'TeamSpeak3\\' => array($vendorDir . '/fkubis/teamspeak-php-framework/TeamSpeak3'),
+    'Plugin\\' => array($baseDir . '/plugins'),
     'App\\' => array($baseDir . '/app'),
 );
