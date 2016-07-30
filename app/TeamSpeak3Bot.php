@@ -227,15 +227,9 @@ class TeamSpeak3Bot
 
     private function initializePlugins()
     {
-        $dir = opendir("config/plugins");
-
-        while ($file = readdir($dir)) {
-            if (substr($file, -5) == ".conf") {
-                $this->loadPlugin($file);
-            }
+        foreach (glob('./config/plugins/*.conf') as $file) {
+            $this->loadPlugin($file);
         }
-
-        closedir($dir);
     }
 
     /**
@@ -245,28 +239,35 @@ class TeamSpeak3Bot
      */
     private function loadPlugin($configFile)
     {
-        $config = $this->parseConfigFile("config/plugins/" . $configFile);
+        $config = $this->parseConfigFile($configFile);
         $config['configFile'] = $configFile;
 
         if (!$config) {
-            $this->printOutput("Plugin with config file '" . $configFile .
-                               "' has not been loaded because it doesn't exist.");
+            $this->printOutput("Plugin with config file {$configFile} has not been loaded because it doesn't exist.");
+
+            return false;
+        } elseif (!isset($config['name'])) {
+            $this->printOutput("Plugin with config file {$configFile} has not been loaded because it has no name.");
 
             return false;
         }
 
-        if (!isset($config['name'])) {
-            $this->printOutput("Plugin with config file '" . $configFile .
-                               "' has not been loaded because it has no name.");
+        $this->printOutput("Loading Plugin [{$config['name']}] by {$config['author']} \t:: ", false);
+
+        $config['class'] = \Plugin::class . '\\' . $config['name'];
+
+        if (!class_exists($config['class'])) {
+            $this->printOutput("Loading failed because class {$config['class']} doesn't exist.");
+
+            return false;
+        } elseif (!is_a($config['class'], \Plugin\PluginContract::class, true)) {
+            $this->printOutput("Loading failed because class {$config['class']} does not implement [PluginContract].");
 
             return false;
         }
 
-        $this->printOutput("Loading Plugin [{$config['name']}] by {$config['author']} ... ", false);
-        require_once("plugins/" . $config['name'] . ".php");
-
-        $this->plugins[$config['name']] = new $config['name']($config, $this);
-        $this->printOutput("OK");
+        $this->plugins[$config['name']] = new $config['class']($config, $this);
+        $this->printOutput("Success.");
 
         return true;
     }

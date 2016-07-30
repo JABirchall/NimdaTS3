@@ -1,6 +1,9 @@
 <?php
 
+namespace Plugin;
+
 use App\Plugin;
+use TeamSpeak3\Ts3Exception;
 
 /**
  * Created by PhpStorm.
@@ -8,11 +11,11 @@ use App\Plugin;
  * Date: 28/07/2016
  * Time: 15:30
  */
-class Seen extends Plugin
+class Seen extends Plugin implements PluginContract
 {
     private $server;
 
-    function isTriggered()
+    public function isTriggered()
     {
         if (!isset($this->info['text'])) {
             $this->sendOutput($this->CONFIG['usage']);

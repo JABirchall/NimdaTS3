@@ -1,5 +1,7 @@
 <?php
 
+namespace Plugin;
+
 use App\Plugin;
 
 /**
@@ -8,11 +10,11 @@ use App\Plugin;
  * Date: 29/07/2016
  * Time: 11:12
  */
-class Join extends Plugin
+class Join extends Plugin implements PluginContract
 {
     private $server;
 
-    function isTriggered()
+    public function isTriggered()
     {
 
         $this->server = $this->teamSpeak3Bot->node;

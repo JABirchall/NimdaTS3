@@ -1,5 +1,7 @@
 <?php
 
+namespace Plugin;
+
 use App\Plugin;
 use TeamSpeak3\TeamSpeak3;
 use TeamSpeak3\Ts3Exception;
@@ -10,11 +12,11 @@ use TeamSpeak3\Ts3Exception;
  * Date: 26/07/2016
  * Time: 03:09
  */
-class Kick extends Plugin
+class Kick extends Plugin implements PluginContract
 {
     private $server;
 
-    function isTriggered()
+    public function isTriggered()
     {
         if (!isset($this->info['text'])) {
             $this->sendOutput($this->CONFIG['usage']);
@@ -39,7 +41,6 @@ class Kick extends Plugin
 
                         return;
                     }
-                    echo $message;
                 }
 
                 return;
