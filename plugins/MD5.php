@@ -13,7 +13,7 @@ class MD5 extends Plugin implements PluginContract
     /**
      * @return sendOutput
      */
-    function isTriggered()
+    public function isTriggered()
     {
         if (!isset($this->info['text'])) {
             $this->sendOutput($this->CONFIG['usage']);

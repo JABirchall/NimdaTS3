@@ -14,7 +14,7 @@ class Join extends Plugin implements PluginContract
 {
     private $server;
 
-    function isTriggered()
+    public function isTriggered()
     {
 
         $this->server = $this->teamSpeak3Bot->node;

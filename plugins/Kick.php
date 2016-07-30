@@ -16,7 +16,7 @@ class Kick extends Plugin implements PluginContract
 {
     private $server;
 
-    function isTriggered()
+    public function isTriggered()
     {
         if (!isset($this->info['text'])) {
             $this->sendOutput($this->CONFIG['usage']);
@@ -41,7 +41,6 @@ class Kick extends Plugin implements PluginContract
 
                         return;
                     }
-                    echo $message;
                 }
 
                 return;
