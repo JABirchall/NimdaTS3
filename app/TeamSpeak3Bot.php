@@ -260,11 +260,18 @@ class TeamSpeak3Bot
             return false;
         }
 
-        $this->printOutput("Loading Plugin [{$config['name']}] by {$config['author']} ... ", false);
+        $this->printOutput("Loading Plugin [{$config['name']}] by {$config['author']} \t:: ", false);
+
         $config['class'] = \Plugin::class . '\\' . $config['name'];
 
+        if (!class_exists($config['class'])) {
+            $this->printOutput("Loading failed because class {$config['class']} doesn't exist.");
+
+            return false;
+        }
+
         $this->plugins[$config['name']] = new $config['class']($config, $this);
-        $this->printOutput("OK");
+        $this->printOutput("Success.");
 
         return true;
     }
