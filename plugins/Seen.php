@@ -10,7 +10,7 @@ use App\Plugin;
  * Date: 28/07/2016
  * Time: 15:30
  */
-class Seen extends Plugin implements PluginInterface
+class Seen extends Plugin implements PluginContract
 {
     private $server;
 

@@ -7,7 +7,7 @@ use App\Plugin;
 /**
  * Class MD5
  */
-class MD5 extends Plugin implements PluginInterface
+class MD5 extends Plugin implements PluginContract
 {
 
     /**

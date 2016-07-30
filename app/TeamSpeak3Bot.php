@@ -266,8 +266,8 @@ class TeamSpeak3Bot
             $this->printOutput("Loading failed because class {$config['class']} doesn't exist.");
 
             return false;
-        } elseif (!is_a($config['class'], \Plugin\PluginInterface::class, true)) {
-            $this->printOutput("Loading failed because class {$config['class']} does not implement [PluginInterface].");
+        } elseif (!is_a($config['class'], \Plugin\PluginContract::class, true)) {
+            $this->printOutput("Loading failed because class {$config['class']} does not implement [PluginContract].");
 
             return false;
         }

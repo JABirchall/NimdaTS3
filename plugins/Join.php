@@ -10,7 +10,7 @@ use App\Plugin;
  * Date: 29/07/2016
  * Time: 11:12
  */
-class Join extends Plugin implements PluginInterface
+class Join extends Plugin implements PluginContract
 {
     private $server;
 

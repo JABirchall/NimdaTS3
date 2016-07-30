@@ -5,7 +5,7 @@ namespace Plugin;
 use App\Plugin;
 use TeamSpeak3\Ts3Exception;
 
-class ClientInfo extends Plugin implements PluginInterface
+class ClientInfo extends Plugin implements PluginContract
 {
 
     private $server;
