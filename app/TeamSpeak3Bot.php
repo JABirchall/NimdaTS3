@@ -227,15 +227,9 @@ class TeamSpeak3Bot
 
     private function initializePlugins()
     {
-        $dir = opendir("config/plugins");
-
-        while ($file = readdir($dir)) {
-            if (substr($file, -5) == ".conf") {
-                $this->loadPlugin($file);
-            }
+        foreach(glob('./config/plugins/*.conf') as $file){
+            $this->loadPlugin($file);
         }
-
-        closedir($dir);
     }
 
     /**
@@ -245,7 +239,7 @@ class TeamSpeak3Bot
      */
     private function loadPlugin($configFile)
     {
-        $config = $this->parseConfigFile("config/plugins/" . $configFile);
+        $config = $this->parseConfigFile($configFile);
         $config['configFile'] = $configFile;
 
         if (!$config) {
