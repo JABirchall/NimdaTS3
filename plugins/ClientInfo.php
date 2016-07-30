@@ -1,5 +1,7 @@
 <?php
 
+namespace Plugins;
+
 use App\Plugin;
 use TeamSpeak3\Ts3Exception;
 

@@ -2,7 +2,7 @@
 
 use App\TeamSpeak3Bot;
 
-include_once("vendor/autoload.php");
+include_once(__DIR__ . "/vendor/autoload.php");
 
 TeamSpeak3Bot::setOptions([
     'username' => 'serveradmin',
