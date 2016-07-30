@@ -227,7 +227,7 @@ class TeamSpeak3Bot
 
     private function initializePlugins()
     {
-        foreach(glob('./config/plugins/*.conf') as $file){
+        foreach (glob('./config/plugins/*.conf') as $file) {
             $this->loadPlugin($file);
         }
     }
