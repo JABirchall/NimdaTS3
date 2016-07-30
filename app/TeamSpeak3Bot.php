@@ -23,7 +23,7 @@ class TeamSpeak3Bot
     /**
      * @var string
      */
-    const DRBOTVERSION = '0.6.0';
+    const DRBOTVERSION = '0.8.0';
 
     /**
      * @var string
