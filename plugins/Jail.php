@@ -10,7 +10,7 @@ use App\Plugin;
  * Date: 26/07/2016
  * Time: 02:37
  */
-class Jail extends Plugin
+class Jail extends Plugin implements PluginInterface
 {
     private $server;
 

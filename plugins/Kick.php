@@ -12,7 +12,7 @@ use TeamSpeak3\Ts3Exception;
  * Date: 26/07/2016
  * Time: 03:09
  */
-class Kick extends Plugin
+class Kick extends Plugin implements PluginInterface
 {
     private $server;
 

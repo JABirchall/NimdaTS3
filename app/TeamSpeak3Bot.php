@@ -268,6 +268,12 @@ class TeamSpeak3Bot
             return false;
         }
 
+        if (!is_a($config['class'], \Plugin\PluginInterface::class, true)) {
+            $this->printOutput("Loading failed because class {$config['class']} does not implement [PluginInterface].");
+
+            return false;
+        }
+
         $this->plugins[$config['name']] = new $config['class']($config, $this);
         $this->printOutput("Success.");
 
