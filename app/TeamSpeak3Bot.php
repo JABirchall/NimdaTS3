@@ -472,7 +472,7 @@ class TeamSpeak3Bot
     public function onDisconnect()
     {
         $this->timer->stop();
-        $this->printOutput("DrBot finished total runtime: " . Conver::seconds($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
+        $this->printOutput("DrBot finished total runtime: " . Convert::seconds($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
     }
 
     /**
