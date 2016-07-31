@@ -65,7 +65,7 @@ class TeamSpeak3Bot
     public $plugins;
 
     protected $timer;
-        /**
+    /**
      * @var
      */
     private static $_username;
@@ -141,7 +141,7 @@ class TeamSpeak3Bot
         $this->initializePlugins();
         $this->register();
         $this->timer->stop();
-        $this->printOutput("DrBot version " . $this::DRBOTVERSION . " Started in " . round($this->timer->getRuntime(),2). " seconds, Using " . Convert::bytes($this->timer->getMemUsage()). " memory.");
+        $this->printOutput("DrBot version " . $this::DRBOTVERSION . " Started in " . round($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
         $this->timer = new Timer("runTime");
         $this->timer->start();
         $this->wait();
@@ -286,7 +286,8 @@ class TeamSpeak3Bot
             return false;
         }
 
-        $array = json_decode(file_get_contents($file),true);
+        $array = json_decode(file_get_contents($file), true);
+
         return $array;
     }
 
@@ -465,13 +466,13 @@ class TeamSpeak3Bot
         $this->node->clientListReset();
         $this->node->channelListReset();
 
-        $this->printOutput("DrBot runtime:  " . round($this->timer->getRuntime(),2). ", Using " . Convert::bytes($this->timer->getMemUsage()). " memory.");
+        $this->printOutput("DrBot runtime: " . round($this->timer->getRuntime(), 2) . ", Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
     }
 
     public function onDisconnect()
     {
         $this->timer->stop();
-        $this->printOutput("DrBot finished total runtime: " . Conver::seconds($this->timer->getRuntime(),2). " seconds, Using " . Convert::bytes($this->timer->getMemUsage()). " memory.");
+        $this->printOutput("DrBot finished total runtime: " . Conver::seconds($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
     }
 
     /**
