@@ -466,7 +466,7 @@ class TeamSpeak3Bot
         $this->node->clientListReset();
         $this->node->channelListReset();
 
-        $this->printOutput("DrBot runtime: " . round($this->timer->getRuntime(), 2) . ", Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
+        $this->printOutput("DrBot runtime: " . Convert::seconds($this->timer->getRuntime()) . ", Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
     }
 
     public function onDisconnect()
