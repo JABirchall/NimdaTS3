@@ -46,7 +46,7 @@ See also the list of [contributors](https://github.com/DrWhatNoName/DrBotTeamSpe
 
 ## License
 
-This project is licensed under the Eclipse License - see the [LICENSE](LICENSE) file for details
+This project is licensed under GNU AGPLv3 License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 
