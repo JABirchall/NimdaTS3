@@ -1,0 +1,10 @@
+{
+  "name": "Seen",
+  "author": "DrWhat",
+  "description": "Seen when a user was last online!",
+  "version": "1.0",
+  "triggers": [
+    "!seen"
+  ],
+  "usage": "Usage: !seen user"
+}

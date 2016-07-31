@@ -1,0 +1,11 @@
+{
+  "name": "ClientInfo",
+  "author": "DrWhat",
+  "description": "Get Information on a client",
+  "version": "1.0",
+  "triggers":[
+    "!clientinfo"
+  ],
+  "usage": "Usage: !clientinfo user"
+
+}

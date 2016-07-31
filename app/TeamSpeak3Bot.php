@@ -8,6 +8,8 @@
 
 namespace App;
 
+use TeamSpeak3\Helper\Convert;
+use TeamSpeak3\Helper\Profiler\Timer;
 use TeamSpeak3\TeamSpeak3;
 use TeamSpeak3\Helper\Signal;
 use TeamSpeak3\Ts3Exception;
@@ -23,7 +25,7 @@ class TeamSpeak3Bot
     /**
      * @var string
      */
-    const DRBOTVERSION = '0.8.0';
+    const DRBOTVERSION = '0.8.9';
 
     /**
      * @var string
@@ -62,7 +64,8 @@ class TeamSpeak3Bot
      */
     public $plugins;
 
-    /**
+    protected $timer;
+        /**
      * @var
      */
     private static $_username;
@@ -116,6 +119,7 @@ class TeamSpeak3Bot
         $this->port = $port;
         $this->name = $name;
         $this->serverPort = $serverPort;
+        $this->timer = new Timer("start_up");
     }
 
     /**
@@ -123,29 +127,34 @@ class TeamSpeak3Bot
      */
     public function run()
     {
+        $this->timer->start();
+
         $this->subscribe();
         try {
             $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}");
         } catch (Ts3Exception $e) {
-            $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
+            $this->onException($e);
 
             return;
         }
 
         $this->initializePlugins();
-
         $this->register();
+        $this->timer->stop();
+        $this->printOutput("DrBot version " . $this::DRBOTVERSION . " Started in " . round($this->timer->getRuntime(),2). " seconds, Using " . Convert::bytes($this->timer->getMemUsage()). " memory.");
+        $this->timer = new Timer("runTime");
+        $this->timer->start();
         $this->wait();
     }
 
     protected function subscribe()
     {
-        Signal::getInstance()->subscribe("serverqueryWaitTimeout", [$this, "onWaitTimeout"]);
         Signal::getInstance()->subscribe("errorException", [$this, "onException"]);
         Signal::getInstance()->subscribe("notifyTextmessage", [$this, "onMessage"]);
         Signal::getInstance()->subscribe("serverqueryConnected", [$this, "onConnect"]);
         Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
-        $this->printOutput("Events subscribed.");
+        Signal::getInstance()->subscribe("serverqueryWaitTimeout", [$this, "onTimeout"]);
+        Signal::getInstance()->subscribe("serverqueryDisconnected", [$this, "onDisconnect"]);
     }
 
     protected function register()
@@ -155,7 +164,6 @@ class TeamSpeak3Bot
         $this->node->notifyRegister("textprivate");
         $this->node->notifyRegister("server");
         $this->node->notifyRegister("channel");
-        $this->printOutput("Notifications registered.");
     }
 
     /**
@@ -173,7 +181,6 @@ class TeamSpeak3Bot
     protected function wait()
     {
         while ($this->online === true) {
-            $this->printOutput("wait");
             $this->node->getAdapter()->wait();
         }
     }
@@ -218,16 +225,12 @@ class TeamSpeak3Bot
      */
     public static function getLastInstance()
     {
-        if (Self::$_instance === null) {
-            return null;
-        }
-
         return Self::$_instance;
     }
 
     private function initializePlugins()
     {
-        foreach (glob('./config/plugins/*.conf') as $file) {
+        foreach (glob('./config/plugins/*.json') as $file) {
             $this->loadPlugin($file);
         }
     }
@@ -252,7 +255,7 @@ class TeamSpeak3Bot
             return false;
         }
 
-        $this->printOutput("Loading Plugin [{$config['name']}] by {$config['author']} \t:: ", false);
+        $this->printOutput("Loading plugin [{$config['name']}] by {$config['author']} \t:: ", false);
 
         $config['class'] = \Plugin::class . '\\' . $config['name'];
 
@@ -283,17 +286,7 @@ class TeamSpeak3Bot
             return false;
         }
 
-        $array = [];
-        $fp = fopen($file, "r");
-        while ($row = fgets($fp)) {
-            $row = trim($row);
-            if (preg_match('/^([A-Za-z0-9_]+?)\s+=\s+(.+?)$/', $row, $arr)) {
-                $array[$arr[1]] = $arr[2];
-            }
-        }
-
-        fclose($fp);
-
+        $array = json_decode(file_get_contents($file),true);
         return $array;
     }
 
@@ -306,7 +299,7 @@ class TeamSpeak3Bot
             $this->channel = $this->node->channelGetByName($channel);
             $this->node->clienMove($this->whoAmI(), $this->channel);
         } catch (Ts3Exception $e) {
-            $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
+            $this->onException($e);
         }
     }
 
@@ -329,7 +322,7 @@ class TeamSpeak3Bot
             $client = $this->node->clientGetByName($username);
             $client->kick($reason, $message);
         } catch (Ts3Exception $e) {
-            $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
+            $this->onException($e);
         }
     }
 
@@ -343,7 +336,7 @@ class TeamSpeak3Bot
             $client = $this->node->clientGetByName($target);
             $client->message($text);
         } catch (Ts3Exception $e) {
-            $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
+            $this->onException($e);
         }
     }
 
@@ -365,7 +358,7 @@ class TeamSpeak3Bot
             $this->joinChannel($channel);
             $this->channel->message($text);
         } catch (Ts3Exception $e) {
-            $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
+            $this->onException($e);
         }
     }
 
@@ -379,7 +372,7 @@ class TeamSpeak3Bot
             $client = $this->node->clientGetByName($target);
             $client->poke($text);
         } catch (Ts3Exception $e) {
-            $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
+            $this->onException($e);
         }
     }
 
@@ -389,7 +382,6 @@ class TeamSpeak3Bot
     public function onConnect(AbstractAdapter $adapter)
     {
         $this->online = true;
-        $this->printOutput("Connected!");
     }
 
     /**
@@ -434,8 +426,6 @@ class TeamSpeak3Bot
     {
 
         if ($this->lastEvent && empty(array_diff($this->lastEvent, $event->getData()))) {
-            $this->printOutput('defer duplicate event.');
-
             return;
         }
         $this->lastEvent = $event->getData();
@@ -464,10 +454,9 @@ class TeamSpeak3Bot
                 }
             }
         }
-
     }
 
-    public function onWaitTimeout($time, AbstractAdapter $adapter)
+    public function onTimeout($time, AbstractAdapter $adapter)
     {
         if ($adapter->getQueryLastTimestamp() < time() - 120) {
             $adapter->request("clientupdate");
@@ -475,6 +464,14 @@ class TeamSpeak3Bot
 
         $this->node->clientListReset();
         $this->node->channelListReset();
+
+        $this->printOutput("DrBot runtime:  " . round($this->timer->getRuntime(),2). ", Using " . Convert::bytes($this->timer->getMemUsage()). " memory.");
+    }
+
+    public function onDisconnect()
+    {
+        $this->timer->stop();
+        $this->printOutput("DrBot finished total runtime: " . Conver::seconds($this->timer->getRuntime(),2). " seconds, Using " . Convert::bytes($this->timer->getMemUsage()). " memory.");
     }
 
     /**

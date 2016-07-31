@@ -95,9 +95,7 @@ class Plugin
                     break;
 
                 case "triggers":
-                    preg_match_all("/'(.*?[^\\\\])'/", $value, $arr);
-                    $triggers = $this->stripSlashes($arr[1]);
-                    $this->triggers = $this->sortByLengthDESC($triggers);
+                    $this->triggers = $this->sortByLengthDESC($value);
                     $this->originalTriggers = $this->triggers;
                     break;
 
