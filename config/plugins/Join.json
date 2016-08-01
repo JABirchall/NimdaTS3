@@ -1,6 +1,6 @@
 {
   "name": "Join",
-  "author": "DrWhat",
+  "author": "JABirchall",
   "description": "Triggers when user moves channel",
   "version": "1.0",
   "triggers": [

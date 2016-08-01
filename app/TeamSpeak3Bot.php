@@ -25,7 +25,7 @@ class TeamSpeak3Bot
     /**
      * @var string
      */
-    const DRBOTVERSION = '0.8.9';
+    const NIMDA_VERSION = '0.8.9';
 
     /**
      * @var string
@@ -111,7 +111,7 @@ class TeamSpeak3Bot
      * @param string $name
      * @param string $serverPort
      */
-    public function __construct($username = "serveradmin", $password = "", $host = "127.0.0.1", $port = "10011", $name = "DrBot", $serverPort = "9987")
+    public function __construct($username = "serveradmin", $password = "", $host = "127.0.0.1", $port = "10011", $name = "Nimda", $serverPort = "9987")
     {
         $this->username = $username;
         $this->password = $password;
@@ -141,7 +141,7 @@ class TeamSpeak3Bot
         $this->initializePlugins();
         $this->register();
         $this->timer->stop();
-        $this->printOutput("DrBot version " . $this::DRBOTVERSION . " Started in " . round($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
+        $this->printOutput("Nimda version " . $this::NIMDA_VERSION . " Started in " . round($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
         $this->timer = new Timer("runTime");
         $this->timer->start();
         $this->wait();
@@ -466,13 +466,13 @@ class TeamSpeak3Bot
         $this->node->clientListReset();
         $this->node->channelListReset();
 
-        $this->printOutput("DrBot runtime: " . Convert::seconds($this->timer->getRuntime()) . ", Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
+        $this->printOutput("Nimda runtime: " . Convert::seconds($this->timer->getRuntime()) . ", Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
     }
 
     public function onDisconnect()
     {
         $this->timer->stop();
-        $this->printOutput("DrBot finished total runtime: " . Convert::seconds($this->timer->getRuntime()) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
+        $this->printOutput("Nimda finished total runtime: " . Convert::seconds($this->timer->getRuntime()) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
     }
 
     /**

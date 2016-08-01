@@ -1,6 +1,6 @@
 {
   "name": "MD5",
-  "author": "noother",
+  "author": "JABirchall",
   "description": "Simply shoot back the md5-hash of an input",
   "version": "1.0",
   "triggers": [

@@ -1,4 +1,4 @@
-# DrBot TeamSpeak 3 Bot
+# Nimda Advanced TeamSpeak 3 Bot
 
 A Modular Designed TeamSpeak 3 bot for Server owners and admins
 
@@ -12,8 +12,6 @@ php start.php
 ### Prerequisities
 
 PHP version 5.4+, Teamspeak 3 Server
-
-
 
 
 ### coding style
@@ -36,13 +34,13 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/DrBotTeamSpeak3/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/JABirchall/NimdaTS3/project/tags). 
 
 ## Authors
 
-* **DrWhat** - *All the work*
+* **JABirchall** - *All the work*
 
-See also the list of [contributors](https://github.com/DrWhatNoName/DrBotTeamSpeak3/graphs/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/JABirchall/NimdaTS3/graphs/contributors) who participated in this project.
 
 ## License
 
