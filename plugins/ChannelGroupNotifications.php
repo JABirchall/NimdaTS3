@@ -10,11 +10,15 @@ namespace Plugin;
 
 
 use App\Plugin;
+use TeamSpeak3\Ts3Exception;
 
 class ChannelGroupNotifications extends Plugin implements PluginContract
 {
 
     private $server;
+    private $notifyClient;
+    private $channel;
+
 
     public function isTriggered()
     {
@@ -24,21 +28,45 @@ class ChannelGroupNotifications extends Plugin implements PluginContract
 
         $this->server = $this->teamSpeak3Bot->node;
 
-        $notifyClient = $this->server->clientGetById($this->info['clid']);
-        $channel = $this->server->channelGetById($this->info['ctid']);
+        $this->notifyClient = $this->server->clientGetById($this->info['clid']);
+        $this->channel = $this->server->channelGetById($this->info['ctid']);
 
-
-        foreach($this->server->clientList() as $client) {
-            foreach ($client->memberOf() as $group) {
-
-                if ($group != $this->CONFIG['groupId']) {
-                    continue;
-                }
-
-                $client->message("[url=client:///{$notifyClient->getUniqueId()}]{$client->toString()}[/url] has join channel [url=channelid://{$channel->getId()}]{$channel->toString()}[/url]");
-                $channel->message("Please wait for a staff member to assist you, I have notified them you are here.");
+        foreach ($this->notifyClient->memberOf() as $group) {
+            if ($group->getId() != $this->CONFIG['guestGroupId']) {
+                continue;
+            } else {
+                $this->notify();
             }
         }
+
     }
 
+    protected function notify()
+    {
+        foreach($this->server->clientList() as $client) {
+
+            if($client["client_type"] == 1) {
+                continue;
+            }
+
+            foreach ($client->memberOf() as $group) {
+                //var_dump($notifyClient["client_unique_identifier"]);
+                //break;
+                if ($group->getId() != $this->CONFIG['groupId']) {
+                    continue;
+                }
+                try {
+                    $client->message("[b][url=client://{$this->notifyClient->getId()}/{$this->notifyClient["client_unique_identifier"]->toString()}]{$this->notifyClient->toString()}[/url] has joined channel [url=channelid://{$this->channel->getId()}/]{$this->channel->toString()}[/url]");
+                } catch(Ts3Exception $e) {
+                    echo $e->getMessage();
+                }
+            }
+        }
+
+        try {
+            $this->channel->message("Please wait for a staff member to assist you, I have notified them you are here.");
+        } catch(Ts3Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
