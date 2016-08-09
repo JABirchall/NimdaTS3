@@ -1,0 +1,13 @@
+{
+  "name": "ChannelGroupNotifications",
+  "author": "JABirchall",
+  "description": "Triggers when user moves into a channel being monitored",
+  "version": "1.0",
+  "triggers": [
+    "event"
+  ],
+  "event": "clientmoved",
+  "usage": "false",
+  "channelId": 1,
+  "groupId": 2
+}
