@@ -1,0 +1,16 @@
+{
+  "name": "BadChannelName",
+  "author": "JABirchall",
+  "description": "Checks and removes channels with bad names",
+  "version": "1.0",
+  "triggers": [
+    "event"
+  ],
+  "event": "clientmoved",
+  "usage": "false",
+  "blacklist": [
+    ".com",
+    ".net",
+    ".org"
+  ]
+}
