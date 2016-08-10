@@ -35,6 +35,7 @@ class ComposerStaticInitede9e2c8483e605ecdf2b2501bcd417e
         ),
         'C' => 
         array (
+            'Config\\' => 7,
             'Carbon\\' => 7,
         ),
         'A' => 
@@ -75,6 +76,10 @@ class ComposerStaticInitede9e2c8483e605ecdf2b2501bcd417e
         'Illuminate\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/illuminate/container',
+        ),
+        'Config\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/config',
         ),
         'Carbon\\' => 
         array (

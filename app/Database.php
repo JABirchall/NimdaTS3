@@ -10,6 +10,7 @@ namespace App;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+
 class Database
 {
 
@@ -19,13 +20,7 @@ class Database
     {
         $this->capsule = new Capsule;
 
-        $this->capsule->addConnection([
-                'driver' => 'sqlite',
-                'database' => __DIR__ . '/../database.sqlite',
-                'prefix' => 'nimda_',
-                'charset' => 'utf-8',
-                'collation' => 'utf8_unicode_ci',
-            ]);
+        $this->capsule->addConnection((new \Config\Database)->config);
 
         $this->capsule->setAsGlobal();
         $this->capsule->bootEloquent();
