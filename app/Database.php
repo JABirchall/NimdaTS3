@@ -22,9 +22,8 @@ class Database
         $this->capsule->addConnection([
                 'driver' => 'sqlite',
                 'database' => __DIR__ . '/../database.sqlite',
-                'prefix' => 'nimda_',
-                'charset' => 'utf-8',
-                'collation' => 'utf8_unicode_ci',
+                'prefix' => '',
+
             ]);
 
         $this->capsule->setAsGlobal();

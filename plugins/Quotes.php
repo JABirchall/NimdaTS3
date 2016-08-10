@@ -12,7 +12,7 @@ namespace Plugin;
 use App\Plugin;
 use Plugin\Models\Quote;
 
-class Quotes extends Plugin implements PluginContract, AdvancedPluginContract
+class Quotes extends Plugin implements AdvancedPluginContract
 {
 
     public function isTriggered()

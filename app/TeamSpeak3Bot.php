@@ -269,18 +269,18 @@ class TeamSpeak3Bot
 
             return false;
         } elseif (!is_a($config['class'], \Plugin\PluginContract::class, true)) {
-            $this->printOutput("Loading failed because class {$config['class']} does not implement [PluginContract].");
+            $this->printOutput("Loading failed because class {$config['class']} does not implement [PluginContract] OR [AdvancedPluginContract].");
 
             return false;
         }
 
+
         $this->plugins[$config['name']] = new $config['class']($config, $this);
 
-        if($this->plugins[$config['name']] instanceof AdvancedPluginContract) {
-            echo "instance of AdvancedPluginContract";
-            
-            if(!Schema::hasTable($config['table'])) {
-                $this->plugins[$config['name']]->install();
+        if($this->plugins[$config['name']] instanceof \Plugin\AdvancedPluginContract) {
+
+            if(!Schema::hasTable([$config['table']])) {
+               $this->plugins[$config['name']]->install();
             }
         }
 

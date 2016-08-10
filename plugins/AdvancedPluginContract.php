@@ -8,10 +8,8 @@
  */
 namespace Plugin;
 
-interface AdvancedPluginContract
+interface AdvancedPluginContract extends PluginContract
 {
-
-    public function isTriggered();
 
     public function install();
 
