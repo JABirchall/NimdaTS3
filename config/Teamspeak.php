@@ -8,7 +8,7 @@
 
 namespace Config;
 
-class Teamspeak
+class TeamSpeak
 {
 
     public $config = [
