@@ -6,14 +6,36 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitede9e2c8483e605ecdf2b2501bcd417e
 {
+    public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'T' => 
         array (
             'TeamSpeak3\\' => 11,
         ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Component\\Translation\\' => 30,
+        ),
         'P' => 
         array (
             'Plugin\\' => 7,
+        ),
+        'I' => 
+        array (
+            'Illuminate\\Support\\' => 19,
+            'Illuminate\\Database\\' => 20,
+            'Illuminate\\Contracts\\' => 21,
+            'Illuminate\\Container\\' => 21,
+        ),
+        'C' => 
+        array (
+            'Carbon\\' => 7,
         ),
         'A' => 
         array (
@@ -26,13 +48,51 @@ class ComposerStaticInitede9e2c8483e605ecdf2b2501bcd417e
         array (
             0 => __DIR__ . '/..' . '/fkubis/teamspeak-php-framework/TeamSpeak3',
         ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Component\\Translation\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/translation',
+        ),
         'Plugin\\' => 
         array (
             0 => __DIR__ . '/../..' . '/plugins',
         ),
+        'Illuminate\\Support\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/illuminate/support',
+        ),
+        'Illuminate\\Database\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/illuminate/database',
+        ),
+        'Illuminate\\Contracts\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/illuminate/contracts',
+        ),
+        'Illuminate\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/illuminate/container',
+        ),
+        'Carbon\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'D' => 
+        array (
+            'Doctrine\\Common\\Inflector\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/doctrine/inflector/lib',
+            ),
         ),
     );
 
@@ -41,6 +101,7 @@ class ComposerStaticInitede9e2c8483e605ecdf2b2501bcd417e
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitede9e2c8483e605ecdf2b2501bcd417e::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitede9e2c8483e605ecdf2b2501bcd417e::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitede9e2c8483e605ecdf2b2501bcd417e::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
