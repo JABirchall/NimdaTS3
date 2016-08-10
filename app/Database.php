@@ -19,13 +19,13 @@ class Database
     {
         $this->capsule = new Capsule;
 
-        $this->capsule->addConnection(
-            [
+        $this->capsule->addConnection([
                 'driver' => 'sqlite',
                 'database' => __DIR__ . '/../database.sqlite',
-                'prefix' => 'nimda_'
-            ]
-        );
+                'prefix' => 'nimda_',
+                'charset' => 'utf-8',
+                'collation' => 'utf8_unicode_ci',
+            ]);
 
         $this->capsule->setAsGlobal();
         $this->capsule->bootEloquent();
