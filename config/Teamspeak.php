@@ -8,7 +8,6 @@
 
 namespace Config;
 
-
 class Teamspeak
 {
 
