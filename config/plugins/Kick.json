@@ -7,5 +7,5 @@
     "!kick",
     "!k"
   ],
-  "usage": "Usage: !kick user"
+  "usage": "Usage: !kick [user]"
 }

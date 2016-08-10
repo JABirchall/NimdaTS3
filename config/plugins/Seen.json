@@ -6,5 +6,5 @@
   "triggers": [
     "!seen"
   ],
-  "usage": "Usage: !seen user"
+  "usage": "Usage: !seen [user]"
 }

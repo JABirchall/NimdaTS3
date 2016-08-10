@@ -108,6 +108,7 @@ class Plugin
                     break;
             }
         }
+
     }
 
     /**

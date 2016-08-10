@@ -7,6 +7,6 @@
     "!jail",
     "!unjail"
   ],
-  "usage": "Usage !jail user !unjail user",
+  "usage": "Usage !jail [user] !unjail [user]",
   "channel": 3
 }

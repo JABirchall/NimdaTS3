@@ -6,7 +6,7 @@
  * Time: 01:13
  */
 
-namespace Plugin;
+namespace Plugin\Models;
 
 
 use Illuminate\Database\Eloquent\Model;

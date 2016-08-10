@@ -99,6 +99,8 @@ class TeamSpeak3Bot
      */
     public $online = false;
 
+    public $database;
+
     protected $lastEvent;
 
     /**
@@ -138,9 +140,11 @@ class TeamSpeak3Bot
             return;
         }
 
+        $this->database = new Database;
         $this->initializePlugins();
         $this->register();
         $this->timer->stop();
+
         $this->printOutput("Nimda version " . $this::NIMDA_VERSION . " Started in " . round($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
         $this->timer = new Timer("runTime");
         $this->timer->start();
@@ -270,6 +274,11 @@ class TeamSpeak3Bot
         }
 
         $this->plugins[$config['name']] = new $config['class']($config, $this);
+
+        if($this->plugins[$config['name']] instanceof AdvancedPluginContract) {
+            $this->plugins[$config['name']]->install();
+        }
+
         $this->printOutput("Success.");
 
         return true;

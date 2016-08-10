@@ -6,5 +6,5 @@
   "triggers": [
     "!md5"
   ],
-  "usage": "Usage: !md5 string"
+  "usage": "Usage: !md5 [string]"
 }
