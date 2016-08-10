@@ -24,12 +24,17 @@ class Quotes extends Plugin implements AdvancedPluginContract
 
             return;
         }
-        Quote::create([
-            'username' =>'tagKnife',
-            'quote' => 'I like to code',
-        ]);
 
-        dd(Quote::first()->toArray());
+        if($this->info['text']->startsWith('find')) {
+            $text = $this->info['text']->substr(strlen('find') + 1);
+            $quote = Quote::where('quote', 'LIKE', '%{$text}%');
+        } elseif($this->info['text']->startsWith('add')) {
+            $text = $this->info['text']->substr(strlen('add') + 1);
+            Quote::create()
+        } elseif($this->info['text']->startsWith('delete')) {
+            $text = $this->info['text']->substr(strlen('delete') + 1);
+
+        }
     }
 
     public function install()
