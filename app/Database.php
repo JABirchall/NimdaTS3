@@ -26,6 +26,9 @@ class Database
                 'prefix' => 'nimda_'
             ]
         );
+
+        $this->capsule->setAsGlobal();
+        $this->capsule->bootEloquent();
     }
 
 }
