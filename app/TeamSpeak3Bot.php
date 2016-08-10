@@ -8,6 +8,7 @@
 
 namespace App;
 
+use Illuminate\Database\Capsule\Manager;
 use Illuminate\Support\Facades\Schema;
 use TeamSpeak3\Helper\Convert;
 use TeamSpeak3\Helper\Profiler\Timer;
@@ -269,7 +270,7 @@ class TeamSpeak3Bot
 
             return false;
         } elseif (!is_a($config['class'], \Plugin\PluginContract::class, true)) {
-            $this->printOutput("Loading failed because class {$config['class']} does not implement [PluginContract] OR [AdvancedPluginContract].");
+            $this->printOutput("Loading failed because class {$config['class']} does not implement [PluginContract].");
 
             return false;
         }
@@ -278,8 +279,8 @@ class TeamSpeak3Bot
         $this->plugins[$config['name']] = new $config['class']($config, $this);
 
         if($this->plugins[$config['name']] instanceof \Plugin\AdvancedPluginContract) {
+            if(!Manager::schema()->hasTable($config['table'])) {
 
-            if(!Schema::hasTable([$config['table']])) {
                $this->plugins[$config['name']]->install();
             }
         }

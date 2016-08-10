@@ -10,6 +10,8 @@ namespace Plugin;
 
 
 use App\Plugin;
+use Illuminate\Database\Capsule\Manager;
+use Illuminate\Database\Schema\Blueprint;
 use Plugin\Models\Quote;
 
 class Quotes extends Plugin implements AdvancedPluginContract
@@ -22,12 +24,27 @@ class Quotes extends Plugin implements AdvancedPluginContract
 
             return;
         }
+        Quote::create([
+            'username' =>'tagKnife',
+            'quote' => 'I like to code',
+        ]);
+
+        dd(Quote::first()->toArray());
     }
 
     public function install()
     {
-        echo "install";
-        // TODO: Implement install() method.
+
+        Manager::schema()->create($this->CONFIG['table'], function (Blueprint $table){
+            $table->increments('id');
+            $table->text('username');
+            $table->text('quote');
+
+            $table->timestamps();
+        });
+
+        echo "Install ";
+
     }
 
 }
