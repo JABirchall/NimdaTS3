@@ -8,6 +8,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Schema;
 use TeamSpeak3\Helper\Convert;
 use TeamSpeak3\Helper\Profiler\Timer;
 use TeamSpeak3\TeamSpeak3;
@@ -276,7 +277,11 @@ class TeamSpeak3Bot
         $this->plugins[$config['name']] = new $config['class']($config, $this);
 
         if($this->plugins[$config['name']] instanceof AdvancedPluginContract) {
-            $this->plugins[$config['name']]->install();
+            echo "instance of AdvancedPluginContract";
+            
+            if(!Schema::hasTable($config['table'])) {
+                $this->plugins[$config['name']]->install();
+            }
         }
 
         $this->printOutput("Success.");
