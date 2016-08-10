@@ -6,7 +6,7 @@ include_once(__DIR__ . "/vendor/autoload.php");
 
 TeamSpeak3Bot::setOptions([
     'username' => 'serveradmin',
-    'password' => 'Tyc00n..',
+    'password' => 'password',
     'host' => '127.0.0.1',
     'port' => '10011',
     'name' => 'Nimda',

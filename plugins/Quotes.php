@@ -27,13 +27,20 @@ class Quotes extends Plugin implements AdvancedPluginContract
 
         if($this->info['text']->startsWith('find')) {
             $text = $this->info['text']->substr(strlen('find') + 1);
-            $quote = Quote::where('quote', 'LIKE', '%{$text}%');
+            $quote = Quote::where('quote', 'LIKE', '%{$text}%')->first();
+            $this->sendOutput($quote->quote);
         } elseif($this->info['text']->startsWith('add')) {
             $text = $this->info['text']->substr(strlen('add') + 1);
-            Quote::create()
+            $text = $text->split(' ', 2);
+            $quote = Quote::create([
+                'username' => $text[0],
+                'quote' => $text[1],
+            ]);
+            $this->sendOutput($quote->quote . " Created successfully");
         } elseif($this->info['text']->startsWith('delete')) {
             $text = $this->info['text']->substr(strlen('delete') + 1);
-
+            $quote = Quote::where('quote', 'LIKE', '%{$text}%')->delete();
+            $this->sendOutput($quote->id . " Removed successfully");
         }
     }
 
