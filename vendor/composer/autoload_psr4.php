@@ -7,6 +7,14 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'TeamSpeak3\\' => array($vendorDir . '/fkubis/teamspeak-php-framework/TeamSpeak3'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
     'Plugin\\' => array($baseDir . '/plugins'),
+    'Illuminate\\Support\\' => array($vendorDir . '/illuminate/support'),
+    'Illuminate\\Database\\' => array($vendorDir . '/illuminate/database'),
+    'Illuminate\\Contracts\\' => array($vendorDir . '/illuminate/contracts'),
+    'Illuminate\\Container\\' => array($vendorDir . '/illuminate/container'),
+    'Config\\' => array($baseDir . '/config'),
+    'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'App\\' => array($baseDir . '/app'),
 );

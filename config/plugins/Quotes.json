@@ -1,0 +1,13 @@
+{
+  "name": "Quotes",
+  "author": "JABirchall",
+  "description": "Kick users",
+  "version": "1.0",
+  "triggers": [
+    "!quote",
+    "!q"
+  ],
+  "usage": "Usage: !quote add [user] [text]",
+  "table": "quotes",
+  "install": true
+}

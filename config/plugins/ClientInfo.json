@@ -6,5 +6,5 @@
   "triggers":[
     "!clientinfo"
   ],
-  "usage": "Usage: !clientinfo user"
+  "usage": "Usage: !clientinfo [user]"
 }

@@ -8,6 +8,8 @@
 
 namespace App;
 
+use Illuminate\Database\Capsule\Manager;
+use Illuminate\Support\Facades\Schema;
 use TeamSpeak3\Helper\Convert;
 use TeamSpeak3\Helper\Profiler\Timer;
 use TeamSpeak3\TeamSpeak3;
@@ -18,6 +20,7 @@ use TeamSpeak3\Adapter\AbstractAdapter;
 
 /**
  * Class TeamSpeak3Bot
+ *
  * @package App\TeamSpeak3Bot
  */
 class TeamSpeak3Bot
@@ -25,7 +28,7 @@ class TeamSpeak3Bot
     /**
      * @var string
      */
-    const NIMDA_VERSION = '0.8.9';
+    const NIMDA_VERSION = '0.9.0-alpha1';
 
     /**
      * @var string
@@ -99,6 +102,8 @@ class TeamSpeak3Bot
      */
     public $online = false;
 
+    public $database;
+
     protected $lastEvent;
 
     /**
@@ -138,9 +143,11 @@ class TeamSpeak3Bot
             return;
         }
 
+        $this->database = new Database;
         $this->initializePlugins();
         $this->register();
         $this->timer->stop();
+
         $this->printOutput("Nimda version " . $this::NIMDA_VERSION . " Started in " . round($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
         $this->timer = new Timer("runTime");
         $this->timer->start();
@@ -269,7 +276,16 @@ class TeamSpeak3Bot
             return false;
         }
 
+
         $this->plugins[$config['name']] = new $config['class']($config, $this);
+
+        if ($this->plugins[$config['name']] instanceof \Plugin\AdvancedPluginContract) {
+            if (!Manager::schema()->hasTable($config['table'])) {
+
+                $this->plugins[$config['name']]->install();
+            }
+        }
+
         $this->printOutput("Success.");
 
         return true;

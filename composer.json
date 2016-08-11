@@ -4,12 +4,14 @@
   "minimum-stability": "stable",
   "license": "proprietary",
   "require": {
-    "fkubis/teamspeak-php-framework": "dev-master"
+    "fkubis/teamspeak-php-framework": "dev-master",
+    "illuminate/database": "v5.2.32"
   },
   "autoload": {
     "psr-4": {
       "App\\": "app/",
-      "Plugin\\": "plugins/"
+      "Plugin\\": "plugins/",
+      "Config\\": "config/"
     }
   },
   "authors": [

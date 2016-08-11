@@ -10,6 +10,7 @@ namespace App;
 
 /**
  * Class Plugin
+ *
  * @package App
  */
 class Plugin
@@ -108,6 +109,7 @@ class Plugin
                     break;
             }
         }
+
     }
 
     /**
