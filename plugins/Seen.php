@@ -30,7 +30,7 @@ class Seen extends Plugin implements PluginContract
             $seen = $this->server->clientInfoDb($this->server->clientFindDb($this->info['text']));
 
             $client->message("[COLOR=blue][B]User {$name} was last seen on " .
-                             date("F j, Y, g:i a", $seen["client_lastconnected"]));
+                date("F j, Y, g:i a", $seen["client_lastconnected"]));
 
         } catch (Ts3Exception $e) {
             $message = $e->getMessage();

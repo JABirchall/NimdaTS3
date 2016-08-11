@@ -10,6 +10,7 @@ namespace App;
 
 /**
  * Class Plugin
+ *
  * @package App
  */
 class Plugin

@@ -31,7 +31,7 @@ class ClientInfo extends Plugin implements PluginContract
             $client->message("[COLOR=blue][B]{$name}: Unique ID: {$clientInfo["client_unique_identifier"]}");
             $client->message("[COLOR=blue][B]{$name}: Joined: " . date("F j, Y, g:i a", $clientInfo["client_created"]));
             $client->message("[COLOR=blue][B]{$name}: Last connection: " .
-                             date("F j, Y, g:i a", $clientInfo["client_lastconnected"]));
+                date("F j, Y, g:i a", $clientInfo["client_lastconnected"]));
             $client->message("[COLOR=blue][B]{$name}: Total connections: {$clientInfo["client_totalconnections"]}");
 
             $clientInfo["client_description"] = ($clientInfo["client_description"]) ? $clientInfo["client_description"] : "N/A";

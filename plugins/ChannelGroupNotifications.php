@@ -22,7 +22,7 @@ class ChannelGroupNotifications extends Plugin implements PluginContract
 
     public function isTriggered()
     {
-        if($this->info['ctid'] != $this->CONFIG['channelId']) {
+        if ($this->info['ctid'] != $this->CONFIG['channelId']) {
             return;
         }
 
@@ -43,9 +43,9 @@ class ChannelGroupNotifications extends Plugin implements PluginContract
 
     protected function notify()
     {
-        foreach($this->server->clientList() as $client) {
+        foreach ($this->server->clientList() as $client) {
 
-            if($client["client_type"] == 1) {
+            if ($client["client_type"] == 1) {
                 continue;
             }
 
@@ -57,7 +57,7 @@ class ChannelGroupNotifications extends Plugin implements PluginContract
                 }
                 try {
                     $client->message("[b][url=client://{$this->notifyClient->getId()}/{$this->notifyClient["client_unique_identifier"]->toString()}]{$this->notifyClient->toString()}[/url] has joined channel [url=channelid://{$this->channel->getId()}/]{$this->channel->toString()}[/url]");
-                } catch(Ts3Exception $e) {
+                } catch (Ts3Exception $e) {
                     echo $e->getMessage();
                 }
             }
@@ -65,7 +65,7 @@ class ChannelGroupNotifications extends Plugin implements PluginContract
 
         try {
             $this->channel->message("Please wait for a staff member to assist you, I have notified them you are here.");
-        } catch(Ts3Exception $e) {
+        } catch (Ts3Exception $e) {
             echo $e->getMessage();
         }
     }

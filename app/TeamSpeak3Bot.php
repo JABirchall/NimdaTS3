@@ -20,6 +20,7 @@ use TeamSpeak3\Adapter\AbstractAdapter;
 
 /**
  * Class TeamSpeak3Bot
+ *
  * @package App\TeamSpeak3Bot
  */
 class TeamSpeak3Bot
@@ -278,10 +279,10 @@ class TeamSpeak3Bot
 
         $this->plugins[$config['name']] = new $config['class']($config, $this);
 
-        if($this->plugins[$config['name']] instanceof \Plugin\AdvancedPluginContract) {
-            if(!Manager::schema()->hasTable($config['table'])) {
+        if ($this->plugins[$config['name']] instanceof \Plugin\AdvancedPluginContract) {
+            if (!Manager::schema()->hasTable($config['table'])) {
 
-               $this->plugins[$config['name']]->install();
+                $this->plugins[$config['name']]->install();
             }
         }
 

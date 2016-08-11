@@ -14,6 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 class Quote extends Model
 {
 
-    protected $fillable = ['username', 'quote', ];
+    protected $fillable = ['username', 'quote',];
 
 }
