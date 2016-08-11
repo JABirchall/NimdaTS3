@@ -55,7 +55,6 @@ class Quotes extends Plugin implements AdvancedPluginContract
 
     public function install()
     {
-
         Manager::schema()->create($this->CONFIG['table'], function(Blueprint $table) {
             $table->increments('id');
             $table->text('username');
@@ -65,7 +64,6 @@ class Quotes extends Plugin implements AdvancedPluginContract
         });
 
         echo "Install ";
-
     }
 
 }
