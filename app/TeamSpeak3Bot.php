@@ -28,7 +28,7 @@ class TeamSpeak3Bot
     /**
      * @var string
      */
-    const NIMDA_VERSION = '0.8.9';
+    const NIMDA_VERSION = '0.9.0-alpha1';
 
     /**
      * @var string
