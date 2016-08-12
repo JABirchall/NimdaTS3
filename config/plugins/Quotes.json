@@ -1,7 +1,7 @@
 {
   "name": "Quotes",
   "author": "JABirchall",
-  "description": "Kick users",
+  "description": "Quotes system",
   "version": "1.0",
   "triggers": [
     "!quote",
