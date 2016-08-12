@@ -29,16 +29,16 @@ class Quotes extends Plugin implements AdvancedPluginContract
         if ($this->info['text']->startsWith('find')) {
             $text = $this->info['text']->substr(strlen('find') + 1);
 
-            if(!$text || empty($text)) {
+            if (!$text || empty($text)) {
                 $this->sendOutput($this->CONFIG['usage']);
 
                 return false;
             }
 
             $ids = Quote::select('id')
-                    ->where('quote', 'LIKE', "%{$text}%")
-                    ->pluck('id')
-                    ->toArray();
+                ->where('quote', 'LIKE', "%{$text}%")
+                ->pluck('id')
+                ->toArray();
 
             $ids = implode(',', $ids);
             $this->sendOutput("Found matching quotes: {$ids}.");
@@ -48,7 +48,7 @@ class Quotes extends Plugin implements AdvancedPluginContract
             $text = $this->info['text']->substr(strlen('add') + 1);
             $text = $text->split(' ', 2);
 
-            if(!$text[0] || !$text[1] || empty($text[1])) {
+            if (!$text[0] || !$text[1] || empty($text[1])) {
                 $this->sendOutput($this->CONFIG['usage']);
 
                 return false;
@@ -65,10 +65,10 @@ class Quotes extends Plugin implements AdvancedPluginContract
         } elseif ($this->info['text']->startsWith('delete')) {
 
             $id = $this->info['text']->substr(strlen('delete') + 1);
-            $quote = Quote::where('id', $id->toInt())
+            $quote = Quote::find($id->toInt())
                     ->delete();
 
-            $this->sendOutput("{$quote->id}[b]- [color=green]Removed successfully");
+            $this->sendOutput("{$id->toInt()} [b]- [color=green]Removed successfully");
 
             return true;
 
@@ -98,6 +98,11 @@ class Quotes extends Plugin implements AdvancedPluginContract
         });
 
         echo "Install ";
+    }
+
+    public function update()
+    {
+        echo "Update ";
     }
 
 }

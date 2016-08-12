@@ -9,7 +9,6 @@
 namespace App;
 
 use Illuminate\Database\Capsule\Manager;
-use Illuminate\Support\Facades\Schema;
 use TeamSpeak3\Helper\Convert;
 use TeamSpeak3\Helper\Profiler\Timer;
 use TeamSpeak3\TeamSpeak3;
@@ -17,6 +16,8 @@ use TeamSpeak3\Helper\Signal;
 use TeamSpeak3\Ts3Exception;
 use TeamSpeak3\Adapter\ServerQuery\Event;
 use TeamSpeak3\Adapter\AbstractAdapter;
+use Plugin\Models\Plugin;
+use Illuminate\Database\Schema\Blueprint;
 
 /**
  * Class TeamSpeak3Bot
@@ -28,7 +29,8 @@ class TeamSpeak3Bot
     /**
      * @var string
      */
-    const NIMDA_VERSION = '0.9.0-alpha1';
+    const NIMDA_VERSION = '0.9.1';
+    const NIMDA_TYPE = '-alpha1';
 
     /**
      * @var string
@@ -144,11 +146,12 @@ class TeamSpeak3Bot
         }
 
         $this->database = new Database;
+        $this->setup();
         $this->initializePlugins();
         $this->register();
         $this->timer->stop();
 
-        $this->printOutput("Nimda version " . $this::NIMDA_VERSION . " Started in " . round($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
+        $this->printOutput("Nimda version " . $this::NIMDA_VERSION . $this::NIMDA_TYPE . " Started in " . round($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
         $this->timer = new Timer("runTime");
         $this->timer->start();
         $this->wait();
@@ -235,6 +238,33 @@ class TeamSpeak3Bot
         return Self::$_instance;
     }
 
+    private function setup()
+    {
+        if (!Manager::schema()->hasTable('plugins')) {
+            Manager::schema()->create('plugins', function(Blueprint $table) {
+                $table->increments('id');
+                $table->text('name');
+                $table->double('version');
+
+                $table->timestamps();
+            });
+
+            Plugin::create([
+                'name' => 'Nimda',
+                'version' => $this::NIMDA_VERSION,
+            ]);
+        } elseif (version_compare(($nimda = Plugin::where('name', 'Nimda')->first())->version, $this::NIMDA_VERSION, '<')) {
+            $this->update($nimda->version);
+
+            $nimda->update(['version' => $this::NIMDA_VERSION]);
+        }
+    }
+
+    private function update($version)
+    {
+        // TODO: Add bot update logic
+    }
+
     private function initializePlugins()
     {
         foreach (glob('./config/plugins/*.json') as $file) {
@@ -281,8 +311,15 @@ class TeamSpeak3Bot
 
         if ($this->plugins[$config['name']] instanceof \Plugin\AdvancedPluginContract) {
             if (!Manager::schema()->hasTable($config['table'])) {
-
                 $this->plugins[$config['name']]->install();
+
+                Plugin::create([
+                    'name' => $config['name'],
+                    'version' => $config['version'],
+                ]);
+            } elseif (version_compare(($plugin = Plugin::where('name', $config['name'])->first())->version, $config['version'], '<')) {
+                $this->plugins[$config['name']]->update();
+                $plugin->update(['version' => $config['version']]);
             }
         }
 
