@@ -20,7 +20,7 @@ class Database
     {
         $this->capsule = new Capsule;
 
-        $this->capsule->addConnection((new \Config\Database)->config);
+        $this->capsule->addConnection((new \Config\Database)->config['connections'][(new \Config\Database)->config['default']]);
 
         $this->capsule->setAsGlobal();
         $this->capsule->bootEloquent();
