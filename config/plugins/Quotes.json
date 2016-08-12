@@ -7,7 +7,7 @@
     "!quote",
     "!q"
   ],
-  "usage": "Usage: !quote add [user] [text]",
+  "usage": "Usage: !quote [id],\n!quote add [user] [text],\n!quote find [text],\n!quote delete [id],",
   "table": "quotes",
   "install": true
 }
