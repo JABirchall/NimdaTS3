@@ -314,7 +314,7 @@ class TeamSpeak3Bot
     {
         try {
             $this->channel = $this->node->channelGetByName($channel);
-            $this->node->clienMove($this->whoAmI(), $this->channel);
+            $this->node->clientMove($this->whoAmI(), $this->channel);
         } catch (Ts3Exception $e) {
             $this->onException($e);
         }
