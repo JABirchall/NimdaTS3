@@ -8,6 +8,5 @@
     "!q"
   ],
   "usage": "Usage: !quote [id],\n!quote add [user] [text],\n!quote find [text],\n!quote delete [id],",
-  "table": "quotes",
-  "install": true
+  "table": "quotes"
 }
