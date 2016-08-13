@@ -100,9 +100,15 @@ class Quotes extends Plugin implements AdvancedPluginContract
         echo "Install ";
     }
 
-    public function update()
+    public function update($version)
     {
-        echo "Update ";
+        switch ($version) {
+            case version_compare($version, $this->CONFIG['version'], '<'):
+                // update logic
+                return true;
+            default:
+                return true;
+        }
     }
 
 }

@@ -318,7 +318,7 @@ class TeamSpeak3Bot
                     'version' => $config['version'],
                 ]);
             } elseif (version_compare(($plugin = Plugin::where('name', $config['name'])->first())->version, $config['version'], '<')) {
-                $this->plugins[$config['name']]->update();
+                $this->plugins[$config['name']]->update($plugin->version);
                 $plugin->update(['version' => $config['version']]);
             }
         }

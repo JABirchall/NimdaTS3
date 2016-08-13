@@ -204,7 +204,7 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v5.2.32",
+            "version": " ",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
