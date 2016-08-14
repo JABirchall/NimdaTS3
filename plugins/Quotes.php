@@ -65,7 +65,7 @@ class Quotes extends Plugin implements AdvancedPluginContract
         } elseif ($this->info['text']->startsWith('delete')) {
 
             $id = $this->info['text']->substr(strlen('delete') + 1);
-            $quote = Quote::find($id->toInt())
+            Quote::find($id->toInt())
                     ->delete();
 
             $this->sendOutput("{$id->toInt()} [b]- [color=green]Removed successfully");
@@ -97,17 +97,22 @@ class Quotes extends Plugin implements AdvancedPluginContract
             $table->timestamps();
         });
 
-        echo "Install ";
+        echo "Install, ";
     }
 
     public function update($version)
     {
-        switch ($version) {
-            case version_compare($version, $this->CONFIG['version'], '<'):
-                // update logic
-                return true;
-            default:
-                return true;
+
+        if(version_compare($version, $this->CONFIG['version'], '<')) {
+            return true;
+        }
+
+        if(version_compare($version, '0.6', '<')) {
+            echo "Update From 0.6, ";
+        }
+
+        if(version_compare($version, '0.8', '<')) {
+            echo "Update From 0.8 ";
         }
     }
 
