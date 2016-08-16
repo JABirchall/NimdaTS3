@@ -112,7 +112,7 @@ class Quotes extends Plugin implements AdvancedPluginContract
         }
 
         if(version_compare($version, '0.8', '<')) {
-            echo "Update From 0.8 ";
+            echo "Update From 0.8, ";
         }
     }
 

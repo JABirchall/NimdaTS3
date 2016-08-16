@@ -7,5 +7,5 @@ include_once(__DIR__ . "/vendor/autoload.php");
 
 TeamSpeak3Bot::setOptions((new TeamSpeak)->config);
 
-$bot = TeamSpeak3Bot::getInstance();
-$bot->run();
+TeamSpeak3Bot::getInstance()->run();
+
