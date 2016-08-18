@@ -55,7 +55,7 @@ class Plugin
     /**
      * @var
      */
-    protected $CONFIG;
+    public $CONFIG;
     /**
      * @var
      */
@@ -204,21 +204,18 @@ class Plugin
      */
     function sendOutput($text, ...$params)
     {
-        foreach ($params as $param) {
-            $text = printf($text, $param);
-        }
+        $text = vsprintf($text, $params);
 
         if (\App\TeamSpeak3Bot::$config['newLineNewMessage'] === false) {
             $this->teamSpeak3Bot->printOutput($text);
             $this->teamSpeak3Bot->sendPrivateMsg($this->info['invokername'], $text);
         } else {
-            $messages = explode($text, PHP_EOL);
+            $messages = explode(PHP_EOL, $text);
             foreach ($messages as $message) {
                 $this->teamSpeak3Bot->printOutput($message);
                 $this->teamSpeak3Bot->sendPrivateMsg($this->info['invokername'], $message);
             }
         }
-
     }
 
     /**
