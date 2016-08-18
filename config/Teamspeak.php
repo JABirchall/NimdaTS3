@@ -11,13 +11,17 @@ namespace Config;
 class TeamSpeak
 {
 
-    public $config = [
+    public static $TS3config = [
         'username' => 'serveradmin',
         'password' => 'password',
         'host' => '127.0.0.1',
         'port' => '10011',
         'name' => 'Nimda',
         'serverPort' => '9987',
+        'misc' => [
+            'debug' => true,
+            'newLineNewMessage' => true,
+        ]
     ];
 
 }

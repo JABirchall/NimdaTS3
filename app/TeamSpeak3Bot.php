@@ -69,6 +69,8 @@ class TeamSpeak3Bot
      */
     public $plugins;
 
+    public static $config;
+
     protected $timer;
     /**
      * @var
@@ -206,6 +208,7 @@ class TeamSpeak3Bot
         Self::$_port = $options['port'];
         Self::$_name = $options['name'];
         Self::$_serverPort = $options['serverPort'];
+        Self::$config = $options['misc'];
     }
 
     /**

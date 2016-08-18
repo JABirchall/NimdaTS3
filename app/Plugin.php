@@ -13,6 +13,11 @@ namespace App;
  *
  * @package App
  */
+/**
+ * Class Plugin
+ *
+ * @package App
+ */
 class Plugin
 {
     /**
@@ -50,7 +55,7 @@ class Plugin
     /**
      * @var
      */
-    protected $config;
+    protected $CONFIG;
     /**
      * @var
      */
@@ -72,6 +77,7 @@ class Plugin
      */
     public function __construct($config, $teamSpeak3Bot)
     {
+
         $this->teamSpeak3Bot = $teamSpeak3Bot;
         foreach ($config as $name => $value) {
             switch ($name) {
@@ -194,9 +200,16 @@ class Plugin
 
     /**
      * @param $text
+     * @param $params
      */
-    function sendOutput($text)
+    function sendOutput($text, ...$params)
     {
+        foreach ($params as $param) {
+            $text = printf($text, $param);
+        }
+
+
+
         $this->teamSpeak3Bot->printOutput($text);
         $this->teamSpeak3Bot->sendPrivateMsg($this->info['invokername'], $text);
     }

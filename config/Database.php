@@ -11,7 +11,7 @@ namespace Config;
 class Database
 {
 
-    public $config = [
+    public static $config = [
 
         /*
         |--------------------------------------------------------------------------
