@@ -3,7 +3,6 @@
 namespace Plugin;
 
 use App\Plugin;
-use Carbon\Carbon;
 use TeamSpeak3\Ts3Exception;
 
 class ClientInfo extends Plugin implements PluginContract
@@ -24,20 +23,24 @@ class ClientInfo extends Plugin implements PluginContract
         $this->server = $this->teamSpeak3Bot->node;
 
         try {
+            $client = $this->server->clientGetByName($this->info['invokername']);
             $name = $this->info['text'];
             $clientInfo = $this->server->clientInfoDb($this->server->clientFindDb($this->info['text']));
 
-            $this->sendOutput("[COLOR=blue][B]%s: Database ID: %s", $name, $clientInfo["client_database_id"]);
-            $this->sendOutput("[COLOR=blue][B]%s: Unique ID: %s", $name, $clientInfo["client_unique_identifier"]);
-            $this->sendOutput("[COLOR=blue][B]%s: Joined: %s", $name, Carbon::parse($clientInfo["client_created"])->toDayDateTimeString());
-            $this->sendOutput("[COLOR=blue][B]%s: Last connection: %s", $name, Carbon::parse($clientInfo["client_lastconnected"])->toDayDateTimeString());
-            $this->sendOutput("[COLOR=blue][B]%s: Total connections: %s", $name, $clientInfo["client_totalconnections"]);
+            $client->message("[COLOR=blue][B]{$name}: Database ID: {$clientInfo["client_database_id"]}");
+            $client->message("[COLOR=blue][B]{$name}: Unique ID: {$clientInfo["client_unique_identifier"]}");
+            $client->message("[COLOR=blue][B]{$name}: Joined: " . date("F j, Y, g:i a", $clientInfo["client_created"]));
+            $client->message("[COLOR=blue][B]{$name}: Last connection: " .
+                date("F j, Y, g:i a", $clientInfo["client_lastconnected"]));
+            $client->message("[COLOR=blue][B]{$name}: Total connections: {$clientInfo["client_totalconnections"]}");
 
-            $this->sendOutput("[COLOR=blue][B]%s: Client description: %s", $name, ($clientInfo["client_description"]) ? $clientInfo["client_description"] : "N/A");
-            $this->sendOutput("[COLOR=blue][B]%s: Last IP: %s", $name, $clientInfo["client_lastip"]);
+            $clientInfo["client_description"] = ($clientInfo["client_description"]) ? $clientInfo["client_description"] : "N/A";
+            $client->message("[COLOR=blue][B]{$name}: Client description: {$clientInfo["client_description"]}");
+            $client->message("[COLOR=blue][B]{$name}: Last IP: {$clientInfo["client_lastip"]}");
         } catch (Ts3Exception $e) {
             $message = $e->getMessage();
-            $this->sendOutput("[color=red][b]ERROR : %s", $message);
+            $admin = $this->server->clientGetByName($this->info['invokername']);
+            $admin->message("[color=red][b]ERROR : {$message}");
         }
 
     }
