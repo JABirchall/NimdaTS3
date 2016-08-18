@@ -4,7 +4,9 @@ A Modular Designed TeamSpeak 3 bot for Server owners and admins
 
 ## Getting Started
 
-To install this bot all you need to do is download or clone the repository to your server. Edit the start up options in start.php then launch the with 
+To install this bot all you need to do is download or clone the repository to your server.
+
+Edit the Teamspeak and database configs in side the config folder then launch the bot with 
 ```
 php start.php
 ```
@@ -20,7 +22,7 @@ We use FIG PSR-2 coding style standard, please read [PSR-2 coding style guide](h
 
 ## Deployment
 
-php start.php, is this too hard?
+This bot must be run in CLI: php start.php
 
 ## Built With
 
@@ -53,3 +55,4 @@ onWaitTimeout Event not firing, See: https://github.com/fkubis/teamspeak-php-fra
 ## Acknowledgments
 
 * noother
+* MAJID
