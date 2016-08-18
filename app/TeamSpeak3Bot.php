@@ -57,6 +57,10 @@ class TeamSpeak3Bot
      */
     private $serverPort;
     /**
+     * @var string
+     */
+    private $timeout;
+    /**
      * @var
      */
     public $node;
@@ -100,6 +104,10 @@ class TeamSpeak3Bot
      * @var
      */
     private static $_instance;
+    /**
+     * @var
+     */
+    private static $_timeout;
 
     /**
      * @var bool
@@ -116,11 +124,12 @@ class TeamSpeak3Bot
      * @param string $username
      * @param string $password
      * @param string $host
-     * @param string $port
+     * @param int $port
      * @param string $name
-     * @param string $serverPort
+     * @param int $serverPort
+     * @param int $timeout
      */
-    public function __construct($username = "serveradmin", $password = "", $host = "127.0.0.1", $port = "10011", $name = "Nimda", $serverPort = "9987")
+    public function __construct($username = "serveradmin", $password = "", $host = "127.0.0.1", $port = 10011, $name = "Nimda", $serverPort = 9987, $timeout = 10)
     {
         $this->username = $username;
         $this->password = $password;
@@ -128,6 +137,7 @@ class TeamSpeak3Bot
         $this->port = $port;
         $this->name = $name;
         $this->serverPort = $serverPort;
+        $this->timeout = $timeout;
         $this->timer = new Timer("start_up");
     }
 
@@ -140,7 +150,7 @@ class TeamSpeak3Bot
 
         $this->subscribe();
         try {
-            $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}&timeout=1");
+            $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}&timeout={$this->timeout}");
         } catch (Ts3Exception $e) {
             $this->onException($e);
 
@@ -208,6 +218,7 @@ class TeamSpeak3Bot
         Self::$_port = $options['port'];
         Self::$_name = $options['name'];
         Self::$_serverPort = $options['serverPort'];
+        Self::$_timeout = $options['timeout'];
         Self::$config = $options['misc'];
     }
 

@@ -18,6 +18,7 @@ class TeamSpeak
         'port' => '10011',
         'name' => 'Nimda',
         'serverPort' => '9987',
+        'timeout' => 1,
         'misc' => [
             'debug' => true,
             'newLineNewMessage' => true,

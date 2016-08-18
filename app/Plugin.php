@@ -212,8 +212,8 @@ class Plugin
         } else {
             $messages = explode(PHP_EOL, $text);
             foreach ($messages as $message) {
-                $this->teamSpeak3Bot->printOutput($message);
                 $this->teamSpeak3Bot->sendPrivateMsg($this->info['invokername'], $message);
+                $this->teamSpeak3Bot->printOutput($message);
             }
         }
     }
