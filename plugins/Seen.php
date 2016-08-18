@@ -3,6 +3,7 @@
 namespace Plugin;
 
 use App\Plugin;
+use Carbon\Carbon;
 use TeamSpeak3\Ts3Exception;
 
 /**
@@ -25,17 +26,12 @@ class Seen extends Plugin implements PluginContract
         $this->server = $this->teamSpeak3Bot->node;
 
         try {
-            $client = $this->server->clientGetByName($this->info['invokername']);
             $name = $this->info['text'];
             $seen = $this->server->clientInfoDb($this->server->clientFindDb($this->info['text']));
 
-            $client->message("[COLOR=blue][B]User {$name} was last seen on " .
-                date("F j, Y, g:i a", $seen["client_lastconnected"]));
-
+            $this->sendOutput("[COLOR=blue][B]User %s was last seen on %s", $name, Carbon::parse($seen["client_lastconnected"])->toDateTimeString());
         } catch (Ts3Exception $e) {
-            $message = $e->getMessage();
-            $admin = $this->server->clientGetByName($this->info['invokername']);
-            $admin->message("[color=red][b]ERROR : {$message}");
+            $this->sendOutput("[color=red][b]ERROR : %s", $e->getMessage());
         }
 
     }

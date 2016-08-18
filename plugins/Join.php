@@ -22,8 +22,8 @@ class Join extends Plugin implements PluginContract
         $client = $this->server->clientGetById($this->info['clid']);
         $channel = $this->server->channelGetById($this->info['ctid']);
 
-        $this->teamSpeak3Bot->sendServerMsg("{$client} has switched to channel {$channel}.");
-        $this->teamSpeak3Bot->printOutput("{$client} has switched to channel {$channel}.");
+        $this->teamSpeak3Bot->sendServerMsg("%s has switched to channel %s.", $client, $channel);
+        $this->teamSpeak3Bot->printOutput("%s has switched to channel %s.", $client, $channel);
     }
 
 }

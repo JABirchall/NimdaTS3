@@ -26,24 +26,22 @@ class Kick extends Plugin implements PluginContract
         $this->server = $this->teamSpeak3Bot->node;
 
         foreach ($this->server->clientList() as $client) {
-            if (strcasecmp($client['client_nickname']->toString(), $this->info['text']) === 0) {
-                try {
-                    $client->kick(TeamSpeak3::KICK_SERVER, "Kicked by {$this->info['invokername']}");
-                    $output = "[color=green] User {$client['client_nickname']} was kicked from the server.";
-                    $this->sendOutput($output);
-                } catch (Ts3Exception $e) {
-                    $message = $e->getMessage();
-                    $admin = $this->server->clientGetByName($this->info['invokername']);
-                    if ($message === "invalid clientID") {
-                        $admin->poke("[COLOR=red][b] There are no users online by that name");
-                        $output = "[COLOR=red][b] There are no users online by that name";
-                        $this->sendOutput($output);
+            if (strcasecmp($client['client_nickname']->toString(), $this->info['text']) != 0) {
+                continue;
+            }
 
-                        return;
-                    }
+            try {
+                $client->kick(TeamSpeak3::KICK_SERVER, "Kicked by {$this->info['invokername']}");
+                $this->sendOutput("[color=green] User %s was kicked from the server.", $client['client_nickname']);
+                break;
+            } catch (Ts3Exception $e) {
+                $message = $e->getMessage();
+
+                if ($message === "invalid clientID") {
+                    $this->sendOutput("[COLOR=red][b] There are no users online by that name");
+
+                    return;
                 }
-
-                return;
             }
         }
     }

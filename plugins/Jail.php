@@ -32,14 +32,12 @@ class Jail extends Plugin implements PluginContract
                 $suspect = $this->server->clientGetById($suspect["clid"]);
                 $suspect->move($jail);
                 $suspect->poke("[COLOR=red][b] You have been put in jail by {$this->info['invokername']}");
-                $output = "User {$suspect['client_nickname']} was put in jail by {$this->info['invokername']}";
-                $this->sendOutput($output);
+                $this->sendOutput("User %s was put in jail by %s", $suspect['client_nickname'], $this->info['invokername']);
             }
         } catch (Ts3Exception $e) {
             $message = $e->getMessage();
-            $admin = $this->server->clientGetByName($this->info['invokername']);
             if ($message === "invalid clientID") {
-                $admin->poke("[COLOR=red][b] There are no users online by that name");
+                $this->sendOutput("[COLOR=red][b] There are no users online by that name");
 
                 return;
             }

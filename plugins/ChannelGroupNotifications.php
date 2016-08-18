@@ -50,13 +50,13 @@ class ChannelGroupNotifications extends Plugin implements PluginContract
             }
 
             foreach ($client->memberOf() as $group) {
-                //var_dump($notifyClient["client_unique_identifier"]);
-                //break;
                 if ($group->getId() != $this->CONFIG['groupId']) {
                     continue;
                 }
+                $clientUrl = "[url=client://{$this->notifyClient->getId()}/{$this->notifyClient['client_unique_identifier']->toString()}]{$this->notifyClient->toString()}[/url]";
+                $channelUrl = "[url=channelid://{$this->channel->getId()}/]{$this->channel->toString()}[/url]";
                 try {
-                    $client->message("[b][url=client://{$this->notifyClient->getId()}/{$this->notifyClient["client_unique_identifier"]->toString()}]{$this->notifyClient->toString()}[/url] has joined channel [url=channelid://{$this->channel->getId()}/]{$this->channel->toString()}[/url]");
+                    $client->message("[b]%s has joined channel %s", $clientUrl, $channelUrl);
                 } catch (Ts3Exception $e) {
                     echo $e->getMessage();
                 }

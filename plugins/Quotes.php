@@ -41,7 +41,7 @@ class Quotes extends Plugin implements AdvancedPluginContract
                 ->toArray();
 
             $ids = implode(',', $ids);
-            $this->sendOutput("Found matching quotes: {$ids}.");
+            $this->sendOutput("Found matching quotes: %s", $ids);
 
             return true;
         } elseif ($this->info['text']->startsWith('add')) {
@@ -59,7 +59,7 @@ class Quotes extends Plugin implements AdvancedPluginContract
                 'quote' => $text[1],
             ]);
 
-            $this->sendOutput("[{$quote->username}]: {$quote->quote} [b]- [color=green]Created successfully");
+            $this->sendOutput("[%s]: %s [b]- [color=green]Created successfully", $quote->username, $quote->quote);
 
             return true;
         } elseif ($this->info['text']->startsWith('delete')) {
@@ -68,16 +68,14 @@ class Quotes extends Plugin implements AdvancedPluginContract
             Quote::find($id->toInt())
                     ->delete();
 
-            $this->sendOutput("{$id->toInt()} [b]- [color=green]Removed successfully");
+            $this->sendOutput("%s [b]- [color=green]Removed successfully", $id);
 
             return true;
 
         } elseif ($this->info['text']->isInt()) {
             $quote = Quote::where('id', $this->info['text']->toInt())->first();
 
-            $time = Carbon::parse($quote->created_at)->diffForHumans();
-
-            $this->sendOutput("[{$quote->username}]: {$quote->quote} [b]- Created {$time}");
+            $this->sendOutput("[%s]: %s [b]- Created %s", $quote->username, $quote->quote, Carbon::parse($quote->created_at)->diffForHumans());
 
             return true;
         } else {

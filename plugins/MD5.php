@@ -21,8 +21,7 @@ class MD5 extends Plugin implements PluginContract
             return;
         }
 
-        $output = "md5({$this->info['text']}) => " . md5($this->info['text']);
-        $this->sendOutput($output);
+        $this->sendOutput("md5(%s) => %s", $this->info['text'], md5($this->info['text']));
     }
 }
 
