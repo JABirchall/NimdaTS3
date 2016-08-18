@@ -456,9 +456,7 @@ class TeamSpeak3Bot
      */
     public function onMessage(Event $event)
     {
-
         foreach ($this->plugins as $name => $config) {
-
             foreach ($config->triggers as $trigger) {
                 if ($trigger == 'event') {
                     continue;
@@ -491,23 +489,21 @@ class TeamSpeak3Bot
      */
     public function onEvent(Event $event)
     {
-
         if ($this->lastEvent && empty(array_diff($this->lastEvent, $event->getData()))) {
             return;
         }
         $this->lastEvent = $event->getData();
-        $this->node->clientListReset();
-        $this->node->channelListReset();
-
-        $this->info['EVENT'] = $event->getData();
-        $info = $this->info['EVENT'];
 
         foreach ($this->plugins as $name => $config) {
-
             foreach ($config->triggers as $trigger) {
                 if ($trigger != 'event') {
                     continue;
                 }
+
+                $this->node->clientListReset();
+                $this->node->channelListReset();
+
+                $this->info['EVENT'] = $event->getData();
                 $info = $this->info['EVENT'];
                 $this->plugins[$name]->info = $info;
 
