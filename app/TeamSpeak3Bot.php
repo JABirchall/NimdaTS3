@@ -456,12 +456,8 @@ class TeamSpeak3Bot
      */
     public function onMessage(Event $event)
     {
-        $this->info['PRIVMSG'] = $event->getData();
-        $info = $this->info['PRIVMSG'];
 
         foreach ($this->plugins as $name => $config) {
-            $this->plugins[$name]->info = $info;
-            $this->plugins[$name]->onMessage();
 
             foreach ($config->triggers as $trigger) {
                 if ($trigger == 'event') {
@@ -469,6 +465,10 @@ class TeamSpeak3Bot
                 }
 
                 if ($event["msg"]->startsWith($trigger)) {
+                    $this->info['PRIVMSG'] = $event->getData();
+                    $info = $this->info['PRIVMSG'];
+                    $this->plugins[$name]->info = $info;
+                    $this->plugins[$name]->onMessage();
                     $info['triggerUsed'] = $trigger;
                     $text = $event["msg"]->substr(strlen($trigger) + 1);
                     $info['fullText'] = $event["msg"];
@@ -503,13 +503,13 @@ class TeamSpeak3Bot
         $info = $this->info['EVENT'];
 
         foreach ($this->plugins as $name => $config) {
-            $this->plugins[$name]->info = $info;
-            $this->plugins[$name]->onMessage();
 
             foreach ($config->triggers as $trigger) {
                 if ($trigger != 'event') {
                     continue;
                 }
+                $info = $this->info['EVENT'];
+                $this->plugins[$name]->info = $info;
 
                 if ($event->getType()->toString() == $this->plugins[$name]->CONFIG['event']) {
                     $info['eventUsed'] = $this->plugins[$name]->CONFIG['event'];

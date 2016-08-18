@@ -206,16 +206,19 @@ class Plugin
     {
         $text = vsprintf($text, $params);
 
+        $client = $this->teamSpeak3Bot->node->clientGetByName($this->info['invokername']);
+
         if (\App\TeamSpeak3Bot::$config['newLineNewMessage'] === false) {
+            $client->message($text);
             $this->teamSpeak3Bot->printOutput($text);
-            $this->teamSpeak3Bot->sendPrivateMsg($this->info['invokername'], $text);
         } else {
             $messages = explode(PHP_EOL, $text);
             foreach ($messages as $message) {
-                $this->teamSpeak3Bot->sendPrivateMsg($this->info['invokername'], $message);
+                $client->message($message);
                 $this->teamSpeak3Bot->printOutput($message);
             }
         }
+        return;
     }
 
     /**
