@@ -11,12 +11,18 @@ Edit the Teamspeak and database configs in side the config folder then launch th
 php start.php
 ```
 
-### Prerequisities
+
+## Prerequisities
 
 PHP version 5.4+, Teamspeak 3 Server
 
+## Features
 
-### coding style
+* Asynchronous execution
+* Plugin Autoloading and Auotinstalling
+* Eloquent database support for Progresql, Mysql, MSSQL, SQLite
+
+## Coding style
 
 We use FIG PSR-2 coding style standard, please read [PSR-2 coding style guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) for specific details.
 
