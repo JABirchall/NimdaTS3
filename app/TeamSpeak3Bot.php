@@ -138,7 +138,7 @@ class TeamSpeak3Bot
 
         $this->subscribe();
         try {
-            $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}");
+            $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}&timeout=1");
         } catch (Ts3Exception $e) {
             $this->onException($e);
 
@@ -159,11 +159,11 @@ class TeamSpeak3Bot
 
     protected function subscribe()
     {
-        Signal::getInstance()->subscribe("errorException", [$this, "onException"]);
-        Signal::getInstance()->subscribe("notifyTextmessage", [$this, "onMessage"]);
-        Signal::getInstance()->subscribe("serverqueryConnected", [$this, "onConnect"]);
-        Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
         Signal::getInstance()->subscribe("serverqueryWaitTimeout", [$this, "onTimeout"]);
+        Signal::getInstance()->subscribe("serverqueryConnected", [$this, "onConnect"]);
+        Signal::getInstance()->subscribe("notifyTextmessage", [$this, "onMessage"]);
+        Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
+        Signal::getInstance()->subscribe("errorException", [$this, "onException"]);
         Signal::getInstance()->subscribe("serverqueryDisconnected", [$this, "onDisconnect"]);
     }
 
@@ -214,7 +214,7 @@ class TeamSpeak3Bot
     public static function getInstance()
     {
         if (Self::$_instance === null) {
-            self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort);
+            Self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort);
         }
 
         return Self::$_instance;
@@ -305,7 +305,6 @@ class TeamSpeak3Bot
 
             return false;
         }
-
 
         $this->plugins[$config['name']] = new $config['class']($config, $this);
 
