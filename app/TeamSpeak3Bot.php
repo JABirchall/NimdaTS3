@@ -228,7 +228,7 @@ class TeamSpeak3Bot
     public static function getInstance()
     {
         if (Self::$_instance === null) {
-            Self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort);
+            Self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort, Self::$_timeout);
         }
 
         return Self::$_instance;
@@ -239,7 +239,7 @@ class TeamSpeak3Bot
      */
     public static function getNewInstance()
     {
-        Self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort);
+        Self::$_instance = new Self(Self::$_username, Self::$_password, Self::$_host, Self::$_port, Self::$_name, Self::$_serverPort, Self::$_timeout);
 
         return Self::$_instance;
     }
