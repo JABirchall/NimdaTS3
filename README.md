@@ -14,7 +14,7 @@ php start.php
 
 ## Prerequisities
 
-PHP version 5.4+, Teamspeak 3 Server
+PHP version 5.5+, Teamspeak 3 Server
 
 ## Features
 

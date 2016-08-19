@@ -268,7 +268,7 @@ class TeamSpeak3Bot
                 'version' => $this::NIMDA_VERSION,
             ]);
         }
-        
+
         $nimda = Plugin::where('name', 'Nimda')->first();
         if (version_compare($nimda->version, $this::NIMDA_VERSION, '<')) {
             $this->update($nimda->version);
