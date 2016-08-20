@@ -166,6 +166,7 @@ class TeamSpeak3Bot
         $this->printOutput("Nimda version " . $this::NIMDA_VERSION . $this::NIMDA_TYPE . " Started in " . round($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
         $this->timer = new Timer("runTime");
         $this->timer->start();
+        $this->node->getAdapter()->disconnect();
         $this->wait();
     }
 
@@ -267,7 +268,9 @@ class TeamSpeak3Bot
                 'name' => 'Nimda',
                 'version' => $this::NIMDA_VERSION,
             ]);
-        } elseif (version_compare(($nimda = Plugin::where('name', 'Nimda')->first())->version, $this::NIMDA_VERSION, '<')) {
+        }
+        $nimda = Plugin::where('name', 'Nimda')->first();
+        if (version_compare($nimda->version, $this::NIMDA_VERSION, '<')) {
             $this->update($nimda->version);
 
             $nimda->update(['version' => $this::NIMDA_VERSION]);
@@ -330,7 +333,9 @@ class TeamSpeak3Bot
                     'name' => $config['name'],
                     'version' => $config['version'],
                 ]);
-            } elseif (version_compare(($plugin = Plugin::where('name', $config['name'])->first())->version, $config['version'], '<')) {
+            }
+            $plugin = Plugin::where('name', $config['name'])->first();
+            if (version_compare($plugin->version, $config['version'], '<')) {
                 $this->plugins[$config['name']]->update($plugin->version);
                 $plugin->update(['version' => $config['version']]);
             }
