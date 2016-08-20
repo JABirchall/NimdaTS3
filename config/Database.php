@@ -10,9 +10,7 @@ namespace Config;
 
 class Database
 {
-
     public static $config = [
-
         /*
         |--------------------------------------------------------------------------
         | Default Database Connection Name
@@ -24,7 +22,6 @@ class Database
         |
         */
         'default' => 'sqlite',
-
         /*
         |--------------------------------------------------------------------------
         | Database Connections
@@ -41,7 +38,6 @@ class Database
         |
         */
         'connections' => [
-
             'sqlite' => [
                 'driver'   => 'sqlite',
                 'database' => __DIR__ . '/../database.sqlite',
@@ -49,7 +45,6 @@ class Database
                 'charset' => 'utf-8',
                 'collation' => 'utf8_unicode_ci',
             ],
-
             'mysql' => [
                 'driver'    => 'mysql',
                 'host'      => '127.0.0.1',
@@ -61,7 +56,6 @@ class Database
                 'prefix'    => 'nimda_',
                 'strict'    => false,
             ],
-
             'pgsql' => [
                 'driver'   => 'pgsql',
                 'host'     => '127.0.0.1',
@@ -72,7 +66,6 @@ class Database
                 'prefix'   => 'nimda_',
                 'schema'   => 'public',
             ],
-
             'sqlsrv' => [
                 'driver'   => 'sqlsrv',
                 'host'     => '127.0.0.1',
