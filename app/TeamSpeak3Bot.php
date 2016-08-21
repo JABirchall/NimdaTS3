@@ -166,7 +166,6 @@ class TeamSpeak3Bot
         $this->printOutput("Nimda version " . $this::NIMDA_VERSION . $this::NIMDA_TYPE . " Started in " . round($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
         $this->timer = new Timer("runTime");
         $this->timer->start();
-        $this->node->getAdapter()->disconnect();
         $this->wait();
     }
 
