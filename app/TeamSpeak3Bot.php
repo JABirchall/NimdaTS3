@@ -463,7 +463,7 @@ class TeamSpeak3Bot
         foreach ($this->plugins as $name => $config) {
             foreach ($config->triggers as $trigger) {
                 if ($trigger == 'event') {
-                    continue;
+                    break;
                 }
 
                 if ($event["msg"]->startsWith($trigger)) {
@@ -501,7 +501,7 @@ class TeamSpeak3Bot
         foreach ($this->plugins as $name => $config) {
             foreach ($config->triggers as $trigger) {
                 if ($trigger != 'event') {
-                    continue;
+                    break;
                 }
 
                 $this->node->clientListReset();
