@@ -198,7 +198,7 @@ class TeamSpeak3Bot
         $carbon = Carbon::now();
 
         if(empty($this->text)) {
-            $this->text = sprintf("[%s:%s:%s]: %s", $carbon->hour, $carbon->minute, $carbon->second, $output);
+            $this->text = sprintf("[%'.02s:%'.02s:%'.02s]: %s ", $carbon->hour, $carbon->minute, $carbon->second, $output);
         } else {
             $this->text .= $output;
         }
@@ -322,7 +322,7 @@ class TeamSpeak3Bot
             return false;
         }
 
-        $this->printOutput("Loading plugin [{$config['name']}] by {$config['author']} \t:: ", false);
+        $this->printOutput(sprintf("%- 88s %s", "Loading plugin [{$config['name']}] by {$config['author']} ", "::"), false);
 
         $config['class'] = \Plugin::class . '\\' . $config['name'];
 
