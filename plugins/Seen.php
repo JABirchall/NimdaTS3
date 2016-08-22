@@ -29,7 +29,7 @@ class Seen extends Plugin implements PluginContract
             $name = $this->info['text'];
             $seen = $this->server->clientInfoDb($this->server->clientFindDb($this->info['text']));
 
-            $this->sendOutput("[COLOR=blue][B]User %s was last seen on %s", $name, Carbon::createFromTimestamp($seen["client_lastconnected"])->toDateTimeString());
+            $this->sendOutput("[COLOR=blue][B]User %s was last seen on %s", $name, Carbon::createFromTimestamp($seen["client_lastconnected"])->diffForHumans());
         } catch (Ts3Exception $e) {
             $this->sendOutput("[color=red][b]ERROR : %s", $e->getMessage());
         }
