@@ -8,6 +8,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager;
 use TeamSpeak3\Helper\Convert;
 use TeamSpeak3\Helper\Profiler\Timer;
@@ -194,7 +195,20 @@ class TeamSpeak3Bot
      */
     public function printOutput($output, $eol = true)
     {
-        echo $output, $eol ? PHP_EOL : '';
+        $carbon = Carbon::now();
+
+        if(empty($this->text)) {
+            $this->text = sprintf("[%s:%s:%s]: %s", $carbon->hour, $carbon->minute, $carbon->second, $output);
+        } else {
+            $this->text .= $output;
+        }
+
+        if ($eol) {
+            echo  $this->text . PHP_EOL;
+            $this->text = (unset)$this->text;
+        }
+
+        //echo  $output, $eol ? PHP_EOL : '';
     }
 
     /**
