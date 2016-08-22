@@ -10,7 +10,6 @@ namespace Plugin;
 
 
 use App\Plugin;
-use Carbon\Carbon;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Schema\Blueprint;
 use Plugin\Models\Quote;
@@ -75,7 +74,7 @@ class Quotes extends Plugin implements AdvancedPluginContract
         } elseif ($this->info['text']->isInt()) {
             $quote = Quote::where('id', $this->info['text']->toInt())->first();
 
-            $this->sendOutput("[%s]: %s [b]- Created %s", $quote->username, $quote->quote, Carbon::parse($quote->created_at)->diffForHumans());
+            $this->sendOutput("[%s]: %s [b]- Created %s", $quote->username, $quote->quote, $quote->created_at->diffForHumans());
 
             return true;
         } else {
