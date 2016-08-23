@@ -13,6 +13,8 @@ namespace App;
  *
  * @package App
  */
+use TeamSpeak3\Ts3Exception;
+
 /**
  * Class Plugin
  *
@@ -205,18 +207,22 @@ class Plugin
     function sendOutput($text, ...$params)
     {
         $text = vsprintf($text, $params);
+        try {
 
-        $client = $this->teamSpeak3Bot->node->clientGetByName($this->info['invokername']);
+            $client = $this->teamSpeak3Bot->node->clientGetByName($this->info['invokername']);
 
-        if (\App\TeamSpeak3Bot::$config['newLineNewMessage'] === false) {
-            $client->message($text);
-            $this->teamSpeak3Bot->printOutput($text);
-        } else {
-            $messages = explode(PHP_EOL, $text);
-            foreach ($messages as $message) {
-                $client->message($message);
-                $this->teamSpeak3Bot->printOutput($message);
+            if (\App\TeamSpeak3Bot::$config['newLineNewMessage'] === false) {
+                $client->message($text);
+                $this->teamSpeak3Bot->printOutput($text);
+            } else {
+                $messages = explode(PHP_EOL, $text);
+                foreach ($messages as $message) {
+                    $client->message($message);
+                    $this->teamSpeak3Bot->printOutput($message);
+                }
             }
+        } catch (Ts3Exception $e) {
+            $this->teamSpeak3Bot->printOutput($e->getMessage());
         }
         return;
     }
