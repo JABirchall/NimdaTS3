@@ -36,7 +36,7 @@ class BadChannelName extends Plugin implements PluginContract
     {
         $channel = $this->server->channelGetById(@$this->info['ctid']?$this->info['ctid']:$this->info['cid']);
         $violator = $this->server->clientGetById($this->info['invokerid']?$this->info['invokerid']:$this->info['clid']);
-        
+
         try {
             $channel->delete(true);
             $violator->kick(TeamSpeak3::KICK_SERVER, "Channel Name Violation");
