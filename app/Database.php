@@ -24,5 +24,4 @@ class Database
         $this->capsule->setAsGlobal();
         $this->capsule->bootEloquent();
     }
-
 }

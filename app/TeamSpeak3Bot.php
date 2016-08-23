@@ -30,7 +30,7 @@ class TeamSpeak3Bot
     /**
      * @var string
      */
-    const NIMDA_VERSION = '0.9.1';
+    const NIMDA_VERSION = '0.10.0';
     const NIMDA_TYPE = '-alpha1';
 
     /**
@@ -562,5 +562,4 @@ class TeamSpeak3Bot
     {
         $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
     }
-
 }

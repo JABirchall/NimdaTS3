@@ -8,7 +8,6 @@
 
 namespace Plugin;
 
-
 use App\Plugin;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Schema\Blueprint;
@@ -70,7 +69,6 @@ class Quotes extends Plugin implements AdvancedPluginContract
             $this->sendOutput("%s [b]- [color=green]Removed successfully", $id);
 
             return true;
-
         } elseif ($this->info['text']->isInt()) {
             $quote = Quote::where('id', $this->info['text']->toInt())->first();
 
@@ -112,5 +110,4 @@ class Quotes extends Plugin implements AdvancedPluginContract
             echo "Update From 0.8, ";
         }
     }
-
 }

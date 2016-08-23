@@ -38,7 +38,6 @@ class ChannelGroupNotifications extends Plugin implements PluginContract
                 $this->notify();
             }
         }
-
     }
 
     protected function notify()

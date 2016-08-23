@@ -10,7 +10,4 @@ namespace Plugin;
 
 use App\Plugin;
 
-class NoInterface extends Plugin
-{
-
-}
+class NoInterface extends Plugin{}

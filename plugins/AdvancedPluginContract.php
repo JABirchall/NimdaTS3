@@ -10,7 +10,6 @@ namespace Plugin;
 
 interface AdvancedPluginContract extends PluginContract
 {
-
     public function install();
 
     public function update($version);

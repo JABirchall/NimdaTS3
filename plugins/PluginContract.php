@@ -11,5 +11,4 @@ namespace Plugin;
 interface PluginContract
 {
     public function isTriggered();
-
 }

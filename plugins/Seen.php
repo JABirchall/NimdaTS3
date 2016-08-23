@@ -33,6 +33,5 @@ class Seen extends Plugin implements PluginContract
         } catch (Ts3Exception $e) {
             $this->sendOutput("[color=red][b]ERROR : %s", $e->getMessage());
         }
-
     }
 }

@@ -44,5 +44,4 @@ class Jail extends Plugin implements PluginContract
             echo $message;
         }
     }
-
 }

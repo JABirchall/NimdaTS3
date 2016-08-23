@@ -3,6 +3,7 @@
 namespace Plugin;
 
 use App\Plugin;
+use Carbon\Carbon;
 
 class WelcomeMsg extends Plugin implements PluginContract
 {
@@ -25,7 +26,7 @@ class WelcomeMsg extends Plugin implements PluginContract
             "%CL_VERSION%"          => $client['client_version'],
             "%CL_PLATFORM%"         => $client['client_platform'],
             "%CL_IP%"               => $client['connection_client_ip'],
-            "%CL_CREATED%"          => $clientInfo["client_created"],
+            "%CL_CREATED%"          => Carbon::createFromTimestamp($clientInfo["client_created"])->toDayDateTimeString(),
             "%CL_TOTALCONNECTIONS%"  => $clientInfo["client_totalconnections"],
         ];
 
@@ -33,5 +34,4 @@ class WelcomeMsg extends Plugin implements PluginContract
 
         $client->message($msg);
     }
-
 }
