@@ -6,11 +6,15 @@
   "triggers": [
     "event"
   ],
-  "event": "clientmoved",
+  "event": "channelcreated",
   "usage": "false",
   "blacklist": [
-    ".com",
-    ".net",
-    ".org"
+    "([\\w][\\w\\d-]+\\.[\\w\\d]{2,3})",
+    ".*[fF][uU]([cC][kK]|[kK]).*",
+    ".*[nN][iI][gG]{1,2}[eE][rR].*",
+    ".*([pP][hH]|[fF])[aA][gG]{1,2}([oO][tT]|).*",
+    ".*[aA][dD][mM][iI][nN].*",
+    ".*[mM][oO][dD].*",
+    ".*[oO][wW][nN][eE][rR].*"
   ]
 }
