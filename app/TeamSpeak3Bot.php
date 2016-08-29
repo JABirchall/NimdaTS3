@@ -147,11 +147,30 @@ class TeamSpeak3Bot
      */
     public function run()
     {
+        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getpwuid() === 0) {
+            $this->printOutput("[WARNING]: Running Nimda as root is bad!\nStart anyway? Y/N:");
+            $response = rtrim(fgets(STDIN));
+            if (strcasecmp($response,'y')) {
+                $this->printOutput("Aborted.");
+                exit;
+            }
+        }
+
+        if($this->username === "serveradmin") {
+            $this->printOutput("[WARNING]: Running Nimda logged in as serveradmin is bad!\nStart anyway? Y/N:");
+            $response = rtrim(fgets(STDIN));
+            if (strcasecmp($response,'y') ) {
+                $this->printOutput("Aborted.");
+                exit;
+            }
+        }
+
         $this->timer->start();
 
         $this->subscribe();
         try {
-            $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}&timeout={$this->timeout}");
+            $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/".
+                "?server_port={$this->serverPort}&blocking=0&nickname={$this->name}&timeout={$this->timeout}");
         } catch (Ts3Exception $e) {
             $this->onException($e);
 
@@ -164,7 +183,8 @@ class TeamSpeak3Bot
         $this->register();
         $this->timer->stop();
 
-        $this->printOutput("Nimda version " . $this::NIMDA_VERSION . $this::NIMDA_TYPE . " Started in " . round($this->timer->getRuntime(), 2) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
+        $this->printOutput("Nimda version " . $this::NIMDA_VERSION . $this::NIMDA_TYPE . " Started in " . round($this->timer->getRuntime(), 2) .
+            " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
         $this->timer = new Timer("runTime");
         $this->timer->start();
         $this->wait();
@@ -512,24 +532,20 @@ class TeamSpeak3Bot
         }
         $this->lastEvent = $event->getData();
 
+        $this->node->clientListReset();
+        $this->node->channelListReset();
+
         foreach ($this->plugins as $name => $config) {
             foreach ($config->triggers as $trigger) {
                 if ($trigger != 'event') {
                     break;
                 }
 
-                $this->node->clientListReset();
-                $this->node->channelListReset();
-
                 $this->info['EVENT'] = $event->getData();
                 $info = $this->info['EVENT'];
                 $this->plugins[$name]->info = $info;
 
                 if ($event->getType()->toString() == $this->plugins[$name]->CONFIG['event']) {
-                    $info['eventUsed'] = $this->plugins[$name]->CONFIG['event'];
-                    $info['data'] = $event->getData();
-
-                    $this->plugins[$name]->info = $info;
                     $this->plugins[$name]->trigger();
                     break;
                 }
