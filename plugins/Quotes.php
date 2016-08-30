@@ -20,7 +20,7 @@ class Quotes extends Plugin implements AdvancedPluginContract
     public function isTriggered()
     {
         if (!isset($this->info['text'])) {
-            $this->sendOutput($this->CONFIG['usage']);
+            $this->sendUsage();
 
             return false;
         }
@@ -29,7 +29,7 @@ class Quotes extends Plugin implements AdvancedPluginContract
             $text = $this->info['text']->substr(strlen('find') + 1);
 
             if (!$text || empty($text)) {
-                $this->sendOutput($this->CONFIG['usage']);
+                $this->sendUsage();
 
                 return false;
             }
@@ -53,7 +53,7 @@ class Quotes extends Plugin implements AdvancedPluginContract
             $text = $text->split(' ', 2);
 
             if (!$text[0] || !$text[1] || empty($text[1])) {
-                $this->sendOutput($this->CONFIG['usage']);
+                $this->sendUsage();
 
                 return false;
             }
@@ -92,10 +92,15 @@ class Quotes extends Plugin implements AdvancedPluginContract
 
             return true;
         } else {
-            $this->sendOutput($this->CONFIG['usage']);
+            $this->sendUsage();
 
             return false;
         }
+    }
+
+    public function sendUsage()
+    {
+        $this->sendOutput($this->CONFIG['usage']);
     }
 
     public function install()

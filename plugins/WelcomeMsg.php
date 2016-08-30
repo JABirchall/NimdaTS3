@@ -15,7 +15,6 @@ class WelcomeMsg extends Plugin implements PluginContract
 
         $client = $this->server->clientGetById($this->info['clid']);
         $clientDbId = current($this->server->clientFindDb($client['client_nickname']));
-
         $clientInfo = $this->server->clientInfoDb($clientDbId);
 
         $format = [
@@ -32,6 +31,6 @@ class WelcomeMsg extends Plugin implements PluginContract
 
         $msg = strtr($this->CONFIG['msg'], $format);
 
-        $client->message($msg);
+        $this->sendOutput($msg);
     }
 }

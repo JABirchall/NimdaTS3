@@ -494,6 +494,11 @@ class TeamSpeak3Bot
      */
     public function onMessage(Event $event)
     {
+        $data = $event->getData();
+        if (@$data['invokername'] == $this->name || @$data['invokeruid'] == 'serveradmin') {
+            return;
+        }
+
         foreach ($this->plugins as $name => $config) {
             if (@$config->CONFIG['event']) {
                 continue;
@@ -505,7 +510,7 @@ class TeamSpeak3Bot
 
                 if ($event["msg"]->startsWith($trigger)) {
                     //$this->info['PRIVMSG'] = $event->getData();
-                    $info =  $event->getData();
+                    $info =  $data;
                     //$this->plugins[$name]->info = $event->getData();
                     //$this->plugins[$name]->onMessage();
                     $info['triggerUsed'] = $trigger;

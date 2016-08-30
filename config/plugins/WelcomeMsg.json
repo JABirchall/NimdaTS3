@@ -8,5 +8,5 @@
   ],
   "event": "cliententerview",
   "usage": "false",
-  "msg": "\n[b]Welcome %CL_NAME% To my TeamSpeak Server\n ID/UNIQUE ID: [color=red]%CL_DATABASE_ID%[/color]/[color=red]%CL_UNIQUE_ID%[/color]\n OS/VERSION: [color=red]%CL_PLATFORM%[/color]/[color=red]%CL_VERSION%[/color]\n COUNTRY/IP: [color=red]%CL_COUNTRY%[/color]/[color=red]%CL_IP%[/color]\n 1st LOGIN: [color=red]%CL_CREATED%[/color]\n TOTAL CONNECTIONS: [color=red]%CL_TOTALCONNECTIONS%[/color]\n[/b]"
+  "msg": "\n[b]Welcome %CL_NAME% To my TeamSpeak Server\n[b]ID/UNIQUE ID: [color=red]%CL_DATABASE_ID%[/color]/[color=red]%CL_UNIQUE_ID%\n[b]OS/VERSION: [color=red]%CL_PLATFORM%[/color]/[color=red]%CL_VERSION%\n[b]COUNTRY/IP: [color=red]%CL_COUNTRY%[/color]/[color=red]%CL_IP%\n[b]1st LOGIN: [color=red]%CL_CREATED%\n[b]TOTAL CONNECTIONS: [color=red]%CL_TOTALCONNECTIONS%\n"
 }
