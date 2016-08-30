@@ -72,11 +72,11 @@ class TeamSpeak3Bot
     /**
      * @var
      */
-    public $plugins;
+    private $plugins;
 
     public static $config;
 
-    protected $timer;
+    private $timer;
     /**
      * @var
      */
@@ -115,9 +115,11 @@ class TeamSpeak3Bot
      */
     public $online = false;
 
-    public $database;
+    private $database;
 
-    protected $lastEvent;
+    private $lastEvent;
+
+    private $carbon;
 
     /**
      * TeamSpeak3Bot constructor.
@@ -130,8 +132,30 @@ class TeamSpeak3Bot
      * @param int $serverPort
      * @param int $timeout
      */
-    public function __construct($username = "serveradmin", $password = "", $host = "127.0.0.1", $port = 10011, $name = "Nimda", $serverPort = 9987, $timeout = 10)
+    public function __construct($username, $password, $host = "127.0.0.1", $port = 10011, $name = "Nimda", $serverPort = 9987, $timeout = 10)
     {
+        $this->carbon = new Carbon;
+
+        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getpwuid() === 0) {
+            $this->printOutput("[WARNING] Running Nimda as root is bad!");
+            $this->printOutput("Start anyway? Y/N:", false);
+            $response = rtrim(fgets(STDIN));
+            if (strcasecmp($response,'y')) {
+                $this->printOutput("Aborted.");
+                exit;
+            }
+        }
+
+        if($username === "serveradmin") {
+            $this->printOutput("[WARNING] Running Nimda logged in as serveradmin is bad!");
+            $this->printOutput("Start anyway? Y/N:", false, true);
+            $response = rtrim(fgets(STDIN));
+            if (strcasecmp($response,'y') ) {
+                $this->printOutput("Aborted.");
+                exit;
+            }
+        }
+
         $this->username = $username;
         $this->password = $password;
         $this->host = $host;
@@ -139,6 +163,7 @@ class TeamSpeak3Bot
         $this->name = $name;
         $this->serverPort = $serverPort;
         $this->timeout = $timeout;
+
         $this->timer = new Timer("start_up");
     }
 
@@ -147,24 +172,6 @@ class TeamSpeak3Bot
      */
     public function run()
     {
-        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getpwuid() === 0) {
-            $this->printOutput("[WARNING]: Running Nimda as root is bad!\nStart anyway? Y/N:");
-            $response = rtrim(fgets(STDIN));
-            if (strcasecmp($response,'y')) {
-                $this->printOutput("Aborted.");
-                exit;
-            }
-        }
-
-        if($this->username === "serveradmin") {
-            $this->printOutput("[WARNING]: Running Nimda logged in as serveradmin is bad!\nStart anyway? Y/N:");
-            $response = rtrim(fgets(STDIN));
-            if (strcasecmp($response,'y') ) {
-                $this->printOutput("Aborted.");
-                exit;
-            }
-        }
-
         $this->timer->start();
 
         $this->subscribe();
@@ -183,8 +190,7 @@ class TeamSpeak3Bot
         $this->register();
         $this->timer->stop();
 
-        $this->printOutput("Nimda version " . $this::NIMDA_VERSION . $this::NIMDA_TYPE . " Started in " . round($this->timer->getRuntime(), 2) .
-            " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
+        $this->printOutput("Nimda version " . $this::NIMDA_VERSION . $this::NIMDA_TYPE . " Started in " . round($this->timer->getRuntime(), 3) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
         $this->timer = new Timer("runTime");
         $this->timer->start();
         $this->wait();
@@ -212,23 +218,24 @@ class TeamSpeak3Bot
     /**
      * @param $output
      * @param $eol
+     * @param $send
      */
-    public function printOutput($output, $eol = true)
+    public function printOutput($output, $eol = true, $send = false)
     {
-        $carbon = Carbon::now();
-
         if(empty($this->text)) {
-            $this->text = sprintf("[%'.02s:%'.02s:%'.02s]: %s ", $carbon->hour, $carbon->minute, $carbon->second, $output);
+            $this->text = sprintf("[%s]: %s ", $this->carbon->now()->toTimeString(), $output);
         } else {
             $this->text .= $output;
         }
-
         if ($eol) {
             echo  $this->text . PHP_EOL;
             $this->text = (unset)$this->text;
         }
 
-        //echo  $output, $eol ? PHP_EOL : '';
+        if($send) {
+            echo  $this->text;
+            $this->text = (unset)$this->text;
+        }
     }
 
     /**
@@ -278,13 +285,6 @@ class TeamSpeak3Bot
         return Self::$_instance;
     }
 
-    /**
-     * @return null
-     */
-    public static function getLastInstance()
-    {
-        return Self::$_instance;
-    }
 
     private function setup()
     {
@@ -342,7 +342,7 @@ class TeamSpeak3Bot
             return false;
         }
 
-        $this->printOutput(sprintf("%- 88s %s", "Loading plugin [{$config['name']}] by {$config['author']} ", "::"), false);
+        $this->printOutput(sprintf("%- 80s %s", "Loading plugin [{$config['name']}] by {$config['author']} ", "::"), false);
 
         $config['class'] = \Plugin::class . '\\' . $config['name'];
 
@@ -495,20 +495,23 @@ class TeamSpeak3Bot
     public function onMessage(Event $event)
     {
         foreach ($this->plugins as $name => $config) {
+            if (@$config->CONFIG['event']) {
+                continue;
+            }
             foreach ($config->triggers as $trigger) {
                 if ($trigger == 'event') {
                     break;
                 }
 
                 if ($event["msg"]->startsWith($trigger)) {
-                    $this->info['PRIVMSG'] = $event->getData();
-                    $info = $this->info['PRIVMSG'];
-                    $this->plugins[$name]->info = $info;
-                    $this->plugins[$name]->onMessage();
+                    //$this->info['PRIVMSG'] = $event->getData();
+                    $info =  $event->getData();
+                    //$this->plugins[$name]->info = $event->getData();
+                    //$this->plugins[$name]->onMessage();
                     $info['triggerUsed'] = $trigger;
                     $text = $event["msg"]->substr(strlen($trigger) + 1);
                     $info['fullText'] = $event["msg"];
-                    unset($info['text']);
+                    //unset($info['text']);
 
                     if (!empty($text->toString())) {
                         $info['text'] = $text;
@@ -527,28 +530,32 @@ class TeamSpeak3Bot
      */
     public function onEvent(Event $event)
     {
-        if ($this->lastEvent && empty(array_diff($this->lastEvent, $event->getData()))) {
+        $data = $event->getData();
+        if (@$data['invokername'] == $this->name || @$data['invokeruid'] == 'serveradmin') {
+            return;
+        } elseif ($this->lastEvent && $event->getMessage()->contains($this->lastEvent)) {
             return;
         }
-        $this->lastEvent = $event->getData();
+
+        $this->lastEvent = $event->getMessage()->toString();
 
         $this->node->clientListReset();
         $this->node->channelListReset();
 
         foreach ($this->plugins as $name => $config) {
+            if (!@$config->CONFIG['event']) {
+                continue;
+            }
+
             foreach ($config->triggers as $trigger) {
-                if ($trigger != 'event') {
+                if ($event->getType() != $this->plugins[$name]->CONFIG['event']) {
                     break;
                 }
 
-                $this->info['EVENT'] = $event->getData();
-                $info = $this->info['EVENT'];
-                $this->plugins[$name]->info = $info;
+                $this->plugins[$name]->info = $data;
 
-                if ($event->getType()->toString() == $this->plugins[$name]->CONFIG['event']) {
-                    $this->plugins[$name]->trigger();
-                    break;
-                }
+                $this->plugins[$name]->trigger();
+                break;
             }
         }
     }

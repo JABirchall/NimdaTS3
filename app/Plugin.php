@@ -49,7 +49,7 @@ class Plugin
     /**
      * @var mixed
      */
-    protected $originalTriggers;
+    //protected $originalTriggers;
     /**
      * @var
      */
@@ -105,7 +105,7 @@ class Plugin
 
                 case "triggers":
                     $this->triggers = $this->sortByLengthDESC($value);
-                    $this->originalTriggers = $this->triggers;
+                    //$this->originalTriggers = $this->triggers;
                     break;
 
                 case "configFile":
@@ -120,58 +120,12 @@ class Plugin
 
     }
 
-    /**
-     * @param $trigger
-     *
-     * @return bool
-     */
-    function addTrigger($trigger)
-    {
-        array_push($this->triggers, $trigger);
-        $this->triggers = $this->sortByLengthDESC($this->triggers);
-
-        return true;
-    }
-
-    /**
-     * @param $trigger
-     *
-     * @return bool
-     */
-    function delTrigger($trigger)
-    {
-        $key = array_search($trigger, $this->triggers);
-        if ($key === false) {
-            return false;
-        }
-        unset($this->triggers[$key]);
-
-        return true;
-    }
-
-    function resetTriggers()
-    {
-        $this->triggers = $this->originalTriggers;
-    }
-
     function trigger()
     {
-        $this->output = [];
-        $info_save = $this->info;
-        $this->info = $info_save;
+        //$this->output = [];
+        //$info_save = $this->info;
+        //$this->info = $info_save;
         $this->isTriggered();
-    }
-
-    /**
-     * @param $array
-     *
-     * @return array|string|stripslashes
-     */
-    protected function stripSlashes($array)
-    {
-        $value = is_array($array) ? array_map('stripslashes', $array) : stripslashes($array);
-
-        return $value;
     }
 
     /**
@@ -181,8 +135,9 @@ class Plugin
      */
     static function sortByLengthASC($array)
     {
-        $tempFunction = create_function('$a,$b', 'return strlen($a)-strlen($b);');
-        usort($array, $tempFunction);
+        usort($array, function($a, $b){
+            return strlen($a)-strlen($b);
+        });
 
         return $array;
     }
@@ -194,8 +149,9 @@ class Plugin
      */
     static function sortByLengthDESC($array)
     {
-        $tempFunction = create_function('$a,$b', 'return strlen($b)-strlen($a);');
-        usort($array, $tempFunction);
+        usort($array, function($a, $b){
+            return strlen($b)-strlen($a);
+        });
 
         return $array;
     }
@@ -208,7 +164,6 @@ class Plugin
     {
         $text = vsprintf($text, $params);
         try {
-
             $client = $this->teamSpeak3Bot->node->clientGetByName($this->info['invokername']);
 
             if (\App\TeamSpeak3Bot::$config['newLineNewMessage'] === false) {
@@ -222,32 +177,7 @@ class Plugin
                 }
             }
         } catch (Ts3Exception $e) {
-            $this->teamSpeak3Bot->printOutput($e->getMessage());
+            $this->teamSpeak3Bot->onException($e);
         }
-        return;
-    }
-
-    /**
-     *
-     */
-    function onMessage()
-    {
-
-    }
-
-    /**
-     *
-     */
-    function onChannelMessage()
-    {
-
-    }
-
-    /**
-     *
-     */
-    function onKick()
-    {
-
     }
 }

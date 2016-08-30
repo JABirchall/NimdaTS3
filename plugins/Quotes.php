@@ -11,6 +11,7 @@ namespace Plugin;
 use App\Plugin;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Plugin\Models\Quote;
 
 class Quotes extends Plugin implements AdvancedPluginContract
@@ -38,6 +39,11 @@ class Quotes extends Plugin implements AdvancedPluginContract
                 ->pluck('id')
                 ->toArray();
 
+            if(!$ids) {
+                $this->sendOutput("No results found matching your query.");
+                return;
+            }
+
             $ids = implode(',', $ids);
             $this->sendOutput("Found matching quotes: %s", $ids);
 
@@ -63,14 +69,24 @@ class Quotes extends Plugin implements AdvancedPluginContract
         } elseif ($this->info['text']->startsWith('delete')) {
 
             $id = $this->info['text']->substr(strlen('delete') + 1);
-            Quote::find($id->toInt())
-                    ->delete();
+            try {
+                $quote = Quote::findOrFail($id->toInt());
+                $quote->delete();
+            } catch (ModelNotFoundException $e) {
+                $this->sendOutput($e->getMessage());
+                return;
+            }
 
             $this->sendOutput("%s [b]- [color=green]Removed successfully", $id);
 
             return true;
         } elseif ($this->info['text']->isInt()) {
-            $quote = Quote::where('id', $this->info['text']->toInt())->first();
+            try {
+                $quote = Quote::where('id', $this->info['text']->toInt())->firstOrFail();
+            } catch (ModelNotFoundException $e) {
+                $this->sendOutput($e->getMessage());
+                return;
+            }
 
             $this->sendOutput("[%s]: %s [b]- Created %s", $quote->username, $quote->quote, $quote->created_at->diffForHumans());
 
