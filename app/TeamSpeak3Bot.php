@@ -509,14 +509,11 @@ class TeamSpeak3Bot
                 }
 
                 if ($event["msg"]->startsWith($trigger)) {
-                    //$this->info['PRIVMSG'] = $event->getData();
                     $info =  $data;
-                    //$this->plugins[$name]->info = $event->getData();
-                    //$this->plugins[$name]->onMessage();
+
                     $info['triggerUsed'] = $trigger;
                     $text = $event["msg"]->substr(strlen($trigger) + 1);
                     $info['fullText'] = $event["msg"];
-                    //unset($info['text']);
 
                     if (!empty($text->toString())) {
                         $info['text'] = $text;
@@ -553,7 +550,7 @@ class TeamSpeak3Bot
             }
 
             foreach ($config->triggers as $trigger) {
-                if ($event->getType() != $this->plugins[$name]->CONFIG['event']) {
+                if ($event->getType() != $config->CONFIG['event']) {
                     break;
                 }
 

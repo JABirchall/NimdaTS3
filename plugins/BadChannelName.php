@@ -34,8 +34,8 @@ class BadChannelName extends Plugin implements PluginContract
 
     private function handle()
     {
-        $channel = $this->server->channelGetById(@$this->info['ctid']?$this->info['ctid']:$this->info['cid']);
-        $violator = $this->server->clientGetById($this->info['invokerid']?$this->info['invokerid']:$this->info['clid']);
+        $channel = $this->server->channelGetById(@$this->info['ctid'] ? $this->info['ctid'] : $this->info['cid']);
+        $violator = $this->server->clientGetById($this->info['invokerid'] ? $this->info['invokerid'] : $this->info['clid']);
 
         try {
             $channel->delete(true);
