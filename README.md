@@ -6,11 +6,16 @@ A Modular Designed TeamSpeak 3 bot for Server owners and admins
 
 To install this bot all you need to do is download or clone the repository to your server.
 
-Edit the Teamspeak and database configs in side the config folder then launch the bot with 
+First run the command to setup the autoloader
+
+```
+php composer.phar dump-autoload
+```
+
+Edit the Teamspeak and database configs in side the config folder then launch the bot with
 ```
 php start.php
 ```
-
 
 ## Prerequisities
 
