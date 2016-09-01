@@ -136,25 +136,25 @@ class TeamSpeak3Bot
     {
         $this->carbon = new Carbon;
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getpwuid() === 0) {
-            $this->printOutput("[WARNING] Running Nimda as root is bad!");
-            $this->printOutput("Start anyway? Y/N:", false);
-            $response = rtrim(fgets(STDIN));
-            if (strcasecmp($response,'y')) {
-                $this->printOutput("Aborted.");
-                exit;
-            }
-        }
+       if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getpwuid() === 0) {
+           $this->printOutput("[WARNING] Running Nimda as root is bad!");
+           $this->printOutput("Start anyway? Y/N:", false);
+           $response = rtrim(fgets(STDIN));
+           if (strcasecmp($response,'y')) {
+               $this->printOutput("Aborted.");
+               exit;
+           }
+       }
 
-        if($username === "serveradmin") {
-            $this->printOutput("[WARNING] Running Nimda logged in as serveradmin is bad!");
-            $this->printOutput("Start anyway? Y/N:", false, true);
-            $response = rtrim(fgets(STDIN));
-            if (strcasecmp($response,'y') ) {
-                $this->printOutput("Aborted.");
-                exit;
-            }
-        }
+       if($username === "serveradmin") {
+           $this->printOutput("[WARNING] Running Nimda logged in as serveradmin is bad!");
+           $this->printOutput("Start anyway? Y/N:", false, true);
+           $response = rtrim(fgets(STDIN));
+           if (strcasecmp($response,'y') ) {
+               $this->printOutput("Aborted.");
+               exit;
+           }
+       }
 
         $this->username = $username;
         $this->password = $password;
@@ -396,92 +396,6 @@ class TeamSpeak3Bot
     }
 
     /**
-     * @param $channel
-     */
-    public function joinChannel($channel)
-    {
-        try {
-            $this->channel = $this->node->channelGetByName($channel);
-            $this->node->clientMove($this->whoAmI(), $this->channel);
-        } catch (Ts3Exception $e) {
-            $this->onException($e);
-        }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function whoAmI()
-    {
-        return $this->node->whoAmI();
-    }
-
-    /**
-     * @param $username
-     * @param int $reason
-     * @param string $message
-     */
-    public function kick($username, $reason = TeamSpeak3::KICK_CHANNEL, $message = "")
-    {
-        try {
-            $client = $this->node->clientGetByName($username);
-            $client->kick($reason, $message);
-        } catch (Ts3Exception $e) {
-            $this->onException($e);
-        }
-    }
-
-    /**
-     * @param $target
-     * @param $text
-     */
-    public function sendPrivateMsg($target, $text)
-    {
-        try {
-            $client = $this->node->clientGetByName($target);
-            $client->message($text);
-        } catch (Ts3Exception $e) {
-            $this->onException($e);
-        }
-    }
-
-    /**
-     * @param $text
-     */
-    public function sendServerMsg($text)
-    {
-        $this->node->message($text);
-    }
-
-    /**
-     * @param $channel
-     * @param $text
-     */
-    public function sendChannelMsg($channel, $text)
-    {
-        try {
-            $this->joinChannel($channel);
-            $this->channel->message($text);
-        } catch (Ts3Exception $e) {
-            $this->onException($e);
-        }
-    }
-
-    /**
-     * @param $target
-     * @param $text
-     */
-    public function sendPoke($target, $text)
-    {
-        try {
-            $client = $this->node->clientGetByName($target);
-            $client->poke($text);
-        } catch (Ts3Exception $e) {
-            $this->onException($e);
-        }
-    }
-
-    /**
      * @param AbstractAdapter $adapter
      */
     public function onConnect(AbstractAdapter $adapter)
@@ -564,6 +478,7 @@ class TeamSpeak3Bot
 
     public function onTimeout($time, AbstractAdapter $adapter)
     {
+        ECHO "timeout\n";
         if ($adapter->getQueryLastTimestamp() < time() - 120) {
             $adapter->request("clientupdate");
         }
