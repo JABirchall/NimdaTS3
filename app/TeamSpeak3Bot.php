@@ -478,7 +478,6 @@ class TeamSpeak3Bot
 
     public function onTimeout($time, AbstractAdapter $adapter)
     {
-        ECHO "timeout\n";
         if ($adapter->getQueryLastTimestamp() < time() - 120) {
             $adapter->request("clientupdate");
         }
