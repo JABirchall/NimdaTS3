@@ -138,7 +138,7 @@ class TeamSpeak3Bot
 
        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getuid() === 0) {
            $this->printOutput("[WARNING] Running Nimda as root is bad!");
-           $this->printOutput("Start anyway? Y/N:", false);
+           $this->printOutput("Start anyway? Y/N:", false, true);
            $response = rtrim(fgets(STDIN));
            if (strcasecmp($response,'y')) {
                $this->printOutput("Aborted.");
