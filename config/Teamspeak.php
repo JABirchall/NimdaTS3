@@ -15,9 +15,9 @@ class TeamSpeak
         'username' => 'serveradmin',
         'password' => 'password',
         'host' => '127.0.0.1',
-        'port' => '10011',
+        'port' => 10011,
         'name' => 'Nimda',
-        'serverPort' => '9987',
+        'serverPort' => 9987,
         'timeout' => 1,
         'misc' => [
             'debug' => true,
