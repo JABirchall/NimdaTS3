@@ -136,7 +136,7 @@ class TeamSpeak3Bot
     {
         $this->carbon = new Carbon;
 
-       if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getpwuid() === 0) {
+       if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getuid() === 0) {
            $this->printOutput("[WARNING] Running Nimda as root is bad!");
            $this->printOutput("Start anyway? Y/N:", false);
            $response = rtrim(fgets(STDIN));
