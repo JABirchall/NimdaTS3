@@ -19,7 +19,7 @@ php start.php
 
 ## Prerequisities
 
-PHP version 5.6+, Teamspeak 3 Server
+PHP version 5.6+, php_PDO extentions, Teamspeak 3 Server
 
 ## Features
 
