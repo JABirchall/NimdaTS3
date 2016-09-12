@@ -488,6 +488,7 @@ class TeamSpeak3Bot
 
     public function onDisconnect()
     {
+    	$this->online = false;
         $this->timer->stop();
         $this->printOutput("Nimda finished total runtime: " . Convert::seconds($this->timer->getRuntime()) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
     }
