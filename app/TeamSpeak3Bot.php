@@ -138,7 +138,7 @@ class TeamSpeak3Bot
 
        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getuid() === 0) {
            $this->printOutput("[WARNING] Running Nimda as root is bad!");
-           $this->printOutput("Start anyway? Y/N:", false, true);
+           $this->printOutput("Start anyway? Y/N:", false);
            $response = rtrim(fgets(STDIN));
            if (strcasecmp($response,'y')) {
                $this->printOutput("Aborted.");
@@ -148,7 +148,7 @@ class TeamSpeak3Bot
 
        if($username === "serveradmin") {
            $this->printOutput("[WARNING] Running Nimda logged in as serveradmin is bad!");
-           $this->printOutput("Start anyway? Y/N:", false, true);
+           $this->printOutput("Start anyway? Y/N:", false);
            $response = rtrim(fgets(STDIN));
            if (strcasecmp($response,'y') ) {
                $this->printOutput("Aborted.");
@@ -176,8 +176,7 @@ class TeamSpeak3Bot
 
         $this->subscribe();
         try {
-            $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/".
-                "?server_port={$this->serverPort}&blocking=0&nickname={$this->name}&timeout={$this->timeout}");
+            $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}&timeout={$this->timeout}&no_query_clients=1");
         } catch (Ts3Exception $e) {
             $this->onException($e);
 
@@ -202,7 +201,7 @@ class TeamSpeak3Bot
         Signal::getInstance()->subscribe("serverqueryConnected", [$this, "onConnect"]);
         Signal::getInstance()->subscribe("notifyTextmessage", [$this, "onMessage"]);
         Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
-        Signal::getInstance()->subscribe("errorException", [$this, "onException"]);
+        //Signal::getInstance()->subscribe("errorException", [$this, "onException"]);
         Signal::getInstance()->subscribe("serverqueryDisconnected", [$this, "onDisconnect"]);
     }
 
@@ -220,21 +219,20 @@ class TeamSpeak3Bot
      * @param $eol
      * @param $send
      */
-    public function printOutput($output, $eol = true, $send = false)
+    public function printOutput($output, $eol = true, $send = true)
     {
-        if(empty($this->text)) {
-            $this->text = sprintf("[%s]: %s ", $this->carbon->now()->toTimeString(), $output);
+        if(!ob_get_contents()) {
+            ob_start(null, 1024);
+            printf("[%s]: %s ", $this->carbon->now()->toTimeString(), $output);
         } else {
-            $this->text .= $output;
+            echo $output;
         }
         if ($eol) {
-            echo  $this->text . PHP_EOL;
-            $this->text = (unset)$this->text;
+            echo PHP_EOL;
         }
 
         if($send) {
-            echo  $this->text;
-            $this->text = (unset)$this->text;
+            ob_end_flush();
         }
     }
 
@@ -301,10 +299,13 @@ class TeamSpeak3Bot
                 'name' => 'Nimda',
                 'version' => $this::NIMDA_VERSION,
             ]);
-        } elseif (version_compare(($nimda = Plugin::where('name', 'Nimda')->first())->version, $this::NIMDA_VERSION, '<')) {
-            $this->update($nimda->version);
+        } else {
+            $nimda = Plugin::where('name', 'Nimda')->first();
+            if (version_compare($nimda->version, $this::NIMDA_VERSION, '<')) {
+                $this->update($nimda->version);
 
-            $nimda->update(['version' => $this::NIMDA_VERSION]);
+                $nimda->update(['version' => $this::NIMDA_VERSION]);
+            }
         }
     }
 
@@ -335,12 +336,12 @@ class TeamSpeak3Bot
 
             return false;
         } elseif (!isset($config['name'])) {
-            $this->printOutput("Plugin with config file {$configFile} has not been loaded because it has no name.");
+            $this->printOutput("Plugin with config file {$configFile} has not been loaded because it has no name.") ;
 
             return false;
         }
 
-        $this->printOutput(sprintf("%- 80s %s", "Loading plugin [{$config['name']}] by {$config['author']} ", "::"), false);
+        $this->printOutput(sprintf("%- 80s %s", "Loading plugin [{$config['name']}] by {$config['author']} ", "::"), false, false);
 
         $config['class'] = \Plugin::class . '\\' . $config['name'];
 
@@ -445,7 +446,7 @@ class TeamSpeak3Bot
     public function onEvent(Event $event)
     {
         $data = $event->getData();
-        if (@$data['invokername'] == $this->name || @$data['invokeruid'] == 'serveradmin') {
+        if (@$data['invokername'] == $this->name || @$data['invokeruid'] == 'serveradmin' || @$data["client_unique_identifier"] == "ServerQuery") {
             return;
         } elseif ($this->lastEvent && $event->getMessage()->contains($this->lastEvent)) {
             return;
@@ -476,7 +477,7 @@ class TeamSpeak3Bot
 
     public function onTimeout($time, AbstractAdapter $adapter)
     {
-        if ($adapter->getQueryLastTimestamp() < time() - 120) {
+        if ($adapter->getQueryLastTimestamp() < $this->carbon->now()->subSeconds(120)) {
             $adapter->request("clientupdate");
         }
 

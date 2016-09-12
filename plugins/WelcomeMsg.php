@@ -14,8 +14,7 @@ class WelcomeMsg extends Plugin implements PluginContract
         $this->server = $this->teamSpeak3Bot->node;
 
         $client = $this->server->clientGetById($this->info['clid']);
-        $clientDbId = current($this->server->clientFindDb($client['client_nickname']));
-        $clientInfo = $this->server->clientInfoDb($clientDbId);
+        $clientInfo = $this->server->clientInfoDb($this->server->clientFindDb($client['client_nickname']));
 
         $format = [
             "%CL_DATABASE_ID%"      => $clientInfo["client_database_id"],

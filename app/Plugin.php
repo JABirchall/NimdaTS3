@@ -162,11 +162,10 @@ class Plugin
      */
     function sendOutput($text, ...$params)
     {
-
         $text = vsprintf($text, $params);
 
         try {
-            $client = $this->teamSpeak3Bot->node->clientGetById($this->info['invokerid']?$this->info['invokerid']:$this->info['clid']);
+            $client = $this->teamSpeak3Bot->node->clientGetById(@$this->info['invokerid']?$this->info['invokerid']:$this->info['clid']);
 
             if (\App\TeamSpeak3Bot::$config['newLineNewMessage'] === false) {
                $client->message($text);
