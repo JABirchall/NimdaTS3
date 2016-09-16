@@ -8,5 +8,5 @@
   ],
   "event": "cliententerview",
   "usage": false,
-  "enabled": true
+  "enabled": false
 }

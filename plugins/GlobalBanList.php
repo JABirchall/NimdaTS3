@@ -11,6 +11,7 @@ namespace Plugin;
 
 use App\Plugin;
 use Plugin\Models\Whitelist;
+use TeamSpeak3\Ts3Exception;
 
 
 class GlobalBanList extends Plugin implements PluginContract
@@ -47,12 +48,15 @@ class GlobalBanList extends Plugin implements PluginContract
         curl_close($curl);
 
         if($response->success === true && $response->banned === true && $response->uid === $this->info['client_unique_identifier']->toString()) {
-
-            $client = $this->server->clientGetByUid($this->info['client_unique_identifier']);
-            $id = hash_pbkdf2("sha1", $this->info['client_unique_identifier']->toString(), '', 1, 8);
-            $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$id}");
-            $client->poke("[b][color=red]Visit [url=http://support.mxgaming.com/]Global Ban Support[/url].");
-            $client->ban(1, "Global Ban ID #{$id} ({$response->reason})");
+            try {
+                $client = $this->server->clientGetByUid($this->info['client_unique_identifier']);
+                $id = hash_pbkdf2("sha1", $this->info['client_unique_identifier']->toString(), '', 1, 8);
+                $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$id}");
+                $client->poke("[b][color=red]Visit [url=http://support.mxgaming.com/]Global Ban Support[/url].");
+                $client->ban(1, "Global Ban ID #{$id} ({$response->reason})");
+            }catch(Ts3Exception $e){
+                return;
+            }
 
             printf("[%s]: Client %s is global banned ID #%s", $this->teamSpeak3Bot->carbon->now()->toTimeString(), $client, $id);
         }

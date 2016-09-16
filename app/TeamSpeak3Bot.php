@@ -209,7 +209,7 @@ class TeamSpeak3Bot
     {
         $this->node->notifyRegister("textserver");
         $this->node->notifyRegister("textchannel");
-        $this->node->notifyRegister("textprivate");
+        //$this->node->notifyRegister("textprivate");
         $this->node->notifyRegister("server");
         $this->node->notifyRegister("channel");
     }

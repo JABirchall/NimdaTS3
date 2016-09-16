@@ -8,8 +8,8 @@
 
 namespace Plugin;
 
-
 use App\Plugin;
+use TeamSpeak3\Ts3Exception;
 
 class GlobalBan extends Plugin implements PluginContract
 {
@@ -27,8 +27,16 @@ class GlobalBan extends Plugin implements PluginContract
 
         list($name, $reason) = $this->info['text']->split(' ');
 
-        $client = $this->server->clientGetByName($name);
+        try {
+            $client = $this->server->clientGetByName($name);
+        }catch(Ts3Exception $e){
+            $message = $e->getMessage();
+            if ($message === "invalid clientID") {
+                $this->sendOutput("[COLOR=red][b] There are no users online by that name");
 
+                return;
+            }
+        }
         $curl = curl_init();
 
         $fields = [
@@ -52,12 +60,18 @@ class GlobalBan extends Plugin implements PluginContract
         $response = json_decode(curl_exec($curl));
 
         if($response->success === true) {
-            $id = hash_pbkdf2("sha1", $client['client_unique_identifier']->toString(), '', 1, 8);
-            $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$id}");
-            $client->poke("[b][color=red]Visit [url=http://support.mxgaming.com/]Global Ban Support[/url].");
-            $client->ban(1, "Global Ban ID #{$id} ({$reason})");
+            try {
+                $id = hash_pbkdf2("sha1", $client['client_unique_identifier']->toString(), '', 1, 8);
+                $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$id}");
+                $client->poke("[b][color=red]Visit [url=http://support.mxgaming.com/]Global Ban Support[/url].");
+                $client->ban(1, "Global Ban ID #{$id} ({$reason})");
+            }catch(Ts3Exception $e){
+                return;
+            }
 
             $this->sendOutput(sprintf("[b][color=green] Client %s successfully global banned ID #%s", $name, $id));
+        } elseif ($response->success === false && $response->err === 0x02) {
+            $this->sendOutput("[COLOR=red][b]This server is not authorized to global ban, email support@mxgaming.com");
         }
 
 
