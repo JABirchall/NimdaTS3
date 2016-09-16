@@ -70,12 +70,10 @@ class GlobalBan extends Plugin implements PluginContract
                 return;
             }
 
-            $this->sendOutput(sprintf("[b][color=green] Client %s successfully global banned ID #%s", $name, $id));
+            $this->sendOutput(sprintf("[b][color=green] Client %s successfully global banned ID #%s", $client, $id));
         } elseif ($response->success === false && $response->err === 0x02) {
             $this->sendOutput("[COLOR=red][b]This server is not authorized to global ban, email support@mxgaming.com");
         }
-
-
     }
 
 }
