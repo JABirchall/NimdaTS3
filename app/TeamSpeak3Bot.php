@@ -119,7 +119,7 @@ class TeamSpeak3Bot
 
     private $lastEvent;
 
-    private $carbon;
+    public $carbon;
 
     /**
      * TeamSpeak3Bot constructor.

@@ -20,6 +20,10 @@ class GlobalBanList extends Plugin implements PluginContract
 
     public function isTriggered()
     {
+        if($this->CONFIG['enabled'] === false) {
+            return;
+        }
+
         $this->server = $this->teamSpeak3Bot->node;
 
         $whitelisted = Whitelist::where('uid', $this->info['client_unique_identifier']->toString())->count();
@@ -49,6 +53,8 @@ class GlobalBanList extends Plugin implements PluginContract
             $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$id}");
             $client->poke("[b][color=red]Visit [url=http://support.mxgaming.com/]Global Ban Support[/url].");
             $client->ban(1, "Global Ban ID #{$id} ({$response->reason})");
+
+            printf("[%s]: Client %s is global banned ID #%s", $this->teamSpeak3Bot->carbon->now()->toTimeString(), $client, $id);
         }
     }
 
