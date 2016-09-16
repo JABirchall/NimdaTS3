@@ -28,8 +28,6 @@ class GlobalBanList extends Plugin implements AdvancedPluginContract
 
             $table->timestamps();
         });
-        
-        echo "Install, ";
     }
 
     public function update($version)

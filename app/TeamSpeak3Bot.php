@@ -359,6 +359,7 @@ class TeamSpeak3Bot
 
         if ($this->plugins[$config['name']] instanceof \Plugin\AdvancedPluginContract) {
             if (!Manager::schema()->hasTable($config['table'])) {
+                $this->printOutput("Install, ", false, false);
                 $this->plugins[$config['name']]->install();
 
                 Plugin::create([
