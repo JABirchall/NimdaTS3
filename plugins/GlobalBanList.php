@@ -86,7 +86,7 @@ class GlobalBanList extends Plugin implements PluginContract
         array_walk(array_map([$this->server, 'serverGroupGetById'], $this->CONFIG['alert_groups']), [$this, 'clientMessage']);
 
 
-        printf("[%s]: %s", $this->teamSpeak3Bot->carbon->now()->toTimeString(), $message);
+        printf("[%s]: %s", $this->teamSpeak3Bot->carbon->now()->toTimeString(), $this->message);
     }
 
     public function clientMessage($admin)
