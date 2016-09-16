@@ -65,7 +65,7 @@ class TCP extends AbstractTransport
         }
 
         @stream_set_timeout($this->stream, $timeout);
-        @stream_set_blocking($this->stream, $this->config["blocking"] ? 1 : 0);
+        @stream_set_blocking($this->stream, $this->config["blocking"] ? true : false);
     }
 
     /**
@@ -97,6 +97,7 @@ class TCP extends AbstractTransport
         $this->waitForReadyRead();
 
         $data = @stream_get_contents($this->stream, $length);
+
 
         Signal::getInstance()->emit(strtolower($this->getAdapterType()) . "DataRead", $data);
 
@@ -133,9 +134,7 @@ class TCP extends AbstractTransport
                 if ($line->count()) {
                     $line->append($token);
                 } else {
-                    throw new Ts3Exception(
-                        "connection to server '" . $this->config["host"] . ":" . $this->config["port"] . "' lost"
-                    );
+                    throw new Ts3Exception("connection to server '" . $this->config["host"] . ":" . $this->config["port"] . "' lost");
                 }
             } else {
                 $line->append($data);
