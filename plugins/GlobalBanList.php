@@ -67,11 +67,12 @@ class GlobalBanList extends Plugin implements PluginContract
                 return;
             }
         }
-
-        $message = sprintf("[ALERT] Client %s is global banned ID #%s\n", $client, $id);
-        array_walk(array_map([$this->server, 'serverGroupGetById'], $this->CONFIG['alert_groups']), function($admin) use ($message) {
-            $admin->message($message);
-        });
+        if($this->CONFIG['alert'] === true) {
+            $message = sprintf("[ALERT] Client %s is global banned ID #%s\n", $client, $id);
+            array_walk(array_map([$this->server, 'serverGroupGetById'], $this->CONFIG['alert_groups']), function($admin) use ($message) {
+                $admin->message($message);
+            });
+        }
 
         printf("[%s]: %s", $this->teamSpeak3Bot->carbon->now()->toTimeString(), $message);
     }
