@@ -26,7 +26,7 @@ class GlobalBanList extends Plugin implements PluginContract
         if($whitelisted >= 1) {
             return;
         }
-        
+
         $curl = curl_init();
 
         $fields = [
@@ -48,7 +48,7 @@ class GlobalBanList extends Plugin implements PluginContract
             $id = hash_pbkdf2("sha1", $this->info['client_unique_identifier']->toString(), '', 1, 8);
             $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$id}");
             $client->poke("[b][color=red]Visit [url=http://support.mxgaming.com/]Global Ban Support[/url].");
-            $client->ban(1, "Nimda Global Ban ID: #{$id}");
+            $client->ban(1, "Global Ban ID #{$id} ({$response->reason})");
         }
     }
 
