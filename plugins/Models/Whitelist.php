@@ -13,5 +13,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Whitelist extends Model
 {
-    protected $fillable = ['uid', 'added_by',];
+    protected $fillable = ['uid', 'added_by', 'added_by_uid',];
 }

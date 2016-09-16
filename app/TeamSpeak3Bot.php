@@ -341,6 +341,7 @@ class TeamSpeak3Bot
             return false;
         }
 
+
         $this->printOutput(sprintf("%- 80s %s", "Loading plugin [{$config['name']}] by {$config['author']} ", "::"), false, false);
 
         $config['class'] = \Plugin::class . '\\' . $config['name'];
@@ -447,7 +448,7 @@ class TeamSpeak3Bot
     public function onEvent(Event $event)
     {
         $data = $event->getData();
-        if (@$data['invokername'] == $this->name || @$data['invokeruid'] == 'serveradmin' || @$data["client_unique_identifier"] == "ServerQuery") {
+        if (@$data['client_type'] == 1) {
             return;
         } elseif ($this->lastEvent && $event->getMessage()->contains($this->lastEvent)) {
             return;
