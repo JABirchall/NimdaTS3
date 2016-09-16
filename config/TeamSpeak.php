@@ -5,7 +5,6 @@
  * Date: 10/08/2016
  * Time: 22:44
  */
-
 namespace Config;
 
 class TeamSpeak

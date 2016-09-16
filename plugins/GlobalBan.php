@@ -48,7 +48,7 @@ class GlobalBan extends Plugin implements PluginContract
             'reason' => $reason,
             'server_name' => $this->server->toString(),
             'server_uid' => $this->server['virtualserver_unique_identifier'],
-            'h' => hash_pbkdf2('sha1', $this->CONFIG['key'].$client['client_unique_identifier']->toString().$this->info['invokeruid'],$this->server['virtualserver_unique_identifier'], 1, 8),
+            'h' => hash_pbkdf2('sha1', sprintf("%s-%s-%s", $this->CONFIG['key'], $client['client_unique_identifier']->toString(),$this->info['invokeruid']),$this->server['virtualserver_unique_identifier'], 1, 8),
 
         ];
 
