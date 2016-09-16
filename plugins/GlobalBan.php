@@ -56,6 +56,8 @@ class GlobalBan extends Plugin implements PluginContract
             $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$id}");
             $client->poke("[b][color=red]Visit [url=http://support.mxgaming.com/]Global Ban Support[/url].");
             $client->ban(1, "Global Ban ID #{$id} ({$reason})");
+
+            $this->sendOutput(sprintf("[b][color=green] Client %s successfully banned ID #%s", $name, $id));
         }
 
 
