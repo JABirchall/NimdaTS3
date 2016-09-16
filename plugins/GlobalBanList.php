@@ -47,19 +47,37 @@ class GlobalBanList extends Plugin implements PluginContract
         $response = json_decode(curl_exec($curl));
         curl_close($curl);
 
-        if($response->success === true && $response->banned === true && $response->uid === $this->info['client_unique_identifier']->toString()) {
+        if($response->success === false || $response->banned === false) {
+            return;
+        }
+
+        try {
+            $client = $this->server->clientGetByUid($this->info['client_unique_identifier']);
+            $id = hash_pbkdf2("sha1", $this->info['client_unique_identifier']->toString(), '', 1, 8);
+        }catch(Ts3Exception $e){
+            return;
+        }
+
+        if($this->CONFIG['ban'] === true && $response->uid === $this->info['client_unique_identifier']->toString()) {
             try {
-                $client = $this->server->clientGetByUid($this->info['client_unique_identifier']);
-                $id = hash_pbkdf2("sha1", $this->info['client_unique_identifier']->toString(), '', 1, 8);
                 $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$id}");
                 $client->poke("[b][color=red]Visit [url=http://support.mxgaming.com/]Global Ban Support[/url].");
                 $client->ban(1, "Global Ban ID #{$id} ({$response->reason})");
             }catch(Ts3Exception $e){
                 return;
             }
-
-            printf("[%s]: Client %s is global banned ID #%s", $this->teamSpeak3Bot->carbon->now()->toTimeString(), $client, $id);
         }
+
+        $message = sprintf("[ALERT] Client %s is global banned ID #%s\n", $client, $id);
+        if($this->CONFIG['alert'] === true) {
+            foreach ($this->CONFIG['alert_groups'] as $group) {
+                foreach($this->server->serverGroupGetById($group) as $admin) {
+                    $admin->message($message);
+                }
+            }
+        }
+
+        printf("[%s]: %s", $this->teamSpeak3Bot->carbon->now()->toTimeString(), $message);
     }
 
 }

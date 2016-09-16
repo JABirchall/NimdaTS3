@@ -28,7 +28,8 @@ class GlobalBan extends Plugin implements PluginContract
         list($name, $reason) = $this->info['text']->split(' ');
 
         try {
-            $client = $this->server->clientGetByName($name);
+            $client =  current($this->server->clientFind($name));
+            $client = $this->server->clientGetById($client['clid']);
         }catch(Ts3Exception $e){
             $message = $e->getMessage();
             if ($message === "invalid clientID") {
@@ -62,7 +63,7 @@ class GlobalBan extends Plugin implements PluginContract
         if($response->success === true) {
             try {
                 $id = hash_pbkdf2("sha1", $client['client_unique_identifier']->toString(), '', 1, 8);
-                $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$id}");
+                $client->poke("[b][color=red]You are global banned by Nimda ID: #{$id}");
                 $client->poke("[b][color=red]Visit [url=http://support.mxgaming.com/]Global Ban Support[/url].");
                 $client->ban(1, "Global Ban ID #{$id} ({$reason})");
             }catch(Ts3Exception $e){

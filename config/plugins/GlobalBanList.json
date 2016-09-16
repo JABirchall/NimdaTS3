@@ -8,5 +8,10 @@
   ],
   "event": "cliententerview",
   "usage": false,
-  "enabled": false
+  "enabled": false,
+  "ban": true,
+  "alert": true,
+  "alert_groups": [
+    "64"
+  ]
 }
