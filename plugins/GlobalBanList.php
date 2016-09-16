@@ -21,7 +21,15 @@ class GlobalBanList extends Plugin implements AdvancedPluginContract
 
     public function install()
     {
-        // TODO: Implement install() method.
+        Manager::schema()->create($this->CONFIG['table'], function(Blueprint $table) {
+            $table->increments('id');
+            $table->text('uid');
+            $table->text('added_by');
+
+            $table->timestamps();
+        });
+        
+        echo "Install, ";
     }
 
     public function update($version)

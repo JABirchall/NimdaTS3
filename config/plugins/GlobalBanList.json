@@ -8,6 +8,7 @@
   ],
   "event": "cliententerview",
   "usage": false,
+  "table": "whitelists",
   "whitelist": [
     "b/twueIIac7nEdxJrMROe9Jx67U="
   ],
