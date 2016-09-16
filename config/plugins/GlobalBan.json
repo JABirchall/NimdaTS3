@@ -1,0 +1,12 @@
+{
+  "name": "GlobalBan",
+  "author": "JABirchall",
+  "description": "Submit a Global Teamspeak ban",
+  "version": "1.0",
+  "triggers": [
+    "!gban",
+    "!globalban"
+  ],
+  "usage": "Usage !gban [user]",
+  "key": ""
+}
