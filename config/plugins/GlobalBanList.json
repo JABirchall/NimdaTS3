@@ -8,7 +8,7 @@
   ],
   "event": "cliententerview",
   "usage": false,
-  "enabled": false,
+  "enabled": true,
   "ban": true,
   "alert": true,
   "alert_groups": [

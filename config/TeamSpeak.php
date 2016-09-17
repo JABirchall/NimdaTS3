@@ -12,8 +12,8 @@ class TeamSpeak
 
     public static $TS3config = [
         'username' => 'serveradmin',
-        'password' => 'password',
-        'host' => '127.0.0.1',
+        'password' => 'Tyc00n..',
+        'host' => 'ts3.mxgaming.com',
         'port' => 10011,
         'name' => 'Nimda',
         'serverPort' => 9987,

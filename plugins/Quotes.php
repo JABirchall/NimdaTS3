@@ -63,6 +63,8 @@ class Quotes extends Plugin implements AdvancedPluginContract
                 'quote' => $text[1],
             ]);
 
+            var_dump($quote);
+
             $this->sendOutput("[%s]: %s [b]- [color=green]Created successfully", $quote->username, $quote->quote);
 
             return true;

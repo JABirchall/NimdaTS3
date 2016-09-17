@@ -38,7 +38,7 @@ class GlobalBanList extends Plugin implements PluginContract
             'uid' => $this->info['client_unique_identifier']->toString()
         ];
 
-        curl_setopt($curl, CURLOPT_URL, 'http://127.0.0.1/globalban.php');
+        curl_setopt($curl, CURLOPT_URL, 'http://127.0.0.1/bans/check');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 1);
@@ -67,6 +67,7 @@ class GlobalBanList extends Plugin implements PluginContract
                 return;
             }
         }
+
         if($this->CONFIG['alert'] === true) {
             $message = sprintf("[ALERT] Client %s is global banned ID #%s\n", $client, $id);
             array_walk(array_map([$this->server, 'serverGroupGetById'], $this->CONFIG['alert_groups']), function($admin) use ($message) {

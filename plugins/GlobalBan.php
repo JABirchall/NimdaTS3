@@ -23,6 +23,7 @@ class GlobalBan extends Plugin implements PluginContract
 
             return;
         }
+
         $this->server = $this->teamSpeak3Bot->node;
 
         list($name, $reason) = $this->info['text']->split(' ');
@@ -38,11 +39,13 @@ class GlobalBan extends Plugin implements PluginContract
                 return;
             }
         }
+
         $curl = curl_init();
 
         $fields = [
             'key' => $this->CONFIG['key'],
             'uid' => $client['client_unique_identifier']->toString(),
+            'ip' => $client['connection_client_ip'],
             'banned_by' => $this->info['invokername'],
             'banned_by_uid' => $this->info['invokeruid'],
             'reason' => $reason,
@@ -52,13 +55,14 @@ class GlobalBan extends Plugin implements PluginContract
 
         ];
 
-        curl_setopt($curl, CURLOPT_URL, 'http://127.0.0.1/submitban.php');
+        curl_setopt($curl, CURLOPT_URL, 'http://127.0.0.1/bans/submit');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 5);
 
         $response = json_decode(curl_exec($curl));
+        curl_close($curl);
 
         if($response->success === true) {
             try {
