@@ -69,7 +69,7 @@ class GlobalBanList extends Plugin implements PluginContract
         }
 
         if($this->CONFIG['alert'] === true) {
-            $message = sprintf("[ALERT] Client %s is global banned ID #%s\n", $client, $id);
+            $message = sprintf("[ALERT] Client %s is global banned ID #%s reason: %s\n", $client, $id, $response->reason);
             array_walk(array_map([$this->server, 'serverGroupGetById'], $this->CONFIG['alert_groups']), function($admin) use ($message) {
                 $admin->message($message);
             });
