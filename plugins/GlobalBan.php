@@ -62,6 +62,11 @@ class GlobalBan extends Plugin implements PluginContract
         curl_setopt($curl, CURLOPT_TIMEOUT, 5);
 
         $response = json_decode(curl_exec($curl));
+        if(curl_errno($curl) != 0) {
+            $this->sendOutput(sprintf("There was a error with the request: %s", curl_error($curl)));
+            return;
+        }
+
         curl_close($curl);
 
         if($response->success === true) {

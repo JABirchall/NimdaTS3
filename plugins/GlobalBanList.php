@@ -45,6 +45,12 @@ class GlobalBanList extends Plugin implements PluginContract
         curl_setopt($curl, CURLOPT_TIMEOUT, 5);
 
         $response = json_decode(curl_exec($curl));
+
+        if(curl_errno($curl) != 0) {
+            curl_close($curl);
+            return;
+        }
+
         curl_close($curl);
 
         if($response->success === false || $response->banned === false) {
