@@ -9,9 +9,11 @@
   "event": "cliententerview",
   "usage": false,
   "enabled": true,
-  "ban": true,
+  "ban": false,
   "alert": true,
   "alert_groups": [
-    "64"
+    12,
+    13,
+    14
   ]
 }

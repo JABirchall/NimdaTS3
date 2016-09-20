@@ -20,7 +20,8 @@ class TeamSpeak
         'timeout' => 1,
         'misc' => [
             'debug' => true,
-            'newLineNewMessage' => true,
+            'newLineNewMessage' => false,
+            'ignoreWarnings' => true
         ]
     ];
 
