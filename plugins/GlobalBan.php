@@ -73,7 +73,7 @@ class GlobalBan extends Plugin implements PluginContract
             try {
                 $id = hash_pbkdf2("sha1", $client['client_unique_identifier']->toString(), '', 1, 8);
                 $client->poke("[b][color=red]You are global banned by Nimda ID: #{$id}");
-                $client->poke("[b][color=red]Visit [url=http://support.mxgaming.com/]Global Ban Support[/url].");
+                $client->poke("[b][color=red]Visit [url=#]Global Ban Support[/url].");
                 $client->ban(1, "Global Ban ID #{$id} ({$reason})");
             }catch(Ts3Exception $e){
                 return;

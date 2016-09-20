@@ -67,7 +67,7 @@ class GlobalBanList extends Plugin implements PluginContract
         if($this->CONFIG['ban'] === true && $response->uid === $this->info['client_unique_identifier']->toString()) {
             try {
                 $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$id}");
-                $client->poke("[b][color=red]Visit [url=http://support.mxgaming.com/]Global Ban Support[/url].");
+                $client->poke("[b][color=red]Visit [url=#]Global Ban Support[/url].");
                 $client->ban(1, "Global Ban ID #{$id} ({$response->reason})");
             }catch(Ts3Exception $e){
                 return;
