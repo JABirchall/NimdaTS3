@@ -119,7 +119,7 @@ class TeamSpeak3Bot
 
     private $lastEvent;
 
-    private $carbon;
+    public $carbon;
 
     /**
      * TeamSpeak3Bot constructor.
@@ -136,7 +136,7 @@ class TeamSpeak3Bot
     {
         $this->carbon = new Carbon;
 
-       if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getuid() === 0) {
+       if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getuid() === 0 && !Self::$config['ignoreWarnings']) {
            $this->printOutput("[WARNING] Running Nimda as root is bad!");
            $this->printOutput("Start anyway? Y/N:", false);
            $response = rtrim(fgets(STDIN));
@@ -146,7 +146,7 @@ class TeamSpeak3Bot
            }
        }
 
-       if($username === "serveradmin") {
+       if($username === "serveradmin" && !Self::$config['ignoreWarnings']) {
            $this->printOutput("[WARNING] Running Nimda logged in as serveradmin is bad!");
            $this->printOutput("Start anyway? Y/N:", false);
            $response = rtrim(fgets(STDIN));
@@ -209,7 +209,7 @@ class TeamSpeak3Bot
     {
         $this->node->notifyRegister("textserver");
         $this->node->notifyRegister("textchannel");
-        $this->node->notifyRegister("textprivate");
+        //$this->node->notifyRegister("textprivate");
         $this->node->notifyRegister("server");
         $this->node->notifyRegister("channel");
     }
@@ -341,6 +341,7 @@ class TeamSpeak3Bot
             return false;
         }
 
+
         $this->printOutput(sprintf("%- 80s %s", "Loading plugin [{$config['name']}] by {$config['author']} ", "::"), false, false);
 
         $config['class'] = \Plugin::class . '\\' . $config['name'];
@@ -359,6 +360,7 @@ class TeamSpeak3Bot
 
         if ($this->plugins[$config['name']] instanceof \Plugin\AdvancedPluginContract) {
             if (!Manager::schema()->hasTable($config['table'])) {
+                $this->printOutput("Install, ", false, false);
                 $this->plugins[$config['name']]->install();
 
                 Plugin::create([
@@ -446,7 +448,7 @@ class TeamSpeak3Bot
     public function onEvent(Event $event)
     {
         $data = $event->getData();
-        if (@$data['invokername'] == $this->name || @$data['invokeruid'] == 'serveradmin' || @$data["client_unique_identifier"] == "ServerQuery") {
+        if (@$data['client_type'] == 1) {
             return;
         } elseif ($this->lastEvent && $event->getMessage()->contains($this->lastEvent)) {
             return;

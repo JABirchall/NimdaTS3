@@ -1,0 +1,19 @@
+{
+  "name": "GlobalBanList",
+  "author": "JABirchall",
+  "description": "Check for Global Teamspeak Ban",
+  "version": "1.0",
+  "triggers": [
+    "event"
+  ],
+  "event": "cliententerview",
+  "usage": false,
+  "enabled": true,
+  "ban": false,
+  "alert": true,
+  "alert_groups": [
+    12,
+    13,
+    14
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "AddWhitelist",
+  "author": "JABirchall",
+  "description": "Whitelist a user from the global ban system.",
+  "version": "1.0",
+  "triggers": [
+    "!whitelist"
+  ],
+  "table": "whitelists",
+  "usage": "Usage: !whitelist [uid]"
+
+}

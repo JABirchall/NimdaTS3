@@ -4,6 +4,7 @@ namespace Plugin;
 
 use App\Plugin;
 use Carbon\Carbon;
+use TeamSpeak3\Ts3Exception;
 
 class WelcomeMsg extends Plugin implements PluginContract
 {
@@ -12,9 +13,12 @@ class WelcomeMsg extends Plugin implements PluginContract
     public function isTriggered()
     {
         $this->server = $this->teamSpeak3Bot->node;
-
-        $client = $this->server->clientGetById($this->info['clid']);
-        $clientInfo = $this->server->clientInfoDb($this->server->clientFindDb($client['client_nickname']));
+        try {
+            $client = $this->server->clientGetById($this->info['clid']);
+            $clientInfo = $this->server->clientInfoDb($this->server->clientFindDb($client['client_nickname']));
+        } catch(Ts3Exception $e) {
+            return;
+        }
 
         $format = [
             "%CL_DATABASE_ID%"      => $clientInfo["client_database_id"],
