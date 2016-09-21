@@ -55,7 +55,7 @@ class GlobalBan extends Plugin implements PluginContract
 
         ];
 
-        curl_setopt($curl, CURLOPT_URL, 'http://127.0.0.1/bans/submit');
+        curl_setopt($curl, CURLOPT_URL, 'http://52.174.144.155/bans/submit');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 1);
@@ -71,15 +71,14 @@ class GlobalBan extends Plugin implements PluginContract
 
         if($response->success === true) {
             try {
-                $id = hash_pbkdf2("sha1", $client['client_unique_identifier']->toString(), '', 1, 8);
-                $client->poke("[b][color=red]You are global banned by Nimda ID: #{$id}");
+                $client->poke("[b][color=red]You are global banned by Nimda ID: #{$response->ban_id}");
                 $client->poke("[b][color=red]Visit [url=#]Global Ban Support[/url].");
-                $client->ban(1, "Global Ban ID #{$id} ({$reason})");
+                $client->ban(1, "Global Ban ID #{$response->ban_id} ({$reason})");
             }catch(Ts3Exception $e){
                 return;
             }
 
-            $this->sendOutput(sprintf("[b][color=green] Client %s successfully global banned ID #%s", $client, $id));
+            $this->sendOutput(sprintf("[b][color=green] Client %s successfully global banned ID #%s", $client, $response->ban_id));
         } elseif ($response->success === false && $response->err === 0x02) {
             $this->sendOutput("[COLOR=red][b]This server is not authorized to global ban, email support@mxgaming.com");
         }

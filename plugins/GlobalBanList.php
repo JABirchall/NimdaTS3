@@ -38,7 +38,7 @@ class GlobalBanList extends Plugin implements PluginContract
             'uid' => $this->info['client_unique_identifier']->toString()
         ];
 
-        curl_setopt($curl, CURLOPT_URL, 'http://127.0.0.1/bans/check');
+        curl_setopt($curl, CURLOPT_URL, 'http://52.174.144.155/bans/check');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 1);
@@ -59,23 +59,22 @@ class GlobalBanList extends Plugin implements PluginContract
 
         try {
             $client = $this->server->clientGetByUid($this->info['client_unique_identifier']);
-            $id = hash_pbkdf2("sha1", $this->info['client_unique_identifier']->toString(), '', 1, 8);
         }catch(Ts3Exception $e){
             return;
         }
 
         if($this->CONFIG['ban'] === true && $response->uid === $this->info['client_unique_identifier']->toString()) {
             try {
-                $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$id}");
+                $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$response->id}");
                 $client->poke("[b][color=red]Visit [url=#]Global Ban Support[/url].");
-                $client->ban(1, "Global Ban ID #{$id} ({$response->reason})");
+                $client->ban(1, "Global Ban ID #{$response->id} ({$response->reason})");
             }catch(Ts3Exception $e){
                 return;
             }
         }
 
         if($this->CONFIG['alert'] === true) {
-            $message = sprintf("[ALERT] Client %s is global banned ID #%s reason: %s\n", $client, $id, $response->reason);
+            $message = sprintf("[ALERT] Client %s is global banned ID #%s reason: %s\n", $client, $response->ban_id, $response->reason);
             array_walk(array_map([$this->server, 'serverGroupGetById'], $this->CONFIG['alert_groups']), function($admin) use ($message) {
                 $admin->message($message);
             });
