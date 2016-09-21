@@ -9,7 +9,7 @@
   "event": "cliententerview",
   "usage": false,
   "enabled": true,
-  "ban": false,
+  "ban": true,
   "alert": true,
   "alert_groups": [
     12,
