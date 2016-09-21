@@ -65,16 +65,16 @@ class GlobalBanList extends Plugin implements PluginContract
 
         if($this->CONFIG['ban'] === true && $response->uid === $this->info['client_unique_identifier']->toString()) {
             try {
-                $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$response->id}");
+                $client->poke("[b][color=red]You are globally banned by Nimda ID: #{$response->ban_id}");
                 $client->poke("[b][color=red]Visit [url=#]Global Ban Support[/url].");
-                $client->ban(1, "Global Ban ID #{$response->id} ({$response->reason})");
+                $client->ban(0, "Global Ban ID #{$response->ban_id} ({$response->reason})");
             }catch(Ts3Exception $e){
                 return;
             }
         }
 
         if($this->CONFIG['alert'] === true) {
-            $message = sprintf("[ALERT] Client %s is global banned ID #%s reason: %s\n", $client, $response->ban_id, $response->reason);
+            $message = sprintf("[ALERT] Client %s is global banned ID #%s reason: %s issued Global Ban from: %s\n", $client, $response->ban_id, $response->reason, $response->server_name);
             array_walk(array_map([$this->server, 'serverGroupGetById'], $this->CONFIG['alert_groups']), function($admin) use ($message) {
                 $admin->message($message);
             });

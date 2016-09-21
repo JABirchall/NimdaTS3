@@ -45,13 +45,13 @@ class GlobalBan extends Plugin implements PluginContract
         $fields = [
             'key' => $this->CONFIG['key'],
             'uid' => $client['client_unique_identifier']->toString(),
-            'ip' => $client['connection_client_ip'],
-            'banned_by' => $this->info['invokername'],
-            'banned_by_uid' => $this->info['invokeruid'],
-            'reason' => $reason,
+            'ip' => $client['connection_client_ip']->toString(),
+            'banned_by' => $this->info['invokername']->toString(),
+            'banned_by_uid' => $this->info['invokeruid']->toString(),
+            'reason' => $reason->toString(),
             'server_name' => $this->server->toString(),
-            'server_uid' => $this->server['virtualserver_unique_identifier'],
-            'h' => hash_pbkdf2('sha1', sprintf("%s-%s-%s", $this->CONFIG['key'], $client['client_unique_identifier']->toString(),$this->info['invokeruid']),$this->server['virtualserver_unique_identifier'], 1, 8),
+            'server_uid' => $this->server['virtualserver_unique_identifier']->toString(),
+            'h' => hash_pbkdf2('sha1', sprintf("%s-%s-%s", $this->CONFIG['key'], $client['client_unique_identifier']->toString(),$this->info['invokeruid']),$this->server['virtualserver_unique_identifier']->toString(), 1, 8),
 
         ];
 
@@ -73,7 +73,7 @@ class GlobalBan extends Plugin implements PluginContract
             try {
                 $client->poke("[b][color=red]You are global banned by Nimda ID: #{$response->ban_id}");
                 $client->poke("[b][color=red]Visit [url=#]Global Ban Support[/url].");
-                $client->ban(1, "Global Ban ID #{$response->ban_id} ({$reason})");
+                $client->ban(0, "Global Ban ID #{$response->ban_id} ({$reason})");
             }catch(Ts3Exception $e){
                 return;
             }
@@ -81,6 +81,8 @@ class GlobalBan extends Plugin implements PluginContract
             $this->sendOutput(sprintf("[b][color=green] Client %s successfully global banned ID #%s", $client, $response->ban_id));
         } elseif ($response->success === false && $response->err === 0x02) {
             $this->sendOutput("[COLOR=red][b]This server is not authorized to global ban, email support@mxgaming.com");
+        } else {
+            $this->sendOutput("[COLOR=orange][b]Unexpected error");
         }
     }
 
