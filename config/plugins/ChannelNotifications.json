@@ -8,7 +8,10 @@
   ],
   "event": "clientmoved",
   "usage": "false",
-  "channelId": 2,
-  "groupId": 7,
-  "guestGroupId": 8
+  "channelIds":[
+    1,
+    2
+  ],
+  "groupId": 1,
+  "guestGroupId": 1
 }

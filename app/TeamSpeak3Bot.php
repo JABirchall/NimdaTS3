@@ -30,7 +30,7 @@ class TeamSpeak3Bot
     /**
      * @var string
      */
-    const NIMDA_VERSION = '0.10.6';
+    const NIMDA_VERSION = '0.11.4';
     const NIMDA_TYPE = '-alpha';
 
     /**
@@ -176,7 +176,7 @@ class TeamSpeak3Bot
 
         $this->subscribe();
         try {
-            $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}&timeout={$this->timeout}&no_query_clients=1");
+            $this->node = TeamSpeak3::factory("serverquery://{$this->username}:{$this->password}@{$this->host}:{$this->port}/?server_port={$this->serverPort}&blocking=0&nickname={$this->name}&timeout={$this->timeout}&no_query_clients=0");
         } catch (Ts3Exception $e) {
             $this->onException($e);
 
@@ -252,10 +252,10 @@ class TeamSpeak3Bot
     public static function setOptions(Array $options = [])
     {
         Self::$_username = $options['username'];
-        Self::$_password = $options['password'];
+        Self::$_password = urlencode($options['password']);
         Self::$_host = $options['host'];
         Self::$_port = $options['port'];
-        Self::$_name = $options['name'];
+        Self::$_name = urlencode($options['name']);
         Self::$_serverPort = $options['serverPort'];
         Self::$_timeout = $options['timeout'];
         Self::$config = $options['misc'];
@@ -297,14 +297,14 @@ class TeamSpeak3Bot
 
             Plugin::create([
                 'name' => 'Nimda',
-                'version' => $this::NIMDA_VERSION,
+                'version' => Self::NIMDA_VERSION,
             ]);
         } else {
             $nimda = Plugin::where('name', 'Nimda')->first();
-            if (version_compare($nimda->version, $this::NIMDA_VERSION, '<')) {
+            if (version_compare($nimda->version, Self::NIMDA_VERSION, '<')) {
                 $this->update($nimda->version);
 
-                $nimda->update(['version' => $this::NIMDA_VERSION]);
+                $nimda->update(['version' => Self::NIMDA_VERSION]);
             }
         }
     }
