@@ -219,8 +219,8 @@ class Uri
     /**
      * Returns the scheme.
      *
-     * @param  mixed default
-     * @return String
+     * @param  mixed $default
+     * @return StringHelper
      */
     public function getScheme($default = null)
     {
@@ -267,8 +267,8 @@ class Uri
     /**
      * Returns the username.
      *
-     * @param  mixed default
-     * @return String
+     * @param  mixed $default
+     * @return StringHelper
      */
     public function getUser($default = null)
     {
@@ -315,8 +315,8 @@ class Uri
     /**
      * Returns the password.
      *
-     * @param  mixed default
-     * @return String
+     * @param  mixed $default
+     * @return StringHelper
      */
     public function getPass($default = null)
     {
@@ -351,8 +351,8 @@ class Uri
     /**
      * Returns the host.
      *
-     * @param  mixed default
-     * @return String
+     * @param  mixed $default
+     * @return StringHelper
      */
     public function getHost($default = null)
     {
@@ -387,7 +387,7 @@ class Uri
     /**
      * Returns the port.
      *
-     * @param  mixed default
+     * @param  mixed $default
      * @return integer
      */
     public function getPort($default = null)
@@ -435,8 +435,8 @@ class Uri
     /**
      * Returns the path.
      *
-     * @param  mixed default
-     * @return String
+     * @param  mixed $default
+     * @return StringHelper
      */
     public function getPath($default = null)
     {
@@ -584,8 +584,8 @@ class Uri
     /**
      * Returns the fragment.
      *
-     * @param  mixed default
-     * @return String
+     * @param  mixed $default
+     * @return StringHelper
      */
     public function getFragment($default = null)
     {
@@ -658,7 +658,7 @@ class Uri
     /**
      * Returns the applications host address.
      *
-     * @return String
+     * @return StringHelper
      */
     public static function getHostUri()
     {

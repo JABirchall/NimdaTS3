@@ -82,9 +82,9 @@ class TSDNS extends AbstractAdapter
     /**
      * Queries the TSDNS server for a specified virtual hostname and returns the result.
      *
-     * @param  string $tsdns
+     * @param  StringHelper|string $tsdns
      * @throws Ts3Exception
-     * @return String
+     * @return StringHelper
      */
     public function resolve($tsdns)
     {

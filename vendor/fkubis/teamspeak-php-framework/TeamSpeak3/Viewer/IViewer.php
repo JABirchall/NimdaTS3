@@ -27,6 +27,8 @@
 
 namespace TeamSpeak3\Viewer;
 
+use TeamSpeak3\Node\AbstractNode;
+
 /**
  * @class IViewer
  * @brief Interface class describing a TeamSpeak 3 viewer.
@@ -36,9 +38,9 @@ interface IViewer
     /**
      * Returns the code needed to display a node in a TeamSpeak 3 viewer.
      *
-     * @param  TeamSpeak3_Node_Abstract $node
+     * @param  AbstractNode $node
      * @param  array $siblings
      * @return string
      */
-    public function fetchObject(TeamSpeak3_Node_Abstract $node, array $siblings = array());
+    public function fetchObject(AbstractNode $node, array $siblings = array());
 }

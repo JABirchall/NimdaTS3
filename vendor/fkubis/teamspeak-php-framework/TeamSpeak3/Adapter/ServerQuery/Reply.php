@@ -44,14 +44,14 @@ class Reply
     /**
      * Stores the command used to get this reply.
      *
-     * @var String
+     * @var StringHelper
      */
     protected $cmd = null;
 
     /**
      * Stores the servers reply (if available).
      *
-     * @var String
+     * @var StringHelper
      */
     protected $rpl = null;
 
@@ -105,7 +105,7 @@ class Reply
     /**
      * Returns the reply as an String object.
      *
-     * @return String
+     * @return StringHelper
      */
     public function toString()
     {
@@ -247,7 +247,7 @@ class Reply
     /**
      * Returns the command used to get this reply.
      *
-     * @return String
+     * @return StringHelper
      */
     public function getCommandString()
     {
@@ -280,7 +280,7 @@ class Reply
      * Parses a ServerQuery error and throws a Ts3Exception object if
      * there's an error.
      *
-     * @param  string $err
+     * @param  StringHelper|string $err
      * @throws Ts3Exception
      * @return void
      */
@@ -321,7 +321,7 @@ class Reply
     /**
      * Parses a ServerQuery reply and creates a String object.
      *
-     * @param  string $rpl
+     * @param  array $rpl
      * @return void
      */
     protected function fetchReply($rpl)

@@ -27,6 +27,9 @@
 
 namespace TeamSpeak3\Viewer;
 
+use TeamSpeak3\Helper\StringHelper;
+use TeamSpeak3\Node\AbstractNode;
+
 /**
  * @class Text
  * @brief Renders nodes used in ASCII-based TeamSpeak 3 viewers.
@@ -43,11 +46,11 @@ class Text implements IViewer
     /**
      * Returns the code needed to display a node in a TeamSpeak 3 viewer.
      *
-     * @param  TeamSpeak3_Node_Abstract $node
+     * @param  AbstractNode $node
      * @param  array $siblings
-     * @return string
+     * @return StringHelper
      */
-    public function fetchObject(TeamSpeak3_Node_Abstract $node, array $siblings = array())
+    public function fetchObject(AbstractNode $node, array $siblings = array())
     {
         $this->currObj = $node;
         $this->currSib = $siblings;
@@ -58,7 +61,7 @@ class Text implements IViewer
             $this->getCorpusName(),
         );
 
-        return TeamSpeak3_Helper_String::factory($this->pattern)->arg($args);
+        return StringHelper::factory($this->pattern)->arg($args);
     }
 
     /**
@@ -85,7 +88,7 @@ class Text implements IViewer
 
     /**
      * Returns an ASCII string which can be used to display the status icon for a
-     * TeamSpeak_Node_Abstract object.
+     * AbstractNode object.
      *
      * @return string
      */
@@ -96,7 +99,7 @@ class Text implements IViewer
 
     /**
      * Returns a string for the current corpus element which contains the display name
-     * for the current TeamSpeak_Node_Abstract object.
+     * for the current AbstractNode object.
      *
      * @return string
      */

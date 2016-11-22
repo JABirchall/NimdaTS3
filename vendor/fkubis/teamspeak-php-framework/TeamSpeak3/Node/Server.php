@@ -28,8 +28,8 @@
 namespace TeamSpeak3\Node;
 
 use TeamSpeak3\Adapter\ServerQuery\Reply;
-use TeamSpeak3\Helper\StringHelper;
 use TeamSpeak3\Helper\Signal;
+use TeamSpeak3\Helper\StringHelper;
 use TeamSpeak3\TeamSpeak3;
 use TeamSpeak3\Ts3Exception;
 

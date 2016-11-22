@@ -56,7 +56,6 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      * The String constructor.
      *
      * @param  string $string
-     * @return \Teamspeak3\Helper\StringHelper
      */
     public function __construct($string)
     {
@@ -67,7 +66,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      * Returns a String object for thegiven string.
      *
      * @param  string $string
-     * @return String
+     * @return StringHelper
      */
     public static function factory($string)
     {
@@ -80,7 +79,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      * @param  string $search
      * @param  string $replace
      * @param  boolean $caseSensitivity
-     * @return String
+     * @return StringHelper
      */
     public function replace($search, $replace, $caseSensitivity = true)
     {
@@ -98,7 +97,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      *
      * @param  array $args
      * @param  string $char
-     * @return String
+     * @return StringHelper
      */
     public function arg(array $args, $char = "%")
     {
@@ -161,7 +160,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
     /**
      * Returns the lowercased string.
      *
-     * @return String
+     * @return StringHelper
      */
     public function toLower()
     {
@@ -171,7 +170,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
     /**
      * Returns the uppercased string.
      *
-     * @return String
+     * @return StringHelper
      */
     public function toUpper()
     {
@@ -203,7 +202,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      *
      * @param  integer $start
      * @param  integer $length
-     * @return String
+     * @return StringHelper
      */
     public function substr($start, $length = null)
     {
@@ -234,7 +233,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      * Appends $part to the string.
      *
      * @param  string $part
-     * @return String
+     * @return StringHelper
      */
     public function append($part)
     {
@@ -247,7 +246,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      * Prepends $part to the string.
      *
      * @param  string $part
-     * @return String
+     * @return StringHelper
      */
     public function prepend($part)
     {
@@ -262,7 +261,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      * @param  string $separator
      * @param  integer $first
      * @param  integer $last
-     * @return String
+     * @return StringHelper
      */
     public function section($separator, $first = 0, $last = 0)
     {
@@ -295,7 +294,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      *
      * @param  integer $size
      * @param  string $char
-     * @return String
+     * @return StringHelper
      */
     public function resize($size, $char = "\0")
     {
@@ -313,7 +312,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
     /**
      * Strips whitespaces (or other characters) from the beginning and end of the string.
      *
-     * @return String
+     * @return StringHelper
      */
     public function trim()
     {
@@ -325,7 +324,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
     /**
      * Escapes a string using the TeamSpeak 3 escape patterns.
      *
-     * @return String
+     * @return StringHelper
      */
     public function escape()
     {
@@ -339,7 +338,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
     /**
      * Unescapes a string using the TeamSpeak 3 escape patterns.
      *
-     * @return String
+     * @return StringHelper
      */
     public function unescape()
     {
@@ -351,7 +350,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
     /**
      * Removes any non alphanumeric characters from the string.
      *
-     * @return String
+     * @return StringHelper
      */
     public function filterAlnum()
     {
@@ -363,7 +362,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
     /**
      * Removes any non alphabetic characters from the string.
      *
-     * @return String
+     * @return StringHelper
      */
     public function filterAlpha()
     {
@@ -375,7 +374,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
     /**
      * Removes any non numeric characters from the string.
      *
-     * @return String
+     * @return StringHelper
      */
     public function filterDigits()
     {
@@ -463,7 +462,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
     /**
      * Converts the string to UTF-8.
      *
-     * @return String
+     * @return StringHelper
      */
     public function toUtf8()
     {
@@ -488,7 +487,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      * Decodes the string with MIME base64 and returns the result as an String
      *
      * @param  string
-     * @return String
+     * @return StringHelper
      */
     public static function fromBase64($base64)
     {
@@ -516,7 +515,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      *
      * @param  string
      * @throws Ts3Exception
-     * @return String
+     * @return StringHelper
      */
     public static function fromHex($hex)
     {
@@ -536,7 +535,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
     /**
      * Returns the string transliterated from UTF-8 to Latin.
      *
-     * @return String
+     * @return StringHelper
      */
     public function transliterate()
     {
@@ -759,7 +758,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      * whitespaces are replaced by a pre-defined spacer and the string is lowercase.
      *
      * @param  string $spacer
-     * @return String
+     * @return StringHelper
      */
     public function uriSafe($spacer = "-")
     {
@@ -797,7 +796,7 @@ class StringHelper implements ArrayAccess, Iterator, Countable
      * @param  string $function
      * @param  array $args
      * @throws Ts3Exception
-     * @return String
+     * @return StringHelper
      */
     public function __call($function, $args)
     {

@@ -65,7 +65,7 @@ class TCP extends AbstractTransport
         }
 
         @stream_set_timeout($this->stream, $timeout);
-        @stream_set_blocking($this->stream, $this->config["blocking"] ? true : false);
+        @stream_set_blocking($this->stream, $this->config["blocking"] ? 1 : 0);
     }
 
     /**
@@ -89,7 +89,7 @@ class TCP extends AbstractTransport
      *
      * @param  integer $length
      * @throws Ts3Exception
-     * @return String
+     * @return StringHelper
      */
     public function read($length = 4096)
     {
@@ -97,7 +97,6 @@ class TCP extends AbstractTransport
         $this->waitForReadyRead();
 
         $data = @stream_get_contents($this->stream, $length);
-
 
         Signal::getInstance()->emit(strtolower($this->getAdapterType()) . "DataRead", $data);
 
@@ -115,7 +114,7 @@ class TCP extends AbstractTransport
      *
      * @param  string $token
      * @throws Ts3Exception
-     * @return String
+     * @return StringHelper
      */
     public function readLine($token = "\n")
     {
@@ -134,7 +133,9 @@ class TCP extends AbstractTransport
                 if ($line->count()) {
                     $line->append($token);
                 } else {
-                    throw new Ts3Exception("connection to server '" . $this->config["host"] . ":" . $this->config["port"] . "' lost");
+                    throw new Ts3Exception(
+                        "connection to server '" . $this->config["host"] . ":" . $this->config["port"] . "' lost"
+                    );
                 }
             } else {
                 $line->append($data);

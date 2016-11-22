@@ -62,7 +62,6 @@ class Servergroup extends AbstractNode
      * Renames the server group specified.
      *
      * @param  string $name
-     * @return void
      */
     public function rename($name)
     {
@@ -115,7 +114,6 @@ class Servergroup extends AbstractNode
      * @param  integer $permvalue
      * @param bool|int $permnegated
      * @param bool|int $permskip
-     * @return void
      */
     public function permAssign($permid, $permvalue, $permnegated = false, $permskip = false)
     {
@@ -137,7 +135,6 @@ class Servergroup extends AbstractNode
      * permissions can be removed at once.
      *
      * @param  integer $permid
-     * @return void
      */
     public function permRemove($permid)
     {
@@ -169,7 +166,6 @@ class Servergroup extends AbstractNode
      * added to default groups or template groups.
      *
      * @param  integer $cldbid
-     * @return void
      */
     public function clientAdd($cldbid)
     {
@@ -180,7 +176,6 @@ class Servergroup extends AbstractNode
      * Removes a client from the server group.
      *
      * @param  integer $cldbid
-     * @return void
      */
     public function clientDel($cldbid)
     {
@@ -202,7 +197,7 @@ class Servergroup extends AbstractNode
      *
      * @param  string $description
      * @param  string $customset
-     * @return String
+     * @return StringHelper
      */
     public function privilegeKeyCreate($description = null, $customset = null)
     {
@@ -243,12 +238,12 @@ class Servergroup extends AbstractNode
     /**
      * Downloads and returns the server groups icon file content.
      *
-     * @return String
+     * @return StringHelper
      */
     public function iconDownload()
     {
         if ($this->iconIsLocal("iconid") || $this["iconid"] == 0) {
-            return;
+            return null;
         }
 
         $download = $this->getParent()->transferInitDownload(rand(0x0000, 0xFFFF), 0, $this->iconGetName("iconid"));

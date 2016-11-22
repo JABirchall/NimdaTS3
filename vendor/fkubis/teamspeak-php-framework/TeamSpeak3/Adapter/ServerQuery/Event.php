@@ -44,7 +44,7 @@ class Event implements ArrayAccess
     /**
      * Stores the event type.
      *
-     * @var String
+     * @var StringHelper
      */
     protected $type = null;
 
@@ -58,14 +58,14 @@ class Event implements ArrayAccess
     /**
      * Stores the event data as an unparsed string.
      *
-     * @var String
+     * @var StringHelper
      */
     protected $mesg = null;
 
     /**
      * Creates a new Event object.
      *
-     * @param  String $evt
+     * @param  StringHelper $evt
      * @param  Host $con
      * @throws Ts3Exception
      * @return Event
@@ -98,7 +98,7 @@ class Event implements ArrayAccess
     /**
      * Returns the event type string.
      *
-     * @return String
+     * @return StringHelper
      */
     public function getType()
     {
@@ -118,7 +118,7 @@ class Event implements ArrayAccess
     /**
      * Returns the event data as an unparsed string.
      *
-     * @return String
+     * @return StringHelper
      */
     public function getMessage()
     {

@@ -27,6 +27,16 @@
 
 namespace TeamSpeak3\Viewer;
 
+use TeamSpeak3\TeamSpeak3;
+use TeamSpeak3\Helper\StringHelper;
+use TeamSpeak3\Helper\Convert;
+use TeamSpeak3\Node\AbstractNode;
+use TeamSpeak3\Node\Server;
+use TeamSpeak3\Node\Servergroup;
+use TeamSpeak3\Node\Channel;
+use TeamSpeak3\Node\Channelgroup;
+use TeamSpeak3\Node\Client;
+
 /**
  * @class Html
  * @brief Renders nodes used in HTML-based TeamSpeak 3 viewers.
@@ -120,11 +130,11 @@ class Html implements IViewer
     /**
      * Returns the code needed to display a node in a TeamSpeak 3 viewer.
      *
-     * @param  TeamSpeak3_Node_Abstract $node
+     * @param  AbstractNode $node
      * @param  array $siblings
-     * @return string
+     * @return StringHelper
      */
-    public function fetchObject(TeamSpeak3_Node_Abstract $node, array $siblings = array())
+    public function fetchObject(AbstractNode $node, array $siblings = array())
     {
         $this->currObj = $node;
         $this->currSib = $siblings;
@@ -145,7 +155,7 @@ class Html implements IViewer
             $this->getSuffixFlag(),
         );
 
-        return TeamSpeak3_Helper_String::factory($this->pattern)->arg($args);
+        return StringHelper::factory($this->pattern)->arg($args);
     }
 
     /**
@@ -236,7 +246,7 @@ class Html implements IViewer
     {
         $extras = "";
 
-        if ($this->currObj instanceof TeamSpeak3_Node_Channel && $this->currObj->isSpacer()) {
+        if ($this->currObj instanceof Channel && $this->currObj->isSpacer()) {
             switch ($this->currObj->spacerGetType()) {
                 case (string)TeamSpeak3::SPACER_SOLIDLINE:
                     $extras .= " solidline";
@@ -285,24 +295,25 @@ class Html implements IViewer
      */
     protected function getCorpusTitle()
     {
-        if ($this->currObj instanceof TeamSpeak3_Node_Server) {
+        if ($this->currObj instanceof Server) {
             return "ID: " . $this->currObj->getId() . " | Clients: " . $this->currObj->clientCount(
-            ) . "/" . $this->currObj["virtualserver_maxclients"] . " | Uptime: " . TeamSpeak3_Helper_Convert::seconds(
+            ) . "/" . $this->currObj["virtualserver_maxclients"] . " | Uptime: " . Convert::seconds(
                 $this->currObj["virtualserver_uptime"]
             );
-        } elseif ($this->currObj instanceof TeamSpeak3_Node_Channel && !$this->currObj->isSpacer()) {
-            return "ID: " . $this->currObj->getId() . " | Codec: " . TeamSpeak3_Helper_Convert::codec(
+        } elseif ($this->currObj instanceof Channel && !$this->currObj->isSpacer()) {
+            return "ID: " . $this->currObj->getId() . " | Codec: " . Convert::codec(
                 $this->currObj["channel_codec"]
             ) . " | Quality: " . $this->currObj["channel_codec_quality"];
-        } elseif ($this->currObj instanceof TeamSpeak3_Node_Client) {
-            return "ID: " . $this->currObj->getId() . " | Version: " . TeamSpeak3_Helper_Convert::versionShort(
+        } elseif ($this->currObj instanceof Client) {
+            return "ID: " . $this->currObj->getId() . " | Version: " . Convert::versionShort(
                 $this->currObj["client_version"]
             ) . " | Platform: " . $this->currObj["client_platform"];
-        } elseif ($this->currObj instanceof TeamSpeak3_Node_Servergroup || $this->currObj instanceof TeamSpeak3_Node_Channelgroup) {
-            return "ID: " . $this->currObj->getId() . " | Type: " . TeamSpeak3_Helper_Convert::groupType(
+        } elseif ($this->currObj instanceof Servergroup || $this->currObj instanceof Channelgroup) {
+            return "ID: " . $this->currObj->getId() . " | Type: " . Convert::groupType(
                 $this->currObj["type"]
             ) . " (" . ($this->currObj["savedb"] ? "Permanent" : "Temporary") . ")";
         }
+	    return "";
     }
 
     /**
@@ -313,8 +324,8 @@ class Html implements IViewer
      */
     protected function getCorpusIcon()
     {
-        if ($this->currObj instanceof TeamSpeak3_Node_Channel && $this->currObj->isSpacer()) {
-            return;
+        if ($this->currObj instanceof Channel && $this->currObj->isSpacer()) {
+            return "";
         }
 
         return $this->getImage($this->currObj->getIcon() . ".png");
@@ -328,9 +339,9 @@ class Html implements IViewer
      */
     protected function getCorpusName()
     {
-        if ($this->currObj instanceof TeamSpeak3_Node_Channel && $this->currObj->isSpacer()) {
+        if ($this->currObj instanceof Channel && $this->currObj->isSpacer()) {
             if ($this->currObj->spacerGetType() != TeamSpeak3::SPACER_CUSTOM) {
-                return;
+                return "";
             }
 
             $string = $this->currObj["channel_name"]->section("]", 1, 99);
@@ -342,11 +353,14 @@ class Html implements IViewer
             return htmlspecialchars($string);
         }
 
-        if ($this->currObj instanceof TeamSpeak3_Node_Client) {
+        if ($this->currObj instanceof Client) {
             $before = array();
             $behind = array();
 
-            foreach ($this->currObj->memberOf() as $group) {
+	        /**
+	         * @var Channelgroup|Servergroup $group
+	         */
+	        foreach ($this->currObj->memberOf() as $group) {
                 if ($group->getProperty("namemode") == TeamSpeak3::GROUP_NAMEMODE_BEFORE) {
                     $before[] = "[" . htmlspecialchars($group["name"]) . "]";
                 } elseif ($group->getProperty("namemode") == TeamSpeak3::GROUP_NAMEMODE_BEHIND) {
@@ -379,13 +393,14 @@ class Html implements IViewer
      */
     protected function getSuffixIcon()
     {
-        if ($this->currObj instanceof TeamSpeak3_Node_Server) {
+        if ($this->currObj instanceof Server) {
             return $this->getSuffixIconServer();
-        } elseif ($this->currObj instanceof TeamSpeak3_Node_Channel) {
+        } elseif ($this->currObj instanceof Channel) {
             return $this->getSuffixIconChannel();
-        } elseif ($this->currObj instanceof TeamSpeak3_Node_Client) {
+        } elseif ($this->currObj instanceof Client) {
             return $this->getSuffixIconClient();
         }
+	    return "";
     }
 
     /**
@@ -420,7 +435,7 @@ class Html implements IViewer
 
                 if ($this->ftclient == "data:image") {
                     $html .= $this->getImage(
-                        "data:" . TeamSpeak3_Helper_Convert::imageMimeType($download) . ";base64," . base64_encode(
+                        "data:" . Convert::imageMimeType($download) . ";base64," . base64_encode(
                             $download
                         ),
                         "Server Icon",
@@ -454,7 +469,7 @@ class Html implements IViewer
      */
     protected function getSuffixIconChannel()
     {
-        if ($this->currObj instanceof TeamSpeak3_Node_Channel && $this->currObj->isSpacer()) {
+        if ($this->currObj instanceof Channel && $this->currObj->isSpacer()) {
             return;
         }
 
@@ -498,7 +513,7 @@ class Html implements IViewer
 
                 if ($this->ftclient == "data:image") {
                     $html .= $this->getImage(
-                        "data:" . TeamSpeak3_Helper_Convert::imageMimeType($download) . ";base64," . base64_encode(
+                        "data:" . Convert::imageMimeType($download) . ";base64," . base64_encode(
                             $download
                         ),
                         "Channel Icon",
@@ -555,7 +570,7 @@ class Html implements IViewer
                 continue;
             }
 
-            $type = ($group instanceof TeamSpeak3_Node_Servergroup) ? "Server Group" : "Channel Group";
+            $type = ($group instanceof Servergroup) ? "Server Group" : "Channel Group";
 
             if (!$group->iconIsLocal("iconid") && $this->ftclient) {
                 if (!isset($this->cacheIcon[$group["iconid"]])) {
@@ -578,7 +593,7 @@ class Html implements IViewer
 
                 if ($this->ftclient == "data:image") {
                     $html .= $this->getImage(
-                        "data:" . TeamSpeak3_Helper_Convert::imageMimeType($download) . ";base64," . base64_encode(
+                        "data:" . Convert::imageMimeType($download) . ";base64," . base64_encode(
                             $download
                         ),
                         $group . " [" . $type . "]",
@@ -620,7 +635,7 @@ class Html implements IViewer
 
                 if ($this->ftclient == "data:image") {
                     $html .= $this->getImage(
-                        "data:" . TeamSpeak3_Helper_Convert::imageMimeType($download) . ";base64," . base64_encode(
+                        "data:" . Convert::imageMimeType($download) . ";base64," . base64_encode(
                             $download
                         ),
                         "Client Icon",
@@ -651,8 +666,8 @@ class Html implements IViewer
      */
     protected function getSuffixFlag()
     {
-        if (!$this->currObj instanceof TeamSpeak3_Node_Client) {
-            return;
+        if (!$this->currObj instanceof Client) {
+            return "";
         }
 
         if ($this->flagpath && $this->currObj["client_country"]) {
@@ -664,6 +679,7 @@ class Html implements IViewer
                 true
             );
         }
+	    return "";
     }
 
     /**

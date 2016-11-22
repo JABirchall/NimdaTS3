@@ -506,7 +506,7 @@ class Host extends AbstractNode
                 ) && !isset($this->permissionList[$grantsid])
             ) {
                 $this->permissionList[$grantsid]["permid"] = $this->permissionList[$permname]["permgrant"];
-                $this->permissionList[$grantsid]["permname"] = TeamSpeak3_Helper_String::factory($grantsid);
+                $this->permissionList[$grantsid]["permname"] = StringHelper::factory($grantsid);
                 $this->permissionList[$grantsid]["permdesc"] = null;
                 $this->permissionList[$grantsid]["permcatid"] = 0xFF;
                 $this->permissionList[$grantsid]["permgrant"] = $this->permissionList[$permname]["permgrant"];
@@ -623,7 +623,7 @@ class Host extends AbstractNode
      *
      * @param  integer $permid
      * @throws Ts3Exception
-     * @return String
+     * @return StringHelper
      */
     public function permissionGetNameById($permid)
     {
