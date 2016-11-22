@@ -197,7 +197,7 @@ class TeamSpeak3Bot
 
     protected function subscribe()
     {
-        Signal::getInstance()->subscribe(strtolower(\TeamSpeak3\Adapter\ServerQuery::class)."WaitTimeout", [$this, "onTimeout"]);
+        Signal::getInstance()->subscribe("serverqueryWaitTimeout", [$this, "onTimeout"]);
         Signal::getInstance()->subscribe("serverqueryConnected", [$this, "onConnect"]);
         Signal::getInstance()->subscribe("notifyTextmessage", [$this, "onMessage"]);
         Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
