@@ -11,7 +11,7 @@ class TeamSpeak
 {
 
     public static $TS3config = [
-        'username' => '127.0.0.1',
+        'username' => 'serveradmin',
         'password' => 'password',
         'host' => '127.0.0.1',
         'port' => 10011,

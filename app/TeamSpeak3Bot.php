@@ -30,7 +30,7 @@ class TeamSpeak3Bot
     /**
      * @var string
      */
-    const NIMDA_VERSION = '0.11.4';
+    const NIMDA_VERSION = '0.12.0';
     const NIMDA_TYPE = '-alpha';
 
     /**
@@ -197,7 +197,7 @@ class TeamSpeak3Bot
 
     protected function subscribe()
     {
-        Signal::getInstance()->subscribe("serverqueryWaitTimeout", [$this, "onTimeout"]);
+        Signal::getInstance()->subscribe(strtolower(\TeamSpeak3\Adapter\ServerQuery::class)."WaitTimeout", [$this, "onTimeout"]);
         Signal::getInstance()->subscribe("serverqueryConnected", [$this, "onConnect"]);
         Signal::getInstance()->subscribe("notifyTextmessage", [$this, "onMessage"]);
         Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
@@ -291,7 +291,6 @@ class TeamSpeak3Bot
                 $table->increments('id');
                 $table->text('name');
                 $table->double('version');
-
                 $table->timestamps();
             });
 
@@ -455,9 +454,7 @@ class TeamSpeak3Bot
         }
 
         $this->lastEvent = $event->getMessage()->toString();
-
-        $this->node->clientListReset();
-        $this->node->channelListReset();
+        $this->updateList();
 
         foreach ($this->plugins as $name => $config) {
             if (!@$config->CONFIG['event']) {
@@ -477,16 +474,22 @@ class TeamSpeak3Bot
         }
     }
 
-    public function onTimeout($time, AbstractAdapter $adapter)
+    protected function updateList()
     {
-        if ($adapter->getQueryLastTimestamp() < $this->carbon->now()->subSeconds(120)) {
-            $adapter->request("clientupdate");
-        }
-
         $this->node->clientListReset();
         $this->node->channelListReset();
+    }
 
-        $this->printOutput("Nimda runtime: " . Convert::seconds($this->timer->getRuntime()) . ", Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
+    public function onTimeout($time, AbstractAdapter $adapter)
+    {
+        if ($adapter->getQueryLastTimestamp() < $this->carbon->now()->subSeconds(120)->timestamp) {
+            $adapter->request("clientupdate");
+            $this->updateList();
+        }
+
+        if(Self::$config['debug'] === true) {
+            $this->printOutput("Nimda runtime: " . Convert::seconds($this->timer->getRuntime()) . ", Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
+        }
     }
 
     public function onDisconnect()
@@ -503,4 +506,5 @@ class TeamSpeak3Bot
     {
         $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
     }
+
 }

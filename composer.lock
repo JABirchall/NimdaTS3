@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c0d9c660ea6e8dc85261bc7bf8c072bf",
-    "content-hash": "586c741052e059b07e281211fac3b822",
+    "hash": "7fbb9c1ba8bc00052963bb07b57d509f",
+    "content-hash": "c28930622164cdc8512ce9246812f2be",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -80,12 +80,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fkubis/teamspeak-php-framework.git",
-                "reference": "0854c46b93da76c329ec3f426aec1a038072377c"
+                "reference": "987819ed0f8b728126ce8cbcac7c0c1964a43bdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fkubis/teamspeak-php-framework/zipball/0854c46b93da76c329ec3f426aec1a038072377c",
-                "reference": "0854c46b93da76c329ec3f426aec1a038072377c",
+                "url": "https://api.github.com/repos/fkubis/teamspeak-php-framework/zipball/987819ed0f8b728126ce8cbcac7c0c1964a43bdf",
+                "reference": "987819ed0f8b728126ce8cbcac7c0c1964a43bdf",
                 "shasum": ""
             },
             "require": {
@@ -115,20 +115,20 @@
             "keywords": [
                 "teamspeak3"
             ],
-            "time": "2016-07-05 09:14:42"
+            "time": "2016-11-21 23:02:15"
         },
         {
             "name": "illuminate/container",
-            "version": "v5.2.37",
+            "version": "v5.2.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "7ec395833738b9059f829348ddc9a59d0118ac88"
+                "reference": "5139cebc8293b6820b91aef6f4b4e18bde33c9b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/7ec395833738b9059f829348ddc9a59d0118ac88",
-                "reference": "7ec395833738b9059f829348ddc9a59d0118ac88",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/5139cebc8293b6820b91aef6f4b4e18bde33c9b2",
+                "reference": "5139cebc8293b6820b91aef6f4b4e18bde33c9b2",
                 "shasum": ""
             },
             "require": {
@@ -153,25 +153,25 @@
             "authors": [
                 {
                     "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
+                    "email": "taylor@laravel.com"
                 }
             ],
             "description": "The Illuminate Container package.",
             "homepage": "http://laravel.com",
-            "time": "2016-05-29 02:18:23"
+            "time": "2016-08-01 13:49:14"
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.2.37",
+            "version": "v5.2.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "f4f44d7c6d20404da8dfc655bd3d6dd788dfdce5"
+                "reference": "22bde7b048a33c702d9737fc1446234fff9b1363"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/f4f44d7c6d20404da8dfc655bd3d6dd788dfdce5",
-                "reference": "f4f44d7c6d20404da8dfc655bd3d6dd788dfdce5",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/22bde7b048a33c702d9737fc1446234fff9b1363",
+                "reference": "22bde7b048a33c702d9737fc1446234fff9b1363",
                 "shasum": ""
             },
             "require": {
@@ -195,16 +195,16 @@
             "authors": [
                 {
                     "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
+                    "email": "taylor@laravel.com"
                 }
             ],
             "description": "The Illuminate Contracts package.",
             "homepage": "http://laravel.com",
-            "time": "2016-05-31 21:36:13"
+            "time": "2016-08-08 11:46:08"
         },
         {
             "name": "illuminate/database",
-            "version": " ",
+            "version": "v5.2.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
@@ -264,16 +264,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v5.2.37",
+            "version": "v5.2.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "6e86ac2b4e3d0c42c2dc846dbac3e74d378a812b"
+                "reference": "510230ab62a7d85dc70203f4fdca6fb71a19e08a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/6e86ac2b4e3d0c42c2dc846dbac3e74d378a812b",
-                "reference": "6e86ac2b4e3d0c42c2dc846dbac3e74d378a812b",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/510230ab62a7d85dc70203f4fdca6fb71a19e08a",
+                "reference": "510230ab62a7d85dc70203f4fdca6fb71a19e08a",
                 "shasum": ""
             },
             "require": {
@@ -282,6 +282,9 @@
                 "illuminate/contracts": "5.2.*",
                 "paragonie/random_compat": "~1.4",
                 "php": ">=5.5.9"
+            },
+            "replace": {
+                "tightenco/collect": "self.version"
             },
             "suggest": {
                 "illuminate/filesystem": "Required to use the composer class (5.2.*).",
@@ -311,12 +314,12 @@
             "authors": [
                 {
                     "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
+                    "email": "taylor@laravel.com"
                 }
             ],
             "description": "The Illuminate Support package.",
             "homepage": "http://laravel.com",
-            "time": "2016-05-30 02:40:53"
+            "time": "2016-08-05 14:49:58"
         },
         {
             "name": "nesbot/carbon",
@@ -415,16 +418,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "dff51f72b0706335131b00a7f49606168c582594"
+                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/dff51f72b0706335131b00a7f49606168c582594",
-                "reference": "dff51f72b0706335131b00a7f49606168c582594",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/e79d363049d1c2128f133a2667e4f4190904f7f4",
+                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4",
                 "shasum": ""
             },
             "require": {
@@ -436,7 +439,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev"
+                    "dev-master": "1.3-dev"
                 }
             },
             "autoload": {
@@ -470,20 +473,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/translation",
-            "version": "v3.1.3",
+            "version": "v3.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "7713ddf81518d0823b027fe74ec390b80f6b6536"
+                "reference": "2f4b6114b75c506dd1ee7eb485b35facbcb2d873"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/7713ddf81518d0823b027fe74ec390b80f6b6536",
-                "reference": "7713ddf81518d0823b027fe74ec390b80f6b6536",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/2f4b6114b75c506dd1ee7eb485b35facbcb2d873",
+                "reference": "2f4b6114b75c506dd1ee7eb485b35facbcb2d873",
                 "shasum": ""
             },
             "require": {
@@ -534,7 +537,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-26 08:04:17"
+            "time": "2016-11-18 21:15:08"
         }
     ],
     "packages-dev": [],
