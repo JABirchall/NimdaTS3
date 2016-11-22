@@ -145,7 +145,7 @@ abstract class AbstractTransport
      *
      * @param  integer $length
      * @throws Ts3Exception
-     * @return String
+     * @return StringHelper
      */
     abstract public function read($length = 4096);
 
@@ -214,7 +214,7 @@ abstract class AbstractTransport
         if ($this->adapter instanceof AbstractAdapter) {
             $string = StringHelper::factory(get_class($this->adapter));
 
-            return $string->substr($string->findLast("_"))->replace(array("_", " "), "")->toString();
+            return $string->substr($string->findLast("\\"))->replace(array("\\", " "), "")->toString();
         }
 
         return "Unknown";
