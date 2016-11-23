@@ -23,7 +23,7 @@ use TeamSpeak3\TeamSpeak3;
 
 class TeamSpeak3Adapater
 {
-    private $ts;
+    private $ts3;
     public __construct()
     {
         $this->ts3 = TeamSpeak3::factory("serverquery://username:password@127.0.0.1:10011/?server_port=9987");
