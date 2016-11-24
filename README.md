@@ -60,10 +60,6 @@ See also the list of [contributors](https://github.com/JABirchall/NimdaTS3/graph
 
 This project is licensed under GNU AGPLv3 License - see the [LICENSE](LICENSE) file for details
 
-## Known issues
-
-onWaitTimeout Event not firing, See: https://github.com/fkubis/teamspeak-php-framework/issues/8
-
 ## Acknowledgments
 
 * noother
