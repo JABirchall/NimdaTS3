@@ -6,20 +6,14 @@ use App\Plugin;
 use TeamSpeak3\TeamSpeak3;
 use TeamSpeak3\Ts3Exception;
 
-define('iOS','iOS');
-define('MacOS','OS X');
-define('Windows','Windows');
-define('Android','Android');
-define('Linux','Linux');
-
 class DisallowOS extends Plugin implements PluginContract
 {
     private $server;
 
     public function isTriggered()
     {
-        $this->disallowed = array(Android);
-
+        $this->disallowed = $this->CONFIG['disallowed'];
+        
         $this->server = $this->teamSpeak3Bot->node;
         try {
             $client = $this->server->clientGetById($this->info['clid']);

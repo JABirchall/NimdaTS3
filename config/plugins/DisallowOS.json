@@ -7,5 +7,10 @@
       "event"
   ],
   "event": "cliententerview",
-  "usage": "false"
+  "usage": "false",
+  "disallowed":[
+    "Android",
+    "OS X",
+    "iOS"
+  ]
 }
