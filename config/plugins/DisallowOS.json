@@ -1,0 +1,11 @@
+{
+  "name": "DisallowOS",
+  "author": "Nicer",
+  "description": "Disallow specific OS",
+  "version": "1.0",
+  "triggers": [
+      "event"
+  ],
+  "event": "cliententerview",
+  "usage": "false"
+}
