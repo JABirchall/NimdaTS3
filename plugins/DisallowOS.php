@@ -12,8 +12,6 @@ class DisallowOS extends Plugin implements PluginContract
 
     public function isTriggered()
     {
-        $this->disallowed = $this->CONFIG['disallowed'];
-
         $this->server = $this->teamSpeak3Bot->node;
         try {
             $client = $this->server->clientGetById($this->info['clid']);
@@ -22,7 +20,7 @@ class DisallowOS extends Plugin implements PluginContract
             return;
         }
 
-        if(in_array($this->server->clientGetById($this->info['clid'])['client_platform'],$this->disallowed)) {       
+        if(in_array($client['client_platform'],$this->CONFIG['disallowed'])) {
             $client->kick(TeamSpeak3::KICK_SERVER,"You are using disallowed OS!");
         }
     }
