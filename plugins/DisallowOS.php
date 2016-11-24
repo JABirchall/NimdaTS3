@@ -21,7 +21,7 @@ class DisallowOS extends Plugin implements PluginContract
         }
 
         if(in_array($client['client_platform'],$this->CONFIG['disallowed'])) {
-            $client->kick(TeamSpeak3::KICK_SERVER,"You are using disallowed OS!");
+            $client->kick(TeamSpeak3::KICK_SERVER,$this->CONFIG['msg']);
         }
     }
 }
