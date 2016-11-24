@@ -15,13 +15,12 @@ class DisallowOS extends Plugin implements PluginContract
         $this->server = $this->teamSpeak3Bot->node;
         try {
             $client = $this->server->clientGetById($this->info['clid']);
-            $clientInfo = $this->server->clientInfoDb($this->server->clientFindDb($client['client_nickname']));
         } catch(Ts3Exception $e) {
             return;
         }
 
-        if(in_array($client['client_platform'],$this->CONFIG['disallowed'])) {
-            $client->kick(TeamSpeak3::KICK_SERVER,$this->CONFIG['msg']);
+        if(in_array($client['client_platform'], $this->CONFIG['disallowed'])) {
+            $client->kick(TeamSpeak3::KICK_SERVER, $this->CONFIG['msg']);
         }
     }
 }
