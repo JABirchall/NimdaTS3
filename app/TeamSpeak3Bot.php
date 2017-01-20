@@ -425,9 +425,7 @@ class TeamSpeak3Bot
                 }
 
                 if ($event["msg"]->startsWith($trigger)) {
-                	if ($data['targetmode'] == "1" && !isset($config->CONFIG['uids'])) {
-                		break;
-                	} else if ($data['targetmode'] == "1" && !in_array($data['invokeruid'],$config->CONFIG['uids'])) {
+                    if ($data['targetmode'] == "1" && !in_array($data['invokeruid'], @$config->CONFIG['uids'])) {
                 		break;
                 	}
                     $info =  $data;
