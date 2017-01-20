@@ -6,5 +6,9 @@
   "triggers": [
     "!md5"
   ],
+  "uids": [
+      "MYUID",
+      "MY SECOND UID"
+  ],
   "usage": "Usage: !md5 [string]"
 }

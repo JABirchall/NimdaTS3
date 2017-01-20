@@ -209,7 +209,7 @@ class TeamSpeak3Bot
     {
         $this->node->notifyRegister("textserver");
         $this->node->notifyRegister("textchannel");
-        //$this->node->notifyRegister("textprivate");
+        $this->node->notifyRegister("textprivate");
         $this->node->notifyRegister("server");
         $this->node->notifyRegister("channel");
     }
@@ -425,6 +425,9 @@ class TeamSpeak3Bot
                 }
 
                 if ($event["msg"]->startsWith($trigger)) {
+                    if ($data['targetmode'] == "1" && !in_array($data['invokeruid'], @$config->CONFIG['uids'])) {
+                		break;
+                	}
                     $info =  $data;
 
                     $info['triggerUsed'] = $trigger;
