@@ -6,5 +6,6 @@
   "triggers": [
     "!md5"
   ],
+  "permissions":"everyone",
   "usage": "Usage: !md5 [string]"
 }

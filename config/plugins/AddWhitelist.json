@@ -6,6 +6,10 @@
   "triggers": [
     "!whitelist"
   ],
+  "permissions":"groups",
+  "groups":[
+  "10"
+  ],
   "table": "whitelists",
   "usage": "Usage: !whitelist [uid]"
 

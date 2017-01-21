@@ -7,5 +7,9 @@
     "!kick",
     "!k"
   ],
+  "permissions":"groups",
+  "groups":[
+  "10"
+  ],
   "usage": "Usage: !kick [user]"
 }
