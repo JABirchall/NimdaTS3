@@ -486,7 +486,9 @@ class TeamSpeak3Bot
                     break;
                 }
 
-                $client = $this->node->clientGetById($data['clid']);
+                if($config->CONFIG['event'] != "clientleftview") {
+                    $client = $this->node->clientGetById($data['clid']);
+                }
                 if(@$config->CONFIG['permissions'] == "groups") {
                     if(empty(@array_intersect_assoc(@$config->CONFIG['groups'], @array_keys($this->node->clientGetServerGroupsByDbid($client['client_database_id']))))) {
                         break;
