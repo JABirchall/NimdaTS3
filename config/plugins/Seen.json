@@ -6,5 +6,9 @@
   "triggers": [
     "!seen"
   ],
+  "permissions":"groups",
+  "groups":[
+  "10"
+  ],
   "usage": "Usage: !seen [user]"
 }

@@ -7,6 +7,10 @@
     "!jail",
     "!unjail"
   ],
+  "permissions":"groups",
+  "groups":[
+  "10"
+  ],
   "usage": "Usage !jail [user] !unjail [user]",
   "channel": 3
 }

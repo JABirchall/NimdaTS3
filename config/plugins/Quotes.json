@@ -7,6 +7,10 @@
     "!quote",
     "!q"
   ],
+  "permissions":"everyone",
+  "groups":[
+  "10"
+  ],
   "usage": "Usage: !quote [id],\n!quote add [user] [text],\n!quote find [text],\n!quote delete [id],",
   "table": "quotes"
 }
