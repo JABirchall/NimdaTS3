@@ -481,11 +481,21 @@ class TeamSpeak3Bot
 
                 if($config->CONFIG['event'] != "clientleftview") {
                     $client = $this->node->clientGetById($data['clid']);
+<<<<<<< HEAD
                     if(@$config->CONFIG['permissions'] == "groups") {
                         if(empty(@array_intersect_assoc($config->CONFIG['groups'], array_keys($this->node->clientGetServerGroupsByDbid($client['client_database_id']))))) {
                             break;
                         }
                     } else if (@$config->CONFIG['permissions'] != "everyone") {
+=======
+                }
+                if(@$config->CONFIG['permissions'] == "groups") {
+                    if(empty(@array_intersect_assoc(@$config->CONFIG['groups'], @array_keys($this->node->clientGetServerGroupsByDbid($client['client_database_id']))))) {
+                        break;
+                    }
+                } else if (@$config->CONFIG['permissions'] == "uids") {
+                    if(!in_array($client['client_unique_identifier'], @$config->CONFIG['uids'])) {
+>>>>>>> 774a10e2cd496b9a7ebcd74d0d4651c2986d2a38
                         break;
                     }              
                 } 
