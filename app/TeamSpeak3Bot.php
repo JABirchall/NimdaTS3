@@ -431,10 +431,10 @@ class TeamSpeak3Bot
                     if(@$config->CONFIG['permissions'] == "groups") {
                         $client = $this->node->clientGetByUid($data['invokeruid']);
                         if(empty(@array_intersect_assoc($config->CONFIG['groups'], array_keys($this->node->clientGetServerGroupsByDbid($client['client_database_id']))))) {
-                            break;
+                            continue;
                         }
                     } else if (@$config->CONFIG['permissions'] != "everyone") {
-                        break;
+                        continue;
                     }   
                     $info = $data;
 
@@ -483,10 +483,10 @@ class TeamSpeak3Bot
                     $client = $this->node->clientGetById($data['clid']);
                     if(@$config->CONFIG['permissions'] == "groups") {
                         if(empty(@array_intersect_assoc($config->CONFIG['groups'], array_keys($this->node->clientGetServerGroupsByDbid($client['client_database_id']))))) {
-                            break;
+                            continue;
                         }
                     } else if (@$config->CONFIG['permissions'] != "everyone") {
-                        break;
+                        continue;
                     }              
                 } 
                 $this->plugins[$name]->info = $data;
