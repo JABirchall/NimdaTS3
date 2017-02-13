@@ -414,6 +414,7 @@ class TeamSpeak3Bot
     public function onMessage(Event $event)
     {
         $data = $event->getData();
+        $mode = $this->parseMessageMode(@$data['targetmode']);
         if (@$data['invokername'] == $this->name || @$data['invokeruid'] == 'serveradmin') {
             return;
         }
@@ -435,7 +436,13 @@ class TeamSpeak3Bot
                         }
                     } else if (@$config->CONFIG['permissions'] != "everyone") {
                         continue;
-                    }   
+                    }
+
+                    if (@is_array($config->CONFIG['limitation']) && $mode != null) {
+                        if(@!in_array($mode, $config->CONFIG['limitation'])) {
+                            continue;
+                        }
+                    }
                     $info = $data;
 
                     $info['triggerUsed'] = $trigger;
@@ -528,6 +535,24 @@ class TeamSpeak3Bot
     public function onException(Ts3Exception $e)
     {
         $this->printOutput("Error {$e->getCode()}: {$e->getMessage()}");
+    }
+
+    public function parseMessageMode($input)
+    {
+        switch($input) {
+            case 1:
+                return "private";
+                break;
+            case 2:
+                return "channel";
+                break;
+            case 3:
+                return "server";
+                break;
+            default:
+                return null;
+                break;
+        }
     }
 
 }
