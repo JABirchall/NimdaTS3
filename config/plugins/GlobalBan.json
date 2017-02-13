@@ -7,6 +7,10 @@
     "!gban",
     "!globalban"
   ],
+  "permissions":"groups",
+  "groups":[
+  "10"
+  ],
   "usage": "Usage !gban [user] [reason]",
   "key": ""
 }

@@ -209,7 +209,7 @@ class TeamSpeak3Bot
     {
         $this->node->notifyRegister("textserver");
         $this->node->notifyRegister("textchannel");
-        //$this->node->notifyRegister("textprivate");
+        $this->node->notifyRegister("textprivate");
         $this->node->notifyRegister("server");
         $this->node->notifyRegister("channel");
     }
@@ -335,13 +335,16 @@ class TeamSpeak3Bot
 
             return false;
         } elseif (!isset($config['name'])) {
-            $this->printOutput("Plugin with config file {$configFile} has not been loaded because it has no name.") ;
+            $this->printOutput("Plugin with config file {$configFile} has not been loaded because it has no name.");
+
+            return false;
+        } elseif (@!in_array($config['permissions'], array("groups", "everyone")) || (@$config['permissions'] == "groups" && !isset($config['groups']))) {
+            $this->printOutput("Plugin with config file {$configFile} has not been loaded because its permissions aren't set correctly.");
 
             return false;
         }
 
-
-        $this->printOutput(sprintf("%- 80s %s", "Loading plugin [{$config['name']}] by {$config['author']} ", "::"), false, false);
+        $this->printOutput(sprintf("%- 80s %s", "Loading plugin [{$config['name']}] by {$config['author']} | Permissions: {$config['permissions']}", "::"), false, false);
 
         $config['class'] = \Plugin::class . '\\' . $config['name'];
 
@@ -425,7 +428,15 @@ class TeamSpeak3Bot
                 }
 
                 if ($event["msg"]->startsWith($trigger)) {
-                    $info =  $data;
+                    if(@$config->CONFIG['permissions'] == "groups") {
+                        $client = $this->node->clientGetByUid($data['invokeruid']);
+                        if(empty(@array_intersect_assoc($config->CONFIG['groups'], array_keys($this->node->clientGetServerGroupsByDbid($client['client_database_id']))))) {
+                            continue;
+                        }
+                    } else if (@$config->CONFIG['permissions'] != "everyone") {
+                        continue;
+                    }   
+                    $info = $data;
 
                     $info['triggerUsed'] = $trigger;
                     $text = $event["msg"]->substr(strlen($trigger) + 1);
@@ -468,6 +479,16 @@ class TeamSpeak3Bot
                     break;
                 }
 
+                if($config->CONFIG['event'] != "clientleftview") {
+                    $client = $this->node->clientGetById($data['clid']);
+                    if(@$config->CONFIG['permissions'] == "groups") {
+                        if(empty(@array_intersect_assoc($config->CONFIG['groups'], array_keys($this->node->clientGetServerGroupsByDbid($client['client_database_id']))))) {
+                            continue;
+                        }
+                    } else if (@$config->CONFIG['permissions'] != "everyone") {
+                        continue;
+                    }              
+                } 
                 $this->plugins[$name]->info = $data;
 
                 $this->plugins[$name]->trigger();
