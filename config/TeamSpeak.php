@@ -19,9 +19,9 @@ class TeamSpeak
         'serverPort' => 9987,
         'timeout' => 1,
         'misc' => [
-            'debug' => true,
+            'debug' => false,
             'newLineNewMessage' => false,
-            'ignoreWarnings' => true
+            'ignoreWarnings' => false
         ]
     ];
 
