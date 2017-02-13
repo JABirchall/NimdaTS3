@@ -10,5 +10,8 @@
   "groups":[
   "10"
   ],
+  "limitation":[
+  "private"
+  ],
   "usage": "Usage: !seen [user]"
 }
