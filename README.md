@@ -65,3 +65,4 @@ This project is licensed under GNU AGPLv3 License - see the [LICENSE](LICENSE) f
 
 * noother
 * MAJID
+* [Najsr](https://github.com/Najsr)
