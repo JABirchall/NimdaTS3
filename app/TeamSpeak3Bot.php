@@ -137,7 +137,7 @@ class TeamSpeak3Bot
         $this->carbon = new Carbon;
 
        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getuid() === 0 && !Self::$config['ignoreWarnings']) {
-           $this->printOutput("[WARNING] Running Nimda as root is bad!");
+           $this->printOutput("[WARNING] Running Nimda as root is dangerous!");
            $this->printOutput("Start anyway? Y/N:", false);
            $response = rtrim(fgets(STDIN));
            if (strcasecmp($response,'y')) {
@@ -147,7 +147,7 @@ class TeamSpeak3Bot
        }
 
        if($username === "serveradmin" && !Self::$config['ignoreWarnings']) {
-           $this->printOutput("[WARNING] Running Nimda logged in as serveradmin is bad!");
+           $this->printOutput("[WARNING] Running Nimda logged in as serveradmin is dangerous!");
            $this->printOutput("Start anyway? Y/N:", false);
            $response = rtrim(fgets(STDIN));
            if (strcasecmp($response,'y') ) {
