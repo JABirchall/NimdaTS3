@@ -99,10 +99,6 @@ class Plugin
                     $this->version = $value;
                     break;
 
-                case "level":
-                    $this->level = $value;
-                    break;
-
                 case "triggers":
                     $this->triggers = $this->sortByLengthDESC($value);
                     //$this->originalTriggers = $this->triggers;

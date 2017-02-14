@@ -1,0 +1,11 @@
+{
+  "name": "Announcement",
+  "author": "JABirchall",
+  "description": "Sends a servera announcement after X time has past",
+  "version": "1.0",
+  "interval": {
+    "hours": 1,
+    "minutes": 0,
+    "seconds": 0
+  }
+}
