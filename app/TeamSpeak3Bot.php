@@ -74,6 +74,8 @@ class TeamSpeak3Bot
      */
     private $plugins;
 
+    private $timers;
+
     public static $config;
 
     private $timer;
@@ -320,6 +322,13 @@ class TeamSpeak3Bot
         }
     }
 
+    private function initializeTimers()
+    {
+        foreach (glob('./config/timers/*.json') as $file) {
+            $this->loadTimer($file);
+        }
+    }
+
     /**
      * @param $configFile
      *
@@ -378,6 +387,41 @@ class TeamSpeak3Bot
                 $plugin->update(['version' => $config['version']]);
             }
         }
+
+        $this->printOutput("Success.");
+
+        return true;
+    }
+
+    private function loadTimer($configFile)
+    {
+        $config = $this->parseConfigFile($configFile);
+        $config['configFile'] = $configFile;
+
+        if (!$config) {
+            $this->printOutput("Timer with config file {$configFile} has not been loaded because it doesn't exist.");
+            return false;
+        } elseif (!isset($config['name'])) {
+            $this->printOutput("Timer with config file {$configFile} has not been loaded because it has no name.");
+
+            return false;
+        }
+
+        $this->printOutput(sprintf("%- 80s %s", "Loading Timer [{$config['name']}] by {$config['author']} ", "::"), false, false);
+
+        $config['class'] = \Timer::class . '\\' . $config['name'];
+
+        if (!class_exists($config['class'])) {
+            $this->printOutput("Loading failed because class {$config['class']} doesn't exist.");
+
+            return false;
+        } elseif (!is_a($config['class'], \Timer\TimerContract::class, true)) {
+            $this->printOutput("Loading failed because class {$config['class']} does not implement [TimerContract].");
+
+            return false;
+        }
+
+        $this->plugins[$config['name']] = new $config['class']($config, $this);
 
         $this->printOutput("Success.");
 
