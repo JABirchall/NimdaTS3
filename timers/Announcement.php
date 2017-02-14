@@ -8,14 +8,12 @@
 
 namespace Timer;
 
-
 use App\Timer;
-
 
 class Announcement extends Timer implements TimerContract
 {
     public function isTriggered()
     {
-        $this->teamSpeak3Bot->node->message($this->CONFIG['message']);
+        $this->teamSpeak3Bot->node->message('Current Server time is '.$this->time->now()->toTimeString());
     }
 }
