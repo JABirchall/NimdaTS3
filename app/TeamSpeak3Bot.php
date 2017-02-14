@@ -338,13 +338,17 @@ class TeamSpeak3Bot
             $this->printOutput("Plugin with config file {$configFile} has not been loaded because it has no name.");
 
             return false;
-        } elseif (@!in_array($config['permissions'], array("groups", "everyone")) || (@$config['permissions'] == "groups" && !isset($config['groups']))) {
+        } elseif (@!$config['event'] && @!in_array($config['permissions'], array("groups", "everyone")) || (@$config['permissions'] == "groups" && @empty($config['groups']))) {
             $this->printOutput("Plugin with config file {$configFile} has not been loaded because its permissions aren't set correctly.");
 
             return false;
         }
 
-        $this->printOutput(sprintf("%- 80s %s", "Loading plugin [{$config['name']}] by {$config['author']} | Permissions: {$config['permissions']}", "::"), false, false);
+        if(@!$config['event']) {
+            $this->printOutput(sprintf("%- 80s %s", "Loading plugin [{$config['name']}] by {$config['author']} | Permissions: {$config['permissions']}", "::"), false, false);
+        } else {
+            $this->printOutput(sprintf("%- 80s %s", "Loading plugin [{$config['name']}] by {$config['author']}", "::"), false, false);
+        }
 
         $config['class'] = \Plugin::class . '\\' . $config['name'];
 
@@ -486,16 +490,6 @@ class TeamSpeak3Bot
                     break;
                 }
 
-                if($config->CONFIG['event'] != "clientleftview") {
-                    $client = $this->node->clientGetById($data['clid']);
-                    if(@$config->CONFIG['permissions'] == "groups") {
-                        if(empty(@array_intersect_assoc($config->CONFIG['groups'], array_keys($this->node->clientGetServerGroupsByDbid($client['client_database_id']))))) {
-                            continue;
-                        }
-                    } else if (@$config->CONFIG['permissions'] != "everyone") {
-                        continue;
-                    }              
-                } 
                 $this->plugins[$name]->info = $data;
 
                 $this->plugins[$name]->trigger();
