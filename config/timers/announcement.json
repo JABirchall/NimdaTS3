@@ -4,8 +4,10 @@
   "description": "Sends a servera announcement after X time has past",
   "version": "1.0",
   "interval": {
-    "hours": 1,
+    "hours": 0,
     "minutes": 0,
-    "seconds": 0
-  }
+    "seconds": 1
+  },
+
+  "message": "Test"
 }

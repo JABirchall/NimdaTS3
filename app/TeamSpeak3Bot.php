@@ -422,7 +422,7 @@ class TeamSpeak3Bot
             return false;
         }
 
-        $this->plugins[$config['name']] = new $config['class']($config, $this);
+        $this->timers[$config['name']] = new $config['class']($config, $this);
 
         $this->printOutput("Success.");
 
@@ -560,6 +560,9 @@ class TeamSpeak3Bot
         if ($adapter->getQueryLastTimestamp() < $this->carbon->now()->subSeconds(120)->timestamp) {
             $adapter->request("clientupdate");
             $this->updateList();
+        }
+        foreach($this->timers as $timer){
+            $timer->handle();
         }
 
         if(Self::$config['debug'] === true) {

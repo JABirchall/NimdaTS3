@@ -14,7 +14,7 @@ use \Carbon\Carbon;
 class Timer
 {
     protected $time;
-    protected $teamSpeak3Bot;
+    public $teamSpeak3Bot;
 
     public function __construct($config, $teamSpeak3Bot)
     {
@@ -67,6 +67,7 @@ class Timer
 
     public function handle()
     {
+        $this->isTriggered();
 
     }
 

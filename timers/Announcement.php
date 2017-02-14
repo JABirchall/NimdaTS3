@@ -11,10 +11,11 @@ namespace Timer;
 
 use App\Timer;
 
+
 class Announcement extends Timer implements TimerContract
 {
     public function isTriggered()
     {
-        // TODO: Implement isTriggered() method.
+        $this->teamSpeak3Bot->node->message($this->CONFIG['message']);
     }
 }
