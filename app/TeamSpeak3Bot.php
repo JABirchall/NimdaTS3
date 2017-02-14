@@ -188,6 +188,7 @@ class TeamSpeak3Bot
         $this->database = new Database;
         $this->setup();
         $this->initializePlugins();
+        $this->initializeTimers();
         $this->register();
         $this->timer->stop();
 

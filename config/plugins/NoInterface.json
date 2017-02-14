@@ -1,6 +1,0 @@
-{
-  "name": "NoInterface",
-  "author": "JABirchall",
-  "description": "This class doesn't implement PluginInterface",
-  "version": "1.0"
-}
