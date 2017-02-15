@@ -9,7 +9,7 @@ To install this bot all you need to do is download or clone the repository to yo
 First run the command to setup the autoloader
 
 ```
-php composer.phar dump-autoload
+php composer.phar dump-autoload -o
 ```
 
 Edit the Teamspeak and database configs in side the config folder then launch the bot with

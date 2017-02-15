@@ -74,6 +74,8 @@ class TeamSpeak3Bot
      */
     private $plugins;
 
+    private $timers;
+
     public static $config;
 
     private $timer;
@@ -137,7 +139,7 @@ class TeamSpeak3Bot
         $this->carbon = new Carbon;
 
        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' && posix_getuid() === 0 && !Self::$config['ignoreWarnings']) {
-           $this->printOutput("[WARNING] Running Nimda as root is bad!");
+           $this->printOutput("[WARNING] Running Nimda as root is dangerous!");
            $this->printOutput("Start anyway? Y/N:", false);
            $response = rtrim(fgets(STDIN));
            if (strcasecmp($response,'y')) {
@@ -147,7 +149,7 @@ class TeamSpeak3Bot
        }
 
        if($username === "serveradmin" && !Self::$config['ignoreWarnings']) {
-           $this->printOutput("[WARNING] Running Nimda logged in as serveradmin is bad!");
+           $this->printOutput("[WARNING] Running Nimda logged in as serveradmin is dangerous!");
            $this->printOutput("Start anyway? Y/N:", false);
            $response = rtrim(fgets(STDIN));
            if (strcasecmp($response,'y') ) {
@@ -186,6 +188,7 @@ class TeamSpeak3Bot
         $this->database = new Database;
         $this->setup();
         $this->initializePlugins();
+        $this->initializeTimers();
         $this->register();
         $this->timer->stop();
 
@@ -320,6 +323,13 @@ class TeamSpeak3Bot
         }
     }
 
+    private function initializeTimers()
+    {
+        foreach (glob('./config/timers/*.json') as $file) {
+            $this->loadTimer($file);
+        }
+    }
+
     /**
      * @param $configFile
      *
@@ -382,6 +392,41 @@ class TeamSpeak3Bot
                 $plugin->update(['version' => $config['version']]);
             }
         }
+
+        $this->printOutput("Success.");
+
+        return true;
+    }
+
+    private function loadTimer($configFile)
+    {
+        $config = $this->parseConfigFile($configFile);
+        $config['configFile'] = $configFile;
+
+        if (!$config) {
+            $this->printOutput("Timer with config file {$configFile} has not been loaded because it doesn't exist.");
+            return false;
+        } elseif (!isset($config['name'])) {
+            $this->printOutput("Timer with config file {$configFile} has not been loaded because it has no name.");
+
+            return false;
+        }
+
+        $this->printOutput(sprintf("%- 80s %s", "Loading Timer [{$config['name']}] by {$config['author']} ", "::"), false, false);
+
+        $config['class'] = \Timer::class . '\\' . $config['name'];
+
+        if (!class_exists($config['class'])) {
+            $this->printOutput("Loading failed because class {$config['class']} doesn't exist.");
+
+            return false;
+        } elseif (!is_a($config['class'], \Timer\TimerContract::class, true)) {
+            $this->printOutput("Loading failed because class {$config['class']} does not implement [TimerContract].");
+
+            return false;
+        }
+
+        $this->timers[$config['name']] = new $config['class']($config, $this);
 
         $this->printOutput("Success.");
 
@@ -509,6 +554,9 @@ class TeamSpeak3Bot
         if ($adapter->getQueryLastTimestamp() < $this->carbon->now()->subSeconds(120)->timestamp) {
             $adapter->request("clientupdate");
             $this->updateList();
+        }
+        foreach($this->timers as $timer){
+            $timer->handle();
         }
 
         if(Self::$config['debug'] === true) {
