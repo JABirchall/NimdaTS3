@@ -13,8 +13,6 @@ use TeamSpeak3\Ts3Exception;
  */
 class Jail extends Plugin implements PluginContract
 {
-    private $server;
-
     public function isTriggered()
     {
         if (!isset($this->info['text'])) {
@@ -22,14 +20,13 @@ class Jail extends Plugin implements PluginContract
 
             return;
         }
-        $this->server = $this->teamSpeak3Bot->node;
 
         try {
-            $suspects = $this->server->clientFind($this->info['text']);
-            $jail = $this->server->channelGetById($this->CONFIG['channel']);
+            $suspects = $this->teamSpeak3Bot->node->clientFind($this->info['text']);
+            $jail = $this->teamSpeak3Bot->node->channelGetById($this->CONFIG['channel']);
 
             foreach ($suspects as $suspect) {
-                $suspect = $this->server->clientGetById($suspect["clid"]);
+                $suspect = $this->teamSpeak3Bot->node->clientGetById($suspect["clid"]);
                 $suspect->move($jail);
                 $suspect->poke("[COLOR=red][b] You have been put in jail by {$this->info['invokername']}");
                 $this->sendOutput("User %s was put in jail by %s", $suspect['client_nickname'], $this->info['invokername']);

@@ -17,15 +17,11 @@ use TeamSpeak3\Ts3Exception;
 class GlobalBanList extends Plugin implements PluginContract
 {
 
-    private $server;
-
     public function isTriggered()
     {
         if($this->CONFIG['enabled'] === false) {
             return;
         }
-
-        $this->server = $this->teamSpeak3Bot->node;
 
         $whitelisted = Whitelist::where('uid', $this->info['client_unique_identifier']->toString())->count();
         if($whitelisted >= 1) {
@@ -58,7 +54,7 @@ class GlobalBanList extends Plugin implements PluginContract
         }
 
         try {
-            $client = $this->server->clientGetByUid($this->info['client_unique_identifier']);
+            $client = $this->teamSpeak3Bot->node->clientGetByUid($this->info['client_unique_identifier']);
         }catch(Ts3Exception $e){
             return;
         }
@@ -75,7 +71,7 @@ class GlobalBanList extends Plugin implements PluginContract
 
         if($this->CONFIG['alert'] === true) {
             $message = sprintf("[ALERT] Client %s is global banned ID #%s reason: %s issued Global Ban from: %s\n", $client, $response->ban_id, $response->reason, $response->server_name);
-            array_walk(array_map([$this->server, 'serverGroupGetById'], $this->CONFIG['alert_groups']), function($admin) use ($message) {
+            array_walk(array_map([$this->teamSpeak3Bot->node, 'serverGroupGetById'], $this->CONFIG['alert_groups']), function($admin) use ($message) {
                 $admin->message($message);
             });
         }

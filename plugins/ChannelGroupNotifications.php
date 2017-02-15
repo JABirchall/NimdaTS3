@@ -8,17 +8,13 @@
 
 namespace Plugin;
 
-
 use App\Plugin;
 use TeamSpeak3\Ts3Exception;
 
 class ChannelGroupNotifications extends Plugin implements PluginContract
 {
-
-    private $server;
     private $notifyClient;
     private $channel;
-
 
     public function isTriggered()
     {
@@ -26,14 +22,13 @@ class ChannelGroupNotifications extends Plugin implements PluginContract
             return;
         }
 
-        $this->server = $this->teamSpeak3Bot->node;
-        $this->notifyClient = $this->server->clientGetById($this->info['clid']);
+        $this->notifyClient = $this->teamSpeak3Bot->node->clientGetById($this->info['clid']);
 
         if($this->notifyClient['client_type'] === 1) {
             return;
         }
 
-        $this->channel = $this->server->channelGetById($this->info['ctid']);
+        $this->channel = $this->teamSpeak3Bot->node->channelGetById($this->info['ctid']);
         foreach ($this->notifyClient->memberOf() as $group) {
             if ($group->getId() != $this->CONFIG['guestGroupId']) {
                 continue;
@@ -45,7 +40,7 @@ class ChannelGroupNotifications extends Plugin implements PluginContract
 
     protected function notify()
     {
-        foreach ($this->server->clientList() as $client) {
+        foreach ($this->teamSpeak3Bot->node->clientList() as $client) {
             if ($client["client_type"] == 1) {
                 continue;
             }

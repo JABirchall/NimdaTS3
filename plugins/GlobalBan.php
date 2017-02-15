@@ -13,9 +13,6 @@ use TeamSpeak3\Ts3Exception;
 
 class GlobalBan extends Plugin implements PluginContract
 {
-
-    public $server;
-
     public function isTriggered()
     {
         if (!isset($this->info['text'])) {
@@ -24,13 +21,11 @@ class GlobalBan extends Plugin implements PluginContract
             return;
         }
 
-        $this->server = $this->teamSpeak3Bot->node;
-
         list($name, $reason) = $this->info['text']->split(' ');
 
         try {
-            $client =  current($this->server->clientFind($name));
-            $client = $this->server->clientGetById($client['clid']);
+            $client =  current($this->teamSpeak3Bot->node->clientFind($name));
+            $client = $this->teamSpeak3Bot->node->clientGetById($client['clid']);
         }catch(Ts3Exception $e){
             $message = $e->getMessage();
             if ($message === "invalid clientID") {
@@ -49,9 +44,9 @@ class GlobalBan extends Plugin implements PluginContract
             'banned_by' => $this->info['invokername']->toString(),
             'banned_by_uid' => $this->info['invokeruid']->toString(),
             'reason' => $reason->toString(),
-            'server_name' => $this->server->toString(),
-            'server_uid' => $this->server['virtualserver_unique_identifier']->toString(),
-            'h' => hash_pbkdf2('sha1', sprintf("%s-%s-%s", $this->CONFIG['key'], $client['client_unique_identifier']->toString(),$this->info['invokeruid']),$this->server['virtualserver_unique_identifier']->toString(), 1, 8),
+            'server_name' => $this->teamSpeak3Bot->node->toString(),
+            'server_uid' => $this->teamSpeak3Bot->node['virtualserver_unique_identifier']->toString(),
+            'h' => hash_pbkdf2('sha1', sprintf("%s-%s-%s", $this->CONFIG['key'], $client['client_unique_identifier']->toString(),$this->info['invokeruid']),$this->teamSpeak3Bot->node['virtualserver_unique_identifier']->toString(), 1, 8),
 
         ];
 

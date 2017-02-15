@@ -9,7 +9,6 @@ use TeamSpeak3\Ts3Exception;
 class ClientInfo extends Plugin implements PluginContract
 {
 
-    private $server;
 
     /**
      * @return sendOutput
@@ -21,11 +20,10 @@ class ClientInfo extends Plugin implements PluginContract
 
             return;
         }
-        $this->server = $this->teamSpeak3Bot->node;
 
         try {
             $name = $this->info['text'];
-            $clientInfo = $this->server->clientInfoDb($this->server->clientFindDb($this->info['text']));
+            $clientInfo = $this->teamSpeak3Bot->node->clientInfoDb($this->teamSpeak3Bot->node->clientFindDb($this->info['text']));
 
             $this->sendOutput("[COLOR=blue][B]%s - Database ID: %s", $name, $clientInfo["client_database_id"]);
             $this->sendOutput("[COLOR=blue][B]%s - Unique ID: %s", $name, $clientInfo["client_unique_identifier"]);

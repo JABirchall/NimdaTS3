@@ -15,8 +15,6 @@ use App\Plugin;
 
 class AddWhitelist extends Plugin implements AdvancedPluginContract
 {
-    private $server;
-
     public function isTriggered()
     {
         if (!isset($this->info['text'])) {
@@ -24,7 +22,6 @@ class AddWhitelist extends Plugin implements AdvancedPluginContract
 
             return;
         }
-        $this->server = $this->teamSpeak3Bot->node;
 
         Whitelist::create([
             'uid' => $this->info['text'],

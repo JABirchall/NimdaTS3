@@ -16,11 +16,8 @@ use TeamSpeak3\Ts3Exception;
 class BadChannelName extends Plugin implements PluginContract
 {
 
-    private $server;
-
     public function isTriggered()
     {
-        $this->server = $this->teamSpeak3Bot->node;
 
         foreach($this->CONFIG['blacklist'] as $regex) {
             if(!$this->info['channel_name']->contains($regex, true)) {
@@ -34,8 +31,8 @@ class BadChannelName extends Plugin implements PluginContract
 
     private function handle()
     {
-        $channel = $this->server->channelGetById(@$this->info['ctid'] ? $this->info['ctid'] : $this->info['cid']);
-        $violator = $this->server->clientGetById($this->info['invokerid'] ? $this->info['invokerid'] : $this->info['clid']);
+        $channel = $this->teamSpeak3Bot->node->channelGetById(@$this->info['ctid'] ? $this->info['ctid'] : $this->info['cid']);
+        $violator = $this->teamSpeak3Bot->node->clientGetById($this->info['invokerid'] ? $this->info['invokerid'] : $this->info['clid']);
 
         try {
             $channel->delete(true);

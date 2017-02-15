@@ -14,7 +14,6 @@ use TeamSpeak3\Ts3Exception;
  */
 class Kick extends Plugin implements PluginContract
 {
-    private $server;
 
     public function isTriggered()
     {
@@ -23,9 +22,8 @@ class Kick extends Plugin implements PluginContract
 
             return;
         }
-        $this->server = $this->teamSpeak3Bot->node;
 
-        foreach ($this->server->clientList() as $client) {
+        foreach ($this->teamSpeak3Bot->node->clientList() as $client) {
             if (strcasecmp($client['client_nickname']->toString(), $this->info['text']) != 0) {
                 continue;
             }

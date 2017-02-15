@@ -14,8 +14,6 @@ use TeamSpeak3\Ts3Exception;
  */
 class Seen extends Plugin implements PluginContract
 {
-    private $server;
-
     public function isTriggered()
     {
         if (!isset($this->info['text'])) {
@@ -23,11 +21,10 @@ class Seen extends Plugin implements PluginContract
 
             return;
         }
-        $this->server = $this->teamSpeak3Bot->node;
 
         try {
             $name = $this->info['text'];
-            $seen = $this->server->clientInfoDb($this->server->clientFindDb($this->info['text']));
+            $seen = $this->teamSpeak3Bot->node->clientInfoDb($this->teamSpeak3Bot->node->clientFindDb($this->info['text']));
 
             $this->sendOutput("[COLOR=blue][B]User %s was last seen on %s", $name, Carbon::createFromTimestamp($seen["client_lastconnected"])->diffForHumans());
         } catch (Ts3Exception $e) {

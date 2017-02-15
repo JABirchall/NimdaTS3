@@ -8,14 +8,11 @@ use TeamSpeak3\Ts3Exception;
 
 class WelcomeMsg extends Plugin implements PluginContract
 {
-    private $server;
-
     public function isTriggered()
     {
-        $this->server = $this->teamSpeak3Bot->node;
         try {
-            $client = $this->server->clientGetById($this->info['clid']);
-            $clientInfo = $this->server->clientInfoDb($this->server->clientFindDb($client['client_nickname']));
+            $client = $this->teamSpeak3Bot->node->clientGetById($this->info['clid']);
+            $clientInfo = $this->teamSpeak3Bot->node->clientInfoDb($this->teamSpeak3Bot->node->clientFindDb($client['client_nickname']));
         } catch(Ts3Exception $e) {
             return;
         }
@@ -33,7 +30,6 @@ class WelcomeMsg extends Plugin implements PluginContract
         ];
 
         $msg = strtr($this->CONFIG['msg'], $format);
-
         $this->sendOutput($msg);
     }
 }
