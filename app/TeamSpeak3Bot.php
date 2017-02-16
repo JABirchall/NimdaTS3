@@ -134,7 +134,7 @@ class TeamSpeak3Bot
      * @param int $serverPort
      * @param int $timeout
      */
-    public function __construct($username, $password, $host = "127.0.0.1", $port = 10011, $name = "Nimda", $serverPort = 9987, $timeout = 10)
+    public function __construct($username, $password, $host = '127.0.0.1', $port = 10011, $name = 'Nimda', $serverPort = 9987, $timeout = 10)
     {
         $this->carbon = new Carbon;
 
@@ -148,12 +148,12 @@ class TeamSpeak3Bot
            }
        }
 
-       if($username === "serveradmin" && !Self::$config['ignoreWarnings']) {
+       if($username === 'serveradmin' && !Self::$config['ignoreWarnings']) {
            $this->printOutput("[WARNING] Running Nimda logged in as serveradmin is dangerous!");
            $this->printOutput("Start anyway? Y/N:", false);
            $response = rtrim(fgets(STDIN));
            if (strcasecmp($response,'y') ) {
-               $this->printOutput("Aborted.");
+               $this->printOutput('Aborted.');
                exit;
            }
        }
@@ -166,7 +166,7 @@ class TeamSpeak3Bot
         $this->serverPort = $serverPort;
         $this->timeout = $timeout;
 
-        $this->timer = new Timer("start_up");
+        $this->timer = new Timer('start_up');
     }
 
     /**
@@ -193,28 +193,28 @@ class TeamSpeak3Bot
         $this->timer->stop();
 
         $this->printOutput("Nimda version " . $this::NIMDA_VERSION . $this::NIMDA_TYPE . " Started in " . round($this->timer->getRuntime(), 3) . " seconds, Using " . Convert::bytes($this->timer->getMemUsage()) . " memory.");
-        $this->timer = new Timer("runTime");
+        $this->timer = new Timer('runTime');
         $this->timer->start();
         $this->wait();
     }
 
     protected function subscribe()
     {
-        Signal::getInstance()->subscribe("serverqueryWaitTimeout", [$this, "onTimeout"]);
-        Signal::getInstance()->subscribe("serverqueryConnected", [$this, "onConnect"]);
-        Signal::getInstance()->subscribe("notifyTextmessage", [$this, "onMessage"]);
-        Signal::getInstance()->subscribe("notifyEvent", [$this, "onEvent"]);
-        //Signal::getInstance()->subscribe("errorException", [$this, "onException"]);
-        Signal::getInstance()->subscribe("serverqueryDisconnected", [$this, "onDisconnect"]);
+        Signal::getInstance()->subscribe('serverqueryWaitTimeout', [$this, 'onTimeout']);
+        Signal::getInstance()->subscribe('serverqueryConnected', [$this, 'onConnect']);
+        Signal::getInstance()->subscribe('notifyTextmessage', [$this, 'onMessage']);
+        Signal::getInstance()->subscribe('notifyEvent', [$this, 'onEvent']);
+        //Signal::getInstance()->subscribe('errorException', [$this, 'onException']);
+        Signal::getInstance()->subscribe('serverqueryDisconnected', [$this, 'onDisconnect']);
     }
 
     protected function register()
     {
-        $this->node->notifyRegister("textserver");
-        $this->node->notifyRegister("textchannel");
-        $this->node->notifyRegister("textprivate");
-        $this->node->notifyRegister("server");
-        $this->node->notifyRegister("channel");
+        $this->node->notifyRegister('textserver');
+        $this->node->notifyRegister('textchannel');
+        $this->node->notifyRegister('textprivate');
+        $this->node->notifyRegister('server');
+        $this->node->notifyRegister('channel');
     }
 
     /**
@@ -348,7 +348,7 @@ class TeamSpeak3Bot
             $this->printOutput("Plugin with config file {$configFile} has not been loaded because it has no name.");
 
             return false;
-        } elseif (@!$config['event'] && @!in_array($config['permissions'], array("groups", "everyone")) || (@$config['permissions'] == "groups" && @empty($config['groups']))) {
+        } elseif (@!$config['event'] && @!in_array($config['permissions'], array('groups', 'everyone')) || (@$config['permissions'] == 'groups' && @empty($config['groups']))) {
             $this->printOutput("Plugin with config file {$configFile} has not been loaded because its permissions aren't set correctly.");
 
             return false;
@@ -428,7 +428,7 @@ class TeamSpeak3Bot
 
         $this->timers[$config['name']] = new $config['class']($config, $this);
 
-        $this->printOutput("Success.");
+        $this->printOutput('Success.');
 
         return true;
     }
@@ -477,13 +477,13 @@ class TeamSpeak3Bot
                     break;
                 }
 
-                if ($event["msg"]->startsWith($trigger)) {
-                    if(@$config->CONFIG['permissions'] == "groups") {
+                if ($event['msg']->startsWith($trigger)) {
+                    if(@$config->CONFIG['permissions'] == 'groups') {
                         $client = $this->node->clientGetByUid($data['invokeruid']);
                         if(empty(@array_intersect_assoc($config->CONFIG['groups'], array_keys($this->node->clientGetServerGroupsByDbid($client['client_database_id']))))) {
                             continue;
                         }
-                    } else if (@$config->CONFIG['permissions'] != "everyone") {
+                    } elseif (@$config->CONFIG['permissions'] != 'everyone') {
                         continue;
                     }
 
@@ -495,8 +495,8 @@ class TeamSpeak3Bot
                     $info = $data;
 
                     $info['triggerUsed'] = $trigger;
-                    $text = $event["msg"]->substr(strlen($trigger) + 1);
-                    $info['fullText'] = $event["msg"];
+                    $text = $event['msg']->substr(strlen($trigger) + 1);
+                    $info['fullText'] = $event['msg'];
 
                     if (!empty($text->toString())) {
                         $info['text'] = $text;
@@ -552,7 +552,7 @@ class TeamSpeak3Bot
     public function onTimeout($time, AbstractAdapter $adapter)
     {
         if ($adapter->getQueryLastTimestamp() < $this->carbon->now()->subSeconds(120)->timestamp) {
-            $adapter->request("clientupdate");
+            $adapter->request('clientupdate');
             $this->updateList();
         }
         foreach($this->timers as $timer){
