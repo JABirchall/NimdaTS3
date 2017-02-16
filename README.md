@@ -28,6 +28,7 @@ PHP version 5.6+, php_PDO extentions, Teamspeak 3 Server
 * Eloquent database support for Progresql, Mysql, MSSQL, SQLite
 * Global Ban system built in
 * Permissions
+* Timers
 
 ## Coding style
 
