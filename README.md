@@ -24,7 +24,7 @@ PHP version 5.6+, php_PDO extentions, Teamspeak 3 Server
 ## Features
 
 * Asynchronous execution
-* Plugin Autoloading and Auotinstalling
+* Plugin Auto-loading and Auto-installing
 * Eloquent database support for Progresql, Mysql, MSSQL, SQLite
 * Global Ban system built in
 * Permissions
@@ -54,7 +54,8 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **JABirchall** - *All the work*
+* **JABirchall** - *Main Bot Class, plugin system, Timers*
+* **Najsr** - *Permissions*
 
 See also the list of [contributors](https://github.com/JABirchall/NimdaTS3/graphs/contributors) who participated in this project.
 
