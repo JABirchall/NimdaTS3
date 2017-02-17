@@ -167,7 +167,6 @@ class ServerQuery extends AbstractAdapter
 
         do {
             $evt = $this->getTransport()->readLine();
-            var_dump($evt);
         } while ($evt instanceof StringHelper &&
                 !$evt->section(TeamSpeak3::SEPARATOR_CELL)->startsWith(TeamSpeak3::EVENT));
 
