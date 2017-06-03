@@ -20,7 +20,7 @@ php start.php
 
 ## Prerequisities
 
-PHP version 5.6+, php_PDO extentions, Teamspeak 3 Server
+PHP version 5.6+, php_PDO extentions, mbstring and Teamspeak 3 Server
 
 ## Features
 
