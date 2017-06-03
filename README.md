@@ -1,5 +1,7 @@
 # Nimda Advanced TeamSpeak 3 Bot
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/86370bd136ce46ba9ead64b272ba11a3)](https://www.codacy.com/app/drwhat/NimdaTS3?utm_source=github.com&utm_medium=referral&utm_content=JABirchall/NimdaTS3&utm_campaign=badger)
+
 A Modular Designed TeamSpeak 3 bot for Server owners and admins
 
 ## Getting Started
