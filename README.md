@@ -1,7 +1,7 @@
 # Nimda Advanced TeamSpeak 3 Bot
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/86370bd136ce46ba9ead64b272ba11a3)](https://www.codacy.com/app/drwhat/NimdaTS3?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JABirchall/NimdaTS3&amp;utm_campaign=Badge_Grade)
-[![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/codeclimate/codeclimate)
-[![Test Coverage](https://codeclimate.com/github/codeclimate/codeclimate/badges/coverage.svg)](https://codeclimate.com/github/codeclimate/codeclimate/coverage)
+[![Code Climate](https://codeclimate.com/github/JABirchall/NimdaTS3/badges/gpa.svg)](https://codeclimate.com/github/codeclimate/codeclimate)
+[![Test Coverage](https://codeclimate.com/github/JABirchall/NimdaTS3/badges/coverage.svg)](https://codeclimate.com/github/codeclimate/codeclimate/coverage)
 [![Issue Count](https://codeclimate.com/github/JABirchall/NimdaTS3/badges/issue_count.svg)](https://codeclimate.com/github/JABirchall/NimdaTS3)
 
 A Modular Designed TeamSpeak 3 bot for Server owners and admins
