@@ -30,7 +30,7 @@ class TeamSpeak3Bot
     /**
      * @var string
      */
-    const NIMDA_VERSION = '0.14.1';
+    const NIMDA_VERSION = '0.14.2';
     const NIMDA_TYPE = '-alpha';
 
     /**
