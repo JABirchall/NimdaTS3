@@ -12,15 +12,15 @@ namespace Plugin;
 use App\Plugin;
 use TeamSpeak3\TeamSpeak3;
 use TeamSpeak3\Ts3Exception;
+use TeamSpeak3\Helper\StringHelper;
 
 class BadChannelName extends Plugin implements PluginContract
 {
-
     public function isTriggered()
     {
 
         foreach($this->CONFIG['blacklist'] as $regex) {
-            if(!$this->info['channel_name']->contains($regex, true)) {
+            if(!StringHelper::factory($this->info['channel_name'])->contains($regex, true)) {
                 continue;
             }
 
