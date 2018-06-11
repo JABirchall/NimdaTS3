@@ -10,6 +10,7 @@ namespace Plugin;
 
 use App\Plugin;
 use TeamSpeak3\TeamSpeak3;
+use TeamSpeak3\Ts3Exception;
 
 
 class AntiProxy extends Plugin implements PluginContract
@@ -61,8 +62,12 @@ class AntiProxy extends Plugin implements PluginContract
 
     private function kickClient()
     {
-        $client = $this->teamSpeak3Bot->node->clientGetByUid($this->info['client_unique_identifier']);
-        $client->kick("Detected using a Proxy, Socks4/5 or VPN.", TeamSpeak3::KICK_SERVER);
+        try {
+            $client = $this->teamSpeak3Bot->node->clientGetByUid($this->info['client_unique_identifier']);
+            $client->kick("Detected using a Proxy, Socks4/5 or VPN.", TeamSpeak3::KICK_SERVER);
+        } catch(Ts3Exception $e) {
+            return;
+        }
     }
 
 }
