@@ -1,0 +1,16 @@
+{
+  "name": "Antiproxy",
+  "author": "JABirchall",
+  "description": "Checks a clients IP address on public IP blacklists",
+  "version": "1.0",
+  "triggers": [
+    "event"
+  ],
+  "event": "cliententerview",
+  "usage": "false",
+  "whitelist": [
+    "127.0.0.1"
+  ],
+  "email": "",
+  "kick_threshold": 0.95 // it is recommend to not use a higher value then this,
+}
