@@ -64,7 +64,7 @@ class AntiProxy extends Plugin implements PluginContract
     {
         try {
             $client = $this->teamSpeak3Bot->node->clientGetByUid($this->info['client_unique_identifier']);
-            $client->kick("Detected using a Proxy, Socks4/5 or VPN.", TeamSpeak3::KICK_SERVER);
+            $client->kick( TeamSpeak3::KICK_SERVER, "Detected using a Proxy, Socks4/5 or VPN.");
         } catch(Ts3Exception $e) {
             return;
         }
